@@ -188,6 +188,10 @@ LinkedList.prototype.remove = function(pos) {
     throw new Error(message.failure);
   }
 
+  if (!cur) {
+    return null;
+  }
+
   if (pos === 0) {
     this.head = cur.next;
     deletedNode = cur;
@@ -524,4 +528,23 @@ LinkedList.prototype.dedupeWithoutModifying = function() {
   }
 
   return clonedLL;
+}
+
+LinkedList.prototype.fib = function(n) {
+  if (n < 2) {
+    return 1;
+  }
+
+  this.head = null;
+
+  this.add(1);
+  this.add(1);
+
+  var cur = this.head;
+
+  while(n-- > 2) {
+    this.add( cur.data + cur.next.data);
+    cur = cur.next;
+  }
+  this.print();
 }
