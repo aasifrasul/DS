@@ -1,3 +1,4 @@
+
 var Node = function(data) {
   this.data = data;
   this.next = null;
@@ -15,6 +16,26 @@ LinkedList.prototype.increment = function() {
 LinkedList.prototype.decrement = function() {
   this.length--;
 }
+
+LinkedList.prototype.size: function() {
+  return this.length;
+};
+
+LinkedList.prototype.toArray: function() {
+  var result = [],
+    current = this.head;
+
+  while (current) {
+    result.push(current.data);
+    current = current.next;
+  }
+
+  return result;
+};
+
+LinkedList.prototype.toString: function() {
+  return this.toArray().toString();
+};
 
 LinkedList.prototype.add = function(value) {
   var node = new Node(value),
@@ -216,7 +237,6 @@ LinkedList.prototype.remove = function(pos) {
 };
 
 LinkedList.prototype.reverse = function() {
-
   if (!this.head || !this.head.next) return this;
 
   var cur = this.head;
@@ -542,9 +562,11 @@ LinkedList.prototype.fib = function(n) {
 
   var cur = this.head;
 
-  while(n-- > 2) {
-    this.add( cur.data + cur.next.data);
+  while (n-- > 2) {
+    this.add(cur.data + cur.next.data);
     cur = cur.next;
   }
   this.print();
 }
+
+var linkedList = new LinkedList();

@@ -51,3 +51,5 @@ Queue.prototype.hasNext = function() {
 Queue.prototype.isEmpty = function() {
   return this.first == null;
 }
+
+var queue = new Queue();

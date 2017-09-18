@@ -37,9 +37,11 @@ Stack.prototype.print = function() {
 };
 
 Stack.prototype.hasNext = function() {
-  return this.next != undefined;
+  return this.previous != undefined;
 }
 
 Stack.prototype.isEmpty = function() {
   return this.top == undefined;
 }
+
+var stack = new Stack();
