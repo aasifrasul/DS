@@ -271,7 +271,6 @@ LinkedList.prototype.findLoopStart = function() {
   while (slow && fast) {
     slow = slow.next;
 
-    //if hits null, then there is no loop
     if (!fast.next) {
       return null;
     }
@@ -294,30 +293,33 @@ LinkedList.prototype.pushSorted = function(val) {
   }
   var head = this.head,
     cur = head,
+    node = new Node(val),
     previous;
 
   this.increment();
 
   if (!this.head) {
-    this.head = { data: val, next: null };
+    this.head = node;
     return this;
   }
   //value lower than head value
   if (val < this.head.data) {
-    this.head = { data: val, next: head };
+    node.next = head;
+    this.head = node;
     return this;
   }
 
   while (cur) {
     if (cur.data > val) {
-      previous.next = { data: val, next: cur };
+      node.next = cur;
+      previous.next = node;
       return this;
     }
     previous = cur;
     cur = cur.next;
   }
-  //value higher than the last node value
-  previous.next = { data: val, next: null };
+  node.next = null;
+  previous.next = node;
   return this;
 }
 
@@ -336,7 +338,6 @@ LinkedList.prototype.pushSortedDesc = function(val) {
     this.head = node;
     return this;
   }
-  //value lower than head value
   if (val > this.head.data) {
     node.next = head;
     this.head = node;
@@ -352,7 +353,6 @@ LinkedList.prototype.pushSortedDesc = function(val) {
     previous = cur;
     cur = cur.next;
   }
-  //value higher than the last node value
   node.next = null;
   previous.next = node;
   return this;
@@ -362,7 +362,6 @@ LinkedList.prototype.kthFromEnd = function(k) {
   var node = this.head,
     i = 1,
     kthNode;
-  //handle, 0 or negative value of k
   if (k <= 0) return;
 
   while (node) {
@@ -395,7 +394,6 @@ LinkedList.prototype.deleteKthFromEnd = function(k) {
 
     node = node.next;
   }
-  //kth node is the head
   if (!previous)
     this.head = this.head.next;
   else {
@@ -410,7 +408,6 @@ LinkedList.prototype.findLoopStart = function() {
   while (slow && fast) {
     slow = slow.next;
 
-    //if hits null, then there is no loop
     if (!fast.next) {
       return null;
     }
@@ -433,7 +430,6 @@ LinkedList.prototype.getLength = function() {
     pointer = head,
     anotherPtr,
     len = 0;
-  //use the previously written function
   var loopStartNode = head.findLoopStart();
   if (!loopStartNode) {
     while (cur) {
@@ -510,7 +506,6 @@ LinkedList.prototype.dedupe = function() {
   const sortedLL = this.sort();
   let cur = sortedLL.head;
 
-  // 1st use-case: an empty list 
   if (!cur) {
     return null;
   }
