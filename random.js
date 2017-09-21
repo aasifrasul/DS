@@ -288,3 +288,46 @@ function permutations(str) {
   }
   return perms;
 }
+
+Object.compare = (obj1, obj2) => {
+	var p;
+  for (p in obj1) {
+    if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+
+    switch (typeof(obj1[p])) {
+      case 'object':
+        if (!Object.compare(obj1[p], obj2[p])) return false;
+        break;
+      case 'function':
+        if (typeof(obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false;
+        break;
+      default:
+        if (obj1[p] != obj2[p]) return false;
+    }
+  }
+
+  for (p in obj2) {
+    if (typeof(obj1[p]) == 'undefined') return false;
+  }
+  return true;
+};
+
+var isAnagaram = (str1, str2) => {
+	var hash = str => Array.prototype.slice.call(str).reduce((hash, item) => {
+		hash[item] = item;
+		return hash;
+	}, {});
+	var hash1 = hash(str1);
+	var hash2 = hash(str2);
+	for (key in hash1) {
+		if (!hash2[key]) {
+			return false;
+		}
+	}
+	for (key in hash2) {
+		if (!hash1[key]) {
+			return false;
+		}
+	}
+	return true;
+}
