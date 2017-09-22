@@ -6,9 +6,9 @@ var DoublyLinkedList = (function () {
   };
 
   var DoublyLinkedList = function() {
-    this._head = null;
-    this._tail = null;
-    this._length = 0;
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
   }
 
   DoublyLinkedList.prototype = {
@@ -29,20 +29,58 @@ var DoublyLinkedList = (function () {
       var node = new Node(data);
 
       //special case: no items in the list yet
-      if (this._length == 0) {
-        this._head = node;
-        this._tail = node;
+      if (this.length == 0) {
+        this.head = node;
+        this.tail = node;
       } else {
 
         //attach to the tail node
-        this._tail.next = node;
-        node.prev = this._tail;
-        this._tail = node;
+        this.tail.next = node;
+        node.prev = this.tail;
+        this.tail = node;
       }
 
       //don't forget to update the count
-      this._length++;
+      this.length++;
+    },
 
+    insertAfter: function(data, toNodeData) {
+      var current = this.head;
+      while(current) {
+        if(current.data === toNodeData) {
+          var node = new Node(data);
+          if(current === this.tail) {
+            this.add(data);
+          } else {
+            current.next.previous = node;
+            node.previous = current;
+            node.next = current.next;
+            current.next = node;
+            this.numberOfValues++;
+          }
+        }
+        current = current.next;
+      }
+    },
+
+    traverse: function(fn) {
+      var current = this.head;
+      while(current) {
+        if(fn) {
+          fn(current);
+        }
+        current = current.next;
+      }
+    },
+
+    traverseReverse: function(fn) {
+      var current = this.tail;
+      while(current) {
+        if(fn) {
+          fn(current);
+        }
+        current = current.previous;
+      }
     },
 
     /**
@@ -56,8 +94,8 @@ var DoublyLinkedList = (function () {
     item: function(index) {
 
       //check for out-of-bounds values
-      if (index > -1 && index < this._length) {
-        var current = this._head,
+      if (index > -1 && index < this.length) {
+        var current = this.head,
           i = 0;
 
         while (i++ < index) {
@@ -80,33 +118,33 @@ var DoublyLinkedList = (function () {
     remove: function(index) {
 
       //check for out-of-bounds values
-      if (index > -1 && index < this._length) {
+      if (index > -1 && index < this.length) {
 
-        var current = this._head,
+        var current = this.head,
           i = 0;
 
         //special case: removing first item
         if (index === 0) {
-          this._head = current.next;
+          this.head = current.next;
 
           /*
            * If there's only one item in the list and you remove it,
-           * then this._head will be null. In that case, you should
-           * also set this._tail to be null to effectively destroy
+           * then this.head will be null. In that case, you should
+           * also set this.tail to be null to effectively destroy
            * the list. Otherwise, set the prev pointer on the new
-           * this._head to be null.
+           * this.head to be null.
            */
-          if (!this._head) {
-            this._tail = null;
+          if (!this.head) {
+            this.tail = null;
           } else {
-            this._head.prev = null;
+            this.head.prev = null;
           }
 
           //special case: removing last item
-        } else if (index === this._length - 1) {
-          current = this._tail;
-          this._tail = current.prev;
-          this._tail.next = null;
+        } else if (index === this.length - 1) {
+          current = this.tail;
+          this.tail = current.prev;
+          this.tail.next = null;
         } else {
 
           //find the right location
@@ -120,7 +158,7 @@ var DoublyLinkedList = (function () {
         }
 
         //decrement the length
-        this._length--;
+        this.length--;
 
         //return the value
         return current.data;
@@ -131,15 +169,15 @@ var DoublyLinkedList = (function () {
     },
 
     reverse: function() {
-      var head = this._head,
-        current = this._head,
+      var head = this.head,
+        current = this.head,
         tmp;
       while (current) {
         tmp = current.next;
         current.next = current.prev;
         current.prev = tmp;
         if (!tmp) {
-          this._head = current;
+          this.head = current;
         }
         current = tmp;
       }
@@ -147,14 +185,14 @@ var DoublyLinkedList = (function () {
     },
 
     delete: function(val) {
-      var current = this._head,
+      var current = this.head,
         prev;
 
       //delete head
       if (current.value == val) {
-        this._head = current.next;
-        //if there is only one node, then this._head is null
-        if (this._head) this._head.prev = null;
+        this.head = current.next;
+        //if there is only one node, then this.head is null
+        if (this.head) this.head.prev = null;
         return this;
       }
 
@@ -176,12 +214,12 @@ var DoublyLinkedList = (function () {
     },
 
     size: function() {
-      return this._length;
+      return this.length;
     },
 
     toArray: function() {
       var result = [],
-        current = this._head;
+        current = this.head;
 
       while (current) {
         result.push(current.data);
@@ -199,4 +237,47 @@ var DoublyLinkedList = (function () {
   return DoublyLinkedList;
 })();
 
-var dll = new DoublyLinkedList();
+var doublyLinkedList = new DoublyLinkedList();
+doublyLinkedList.print(); // => ''
+doublyLinkedList.add(1);
+doublyLinkedList.add(2);
+doublyLinkedList.add(3);
+doublyLinkedList.add(4);
+doublyLinkedList.print(); // => 1 2 3 4
+console.log('length is 4:', doublyLinkedList.length()); // => 4
+doublyLinkedList.remove(3); // remove value
+doublyLinkedList.print(); // => 1 2 4
+doublyLinkedList.remove(9); // remove non existing value
+doublyLinkedList.print(); // => 1 2 4
+doublyLinkedList.remove(1); // remove head
+doublyLinkedList.print(); // => 2 4
+doublyLinkedList.remove(4); // remove tail
+doublyLinkedList.print(); // => 2
+console.log('length is 1:', doublyLinkedList.length()); // => 1
+doublyLinkedList.remove(2); // remove tail, the list should be empty
+doublyLinkedList.print(); // => ''
+console.log('length is 0:', doublyLinkedList.length()); // => 0
+doublyLinkedList.add(2);
+doublyLinkedList.add(6);
+doublyLinkedList.print(); // => 2 6
+doublyLinkedList.insertAfter(3, 2);
+doublyLinkedList.print(); // => 2 3 6
+doublyLinkedList.traverseReverse(function(node) { console.log(node.data); });
+doublyLinkedList.insertAfter(4, 3);
+doublyLinkedList.print(); // => 2 3 4 6
+doublyLinkedList.insertAfter(5, 9); // insertAfter a non existing node
+doublyLinkedList.print(); // => 2 3 4 6
+doublyLinkedList.insertAfter(5, 4);
+doublyLinkedList.insertAfter(7, 6); // insertAfter the tail
+doublyLinkedList.print(); // => 2 3 4 5 6 7
+doublyLinkedList.add(8); // add node with normal method
+doublyLinkedList.print(); // => 2 3 4 5 6 7 8
+console.log('length is 7:', doublyLinkedList.length()); // => 7
+doublyLinkedList.traverse(function(node) { node.data = node.data + 10; });
+doublyLinkedList.print(); // => 12 13 14 15 16 17 18
+doublyLinkedList.traverse(function(node) { console.log(node.data); }); // => 12 13 14 15 16 17 18
+console.log('length is 7:', doublyLinkedList.length()); // => 7
+doublyLinkedList.traverseReverse(function(node) { console.log(node.data); }); // => 18 17 16 15 14 13 12
+doublyLinkedList.print(); // => 12 13 14 15 16 17 18
+console.log('length is 7:', doublyLinkedList.length()); // => 7
+

@@ -6,7 +6,7 @@ var DoublyList = (function () {
 	}
 
 	var DoublyList = function () {
-	  this._length = 0;
+	  this.length = 0;
 	  this.head = null;
 	  this.tail = null;
 	}
@@ -14,7 +14,7 @@ var DoublyList = (function () {
 	DoublyList.prototype.add = function(value) {
 	  var node = new Node(value);
 
-	  if (this._length) {
+	  if (this.length) {
 	    this.tail.next = node;
 	    node.previous = this.tail;
 	    this.tail = node;
@@ -23,7 +23,7 @@ var DoublyList = (function () {
 	    this.tail = node;
 	  }
 
-	  this._length++;
+	  this.length++;
 
 	  return node;
 	};
@@ -48,7 +48,7 @@ var DoublyList = (function () {
 
 	DoublyList.prototype.searchNodeAt = function(position) {
 	  var currentNode = this.head,
-	    length = this._length,
+	    length = this.length,
 	    count = 1,
 	    message = { failure: 'Failure: non-existent node in this list.' };
 
@@ -68,7 +68,7 @@ var DoublyList = (function () {
 
 	DoublyList.prototype.remove = function(position) {
 	  var currentNode = this.head,
-	    length = this._length,
+	    length = this.length,
 	    count = 1,
 	    message = { failure: 'Failure: non-existent node in this list.' },
 	    beforeNodeToDelete = null,
@@ -93,7 +93,7 @@ var DoublyList = (function () {
 	    }
 
 	    // 3rd use-case: the last node is removed
-	  } else if (position === this._length) {
+	  } else if (position === this.length) {
 	    this.tail = this.tail.previous;
 	    this.tail.next = null;
 	    // 4th use-case: a middle node is removed
@@ -113,7 +113,7 @@ var DoublyList = (function () {
 	    nodeToDelete = null;
 	  }
 
-	  this._length--;
+	  this.length--;
 
 	  return message.success;
 	};

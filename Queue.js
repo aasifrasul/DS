@@ -36,6 +36,24 @@ var Queue = (function() {
     return temp;
   };
 
+  Queue.prototype.peekAt = function (index) {
+    //anything smaller than 0 and equal or greater than count is not at the queue
+    if (index > -1 && index < count) {
+        var current = head;
+
+        //Navigates through the queue to find the item
+        for(var i = 0; i < index; i++){
+            current = current.next;
+        }
+
+        return current.data;
+    }
+    //an index out of the bounds of the queue was chosen.
+    else {
+        return null;
+    }
+  }
+
   Queue.prototype.print = function() {
     var curr = this.first;
     while (curr) {

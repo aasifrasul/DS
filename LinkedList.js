@@ -56,6 +56,34 @@ var LinkedList = (function () {
     return node;
   };
 
+  LinkedList.prototype.insertAfter = function(data, toNodeData) {
+    var current = this.head;
+    while(current) {
+      if(current.data === toNodeData) {
+        var node = new Node(data);
+        if(current === this.tail) {
+          this.tail.next = node;
+          this.tail = node;
+        } else {
+          node.next = current.next;
+          current.next = node;
+        }
+        this.numberOfValues++;
+      }
+      current = current.next;
+    }
+  };
+
+  LinkedList.prototype.traverse = function(fn) {
+    var current = this.head;
+    while(current) {
+      if(fn) {
+        fn(current);
+      }
+      current = current.next;
+    }
+  };
+
   LinkedList.prototype.addTop = function(value) {
     var node = new Node(value),
       cur = this.head;

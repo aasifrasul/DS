@@ -28,6 +28,10 @@ var Stack = (function () {
     return temp;
   };
 
+  Stack.prototype.Peek = function(){
+    return (top || {}).data;
+  }
+
   Stack.prototype.print = function() {
     var temp = this.top;
     while (temp) {
