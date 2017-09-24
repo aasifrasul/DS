@@ -17,11 +17,11 @@ var LinkedList = (function () {
     this.length--;
   }
 
-  LinkedList.prototype.size: function() {
+  LinkedList.prototype.size = function() {
     return this.length;
   };
 
-  LinkedList.prototype.toArray: function() {
+  LinkedList.prototype.toArray = function() {
     var result = [],
       current = this.head;
 
@@ -33,7 +33,7 @@ var LinkedList = (function () {
     return result;
   };
 
-  LinkedList.prototype.toString: function() {
+  LinkedList.prototype.toString = function() {
     return this.toArray().toString();
   };
 
@@ -271,7 +271,7 @@ var LinkedList = (function () {
     var reversedLL = new LinkedList();
 
     while (cur) {
-      reversedLL.addFirst(cur.data)
+      reversedLL.addTop(cur.data)
       cur = cur.next;
     }
 
@@ -591,6 +591,71 @@ var LinkedList = (function () {
     }
     this.print();
   }
+
+  LinkedList.prototype.deleteEven = function() {
+    let cur = this.head;
+    let previous;
+
+    if (!cur) {
+      return null;
+    }
+
+    while (cur.next) {
+      if (cur.next.data%2 === 0) {
+        cur.next = cur.next.next;
+        this.decrement();
+      } else {
+        cur = cur.next;
+      }
+    }
+
+    if (cur.data%2 === 0) {
+      cur = null;
+      this.decrement();
+    }
+
+    cur = this.head;
+
+    if (cur.data%2 === 0) {
+      this.head = cur.next;
+      this.decrement();
+    }
+
+    return this;
+  };
+
+  LinkedList.prototype.deleteOdd = function() {
+    let cur = this.head;
+    let previous;
+
+    if (!cur) {
+      return null;
+    }
+
+    while (cur.next) {
+      const { data, next } = cur.next;
+      if (data && data%2 === 1) {
+        cur.next = next;
+        this.decrement();
+      } else {
+        cur = cur.next;
+      }
+    }
+
+    if (cur.data && cur.data%2 === 1) {
+      cur = null;
+      this.decrement();
+    }
+
+    cur = this.head;
+
+    if (cur.data && cur.data%2 === 1) {
+      this.head = cur.next;
+      this.decrement();
+    }
+
+    return this;
+  };
 
   return LinkedList;
 })();

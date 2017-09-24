@@ -141,55 +141,12 @@ function removeDuplicateChar(str) {
     } else
       charCount[char] = 1;
   }
-  for (var j in charCount) {
-    if (charCount[j] == 1)
-      newStr += j;
-  }
-  return newStr;
-}
-
-function isPalindrome(str) {
-  var i, len = str.length;
-  for (i = 0; i < len / 2; i++) {
-    if (str[i] !== str[len - 1 - i])
-      return false;
-  }
-  return true;
-}
-
-// Find the missing no of an unsorted array from 0 => n
-/*
-function missingNumber(arr) {
-  var n = arr.length + 1,
-    sum = 0,
-    expectedSum = n * (n + 1) / 2;
-
-  for (var i = 0, len = arr.length; i < len; i++) {
-    sum += arr[i];
-  }
-
-  return expectedSum - sum;
-}
-*/
-
-function missingNumber(arr) {
-  var n = arr.length + 1;
-  return (n * (n + 1) / 2) - eval(arr.join('+'));
-}
-
-function findSum(arr, sum) {
-  var hash = {},
-    len = arr.length;
-
-  for (var i = 0; i < len; i++) {
-    if (hash[sum - arr[i]]) {
-      return true;
-    }
-    hash[arr[i]] = true;
-  }
-
+  for (var j  
   return false;
 }
+
+// Gives the diff between Biggest and Smallest element
+var getMaxDifference = arr => Math.max.apply(null, arr) - Math.min.apply(null, arr);
 
 function maxDifference(arr) {
   var min = arr[0],
@@ -240,7 +197,7 @@ function countZeroes(n) {
   return count;
 }
 
-function subStringFinder(str, subStr) {
+function findSubString(str, subStr) {
   var idx = 0,
     i = 0,
     j = 0,
@@ -354,3 +311,45 @@ function binarySearch(items, value){
     //make sure it's the right value
     return (items[middle] != value) ? -1 : middle;
 }
+
+
+// Compare 2 Objects
+// Irrespective of order of the keys
+function isEqual(a, b) {
+    var aProps = Object.getOwnPropertyNames(a),
+        bProps = Object.getOwnPropertyNames(b);
+
+    if (aProps.length != bProps.length) {
+        return false;
+    }
+
+    for (var i = 0; i < aProps.length; i++) {
+        var propName = aProps[i];
+        
+        if (a[propName] !== b[propName]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Shim for bind
+Function.prototype.bind = Function.prototype.bind || function(context){
+  var self = this;
+  return function(){
+    return self.apply(context, arguments);
+  };
+}
+
+// Shim For forEach
+Array.prototype.forEach = Array.prototype.forEach || function(callback, thisArg) {
+    if (
+    	!Array.isArray(this)
+    	|| typeof callback != 'function'
+    )
+    	return;
+
+    for (i in this) {
+      callback.call(thisArg || this, this[i], i, this);
+    }
+};
