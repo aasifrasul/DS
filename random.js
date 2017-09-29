@@ -1,3 +1,9 @@
+
+function toArray(args) {
+  return Array.prototype.slice.call(args);
+}
+
+
 function add(n) {
   var sum = n;
   var f = function f(m) {
@@ -333,6 +339,40 @@ function isEqual(a, b) {
     return true;
 }
 
+
+var fib = function(n) {
+	return (n === 0 || n === 1) ? n : (fib(n-1) + fib(n-2));
+}
+
+// memmoized Versiom
+var fib = (function(n) {
+	var hash = {};
+	function f(n) {
+		if (n in hash) return hash[n];
+		if (n === 0 || n === 1) {
+			value = n;
+		} else {
+			value = fib(n-1) + fib(n-2);
+		}
+		hash[n] = value;
+		return value;
+	};
+	return f;
+})();
+
+
+// Generic function to memoize another function
+var memoize = function(func) {
+  var memo = {};
+  var slice = Array.prototype.slice;
+
+  return function() {
+    var args = slice.call(arguments);
+    return (args in memo) ? memo[args] : (memo[args] = func.apply(this, args));
+  }
+}
+
+
 // Shim for bind
 Function.prototype.bind = Function.prototype.bind || function(context){
   var self = this;
@@ -353,3 +393,32 @@ Array.prototype.forEach = Array.prototype.forEach || function(callback, thisArg)
       callback.call(thisArg || this, this[i], i, this);
     }
 };
+
+
+// Move Left Animation
+function moveLeft(elem, distance) {
+  var left = 0;
+
+  function frame() {
+    left++;
+    elem.style.left = left + 'px';
+
+    if (left == distance)
+      clearInterval(timeId)
+  }
+
+  var timeId = setInterval(frame, 10);
+}
+
+
+Function.prototype.curry = function() {
+  if (arguments.length < 1) {
+    return this;
+  }
+  var self = this;
+  var args = toArray(arguments);
+  return function() {
+    return self.apply(this, args.concat(toArray(arguments)));
+  }
+}
+
