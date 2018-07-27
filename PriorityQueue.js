@@ -1,4 +1,3 @@
-
 /**
  * Initializes a new empty `PriorityQueue` with the given `comparator(a, b)`
  * function, uses `.DEFAULT_COMPARATOR()` when no function is provided.
@@ -10,10 +9,10 @@
  * @return {PriorityQueue}
  * @api public
  */
-var PriorityQueue = (function () {
+var PriorityQueue = (function() {
 	function PriorityQueue(comparator) {
-	  this._comparator = comparator || PriorityQueue.DEFAULT_COMPARATOR;
-	  this._elements = [];
+		this._comparator = comparator || PriorityQueue.DEFAULT_COMPARATOR;
+		this._elements = [];
 	}
 
 	/**
@@ -26,16 +25,16 @@ var PriorityQueue = (function () {
 	 * @api public
 	 */
 	PriorityQueue.DEFAULT_COMPARATOR = function(a, b) {
-	  if (typeof a === 'number' && typeof b === 'number') {
-	    return a - b;
-	  } else {
-	    a = a.toString();
-	    b = b.toString();
+		if (typeof a === 'number' && typeof b === 'number') {
+			return a - b;
+		} else {
+			a = a.toString();
+			b = b.toString();
 
-	    if (a == b) return 0;
+			if (a == b) return 0;
 
-	    return (a > b) ? 1 : -1;
-	  }
+			return a > b ? 1 : -1;
+		}
 	};
 
 	/**
@@ -45,7 +44,7 @@ var PriorityQueue = (function () {
 	 * @api public
 	 */
 	PriorityQueue.prototype.isEmpty = function() {
-	  return this.size() === 0;
+		return this.size() === 0;
 	};
 
 	/**
@@ -56,9 +55,9 @@ var PriorityQueue = (function () {
 	 * @api public
 	 */
 	PriorityQueue.prototype.peek = function() {
-	  if (this.isEmpty()) throw new Error('PriorityQueue is empty');
+		if (this.isEmpty()) throw new Error('PriorityQueue is empty');
 
-	  return this._elements[0];
+		return this._elements[0];
 	};
 
 	/**
@@ -69,35 +68,35 @@ var PriorityQueue = (function () {
 	 * @api public
 	 */
 	PriorityQueue.prototype.deq = function() {
-	  var first = this.peek();
-	  var last = this._elements.pop();
-	  var size = this.size();
+		var first = this.peek();
+		var last = this._elements.pop();
+		var size = this.size();
 
-	  if (size === 0) return first;
+		if (size === 0) return first;
 
-	  this._elements[0] = last;
-	  var current = 0;
+		this._elements[0] = last;
+		var current = 0;
 
-	  while (current < size) {
-	    var largest = current;
-	    var left = (2 * current) + 1;
-	    var right = (2 * current) + 2;
+		while (current < size) {
+			var largest = current;
+			var left = 2 * current + 1;
+			var right = 2 * current + 2;
 
-	    if (left < size && this._compare(left, largest) >= 0) {
-	      largest = left;
-	    }
+			if (left < size && this._compare(left, largest) >= 0) {
+				largest = left;
+			}
 
-	    if (right < size && this._compare(right, largest) >= 0) {
-	      largest = right;
-	    }
+			if (right < size && this._compare(right, largest) >= 0) {
+				largest = right;
+			}
 
-	    if (largest === current) break;
+			if (largest === current) break;
 
-	    this._swap(largest, current);
-	    current = largest;
-	  }
+			this._swap(largest, current);
+			current = largest;
+		}
 
-	  return first;
+		return first;
 	};
 
 	/**
@@ -108,19 +107,19 @@ var PriorityQueue = (function () {
 	 * @api public
 	 */
 	PriorityQueue.prototype.enq = function(element) {
-	  var size = this._elements.push(element);
-	  var current = size - 1;
+		var size = this._elements.push(element);
+		var current = size - 1;
 
-	  while (current > 0) {
-	    var parent = Math.floor((current - 1) / 2);
+		while (current > 0) {
+			var parent = Math.floor((current - 1) / 2);
 
-	    if (this._compare(current, parent) <= 0) break;
+			if (this._compare(current, parent) <= 0) break;
 
-	    this._swap(parent, current);
-	    current = parent;
-	  }
+			this._swap(parent, current);
+			current = parent;
+		}
 
-	  return size;
+		return size;
 	};
 
 	/**
@@ -130,7 +129,7 @@ var PriorityQueue = (function () {
 	 * @api public
 	 */
 	PriorityQueue.prototype.size = function() {
-	  return this._elements.length;
+		return this._elements.length;
 	};
 
 	/**
@@ -139,7 +138,7 @@ var PriorityQueue = (function () {
 	 *  @param {Function} fn
 	 */
 	PriorityQueue.prototype.forEach = function(fn) {
-	  return this._elements.forEach(fn);
+		return this._elements.forEach(fn);
 	};
 
 	/**
@@ -152,7 +151,7 @@ var PriorityQueue = (function () {
 	 * @api private
 	 */
 	PriorityQueue.prototype._compare = function(a, b) {
-	  return this._comparator(this._elements[a], this._elements[b]);
+		return this._comparator(this._elements[a], this._elements[b]);
 	};
 
 	/**
@@ -163,9 +162,9 @@ var PriorityQueue = (function () {
 	 * @api private
 	 */
 	PriorityQueue.prototype._swap = function(a, b) {
-	  var aux = this._elements[a];
-	  this._elements[a] = this._elements[b];
-	  this._elements[b] = aux;
+		var aux = this._elements[a];
+		this._elements[a] = this._elements[b];
+		this._elements[b] = aux;
 	};
 
 	return PriorityQueue;

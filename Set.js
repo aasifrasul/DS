@@ -1,66 +1,66 @@
 var Set = (function() {
-	var Set = function () {
-	  this.values = [];
-	  this.count = 0;
-	}
+	var Set = function() {
+		this.values = [];
+		this.count = 0;
+	};
 
 	Set.prototype.add = function(value) {
-	  if(!~this.values.indexOf(value)) {
-	    this.values.push(value);
-	    this.count++;
-	  }
+		if (!~this.values.indexOf(value)) {
+			this.values.push(value);
+			this.count++;
+		}
 	};
 	Set.prototype.remove = function(value) {
-	  var index = this.values.indexOf(value);
-	  if(~index) {
-	    this.values.splice(index, 1);
-	    this.count--;
-	  }
+		var index = this.values.indexOf(value);
+		if (~index) {
+			this.values.splice(index, 1);
+			this.count--;
+		}
 	};
 	Set.prototype.contains = function(value) {
-	  return this.values.indexOf(value) !== -1;
+		return this.values.indexOf(value) !== -1;
 	};
 	Set.prototype.union = function(set) {
-	  var newSet = new Set();
-	  set.values.forEach(function(value) {
-	    newSet.add(value);
-	  });
-	  this.values.forEach(function(value) {
-	    newSet.add(value);
-	  });
-	  return newSet;
+		var newSet = new Set();
+		set.values.forEach(function(value) {
+			newSet.add(value);
+		});
+		this.values.forEach(function(value) {
+			newSet.add(value);
+		});
+		return newSet;
 	};
 	Set.prototype.intersect = function(set) {
-	  var newSet = new Set();
-	  this.values.forEach(function(value) {
-	    if(set.contains(value)) {
-	      newSet.add(value);
-	    }
-	  });
-	  return newSet;
+		var newSet = new Set();
+		this.values.forEach(function(value) {
+			if (set.contains(value)) {
+				newSet.add(value);
+			}
+		});
+		return newSet;
 	};
 	Set.prototype.difference = function(set) {
-	  var newSet = new Set();
-	  this.values.forEach(function(value) {
-	    if(!set.contains(value)) {
-	      newSet.add(value);
-	    }
-	  });
-	  return newSet;
+		var newSet = new Set();
+		this.values.forEach(function(value) {
+			if (!set.contains(value)) {
+				newSet.add(value);
+			}
+		});
+		return newSet;
 	};
 	Set.prototype.isSubset = function(set) {
-	  return set.values.every(function(value) {
-	    return this.contains(value);
-	  }, this);
+		return set.values.every(function(value) {
+			return this.contains(value);
+		}, this);
 	};
 	Set.prototype.length = function() {
-	  return this.count;
+		return this.count;
 	};
 	Set.prototype.print = function() {
-	  console.log(this.values.join(' '));
+		console.log(this.values.join(' '));
 	};
 
-  return Set;
+	return Set;
 })();
 
 var set = new Set();
@@ -91,4 +91,4 @@ set6.print(); // => 3
 console.log('set1 subset of set is true:', set.isSubset(set1)); // => true
 console.log('set2 subset of set is false:', set.isSubset(set2)); // => false
 console.log('set1 length gives 2:', set1.length()); // => 2
-console.log('set3 length gives 3:', set3.length()); 
+console.log('set3 length gives 3:', set3.length());

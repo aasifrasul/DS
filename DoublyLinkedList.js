@@ -1,240 +1,230 @@
-var DoublyLinkedList = (function () {
-  var Node = function(data) {
-    this.data = data,
-    this.next = null,
-    this.prev = null
-  };
+var DoublyLinkedList = (function() {
+	var Node = function(data) {
+		(this.data = data), (this.next = null), (this.prev = null);
+	};
 
-  var DoublyLinkedList = function() {
-    this.head = null;
-    this.tail = null;
-    this.length = 0;
-  }
+	var DoublyLinkedList = function() {
+		this.head = null;
+		this.tail = null;
+		this.length = 0;
+	};
 
-  DoublyLinkedList.prototype = {
+	DoublyLinkedList.prototype = {
+		//restore constructor
+		constructor: DoublyLinkedList,
 
-    //restore constructor
-    constructor: DoublyLinkedList,
+		/**
+		 * Appends some data to the end of the list. This method traverses
+		 * the existing list and places the value at the end in a new item.
+		 * @param {variant} data The data to add to the list.
+		 * @return {Void}
+		 * @method add
+		 */
+		add: function(data) {
+			//create a new item object, place data in
+			var node = new Node(data);
 
-    /**
-     * Appends some data to the end of the list. This method traverses
-     * the existing list and places the value at the end in a new item.
-     * @param {variant} data The data to add to the list.
-     * @return {Void}
-     * @method add
-     */
-    add: function(data) {
+			//special case: no items in the list yet
+			if (this.length == 0) {
+				this.head = node;
+				this.tail = node;
+			} else {
+				//attach to the tail node
+				this.tail.next = node;
+				node.prev = this.tail;
+				this.tail = node;
+			}
 
-      //create a new item object, place data in
-      var node = new Node(data);
+			//don't forget to update the count
+			this.length++;
+		},
 
-      //special case: no items in the list yet
-      if (this.length == 0) {
-        this.head = node;
-        this.tail = node;
-      } else {
+		insertAfter: function(data, toNodeData) {
+			var current = this.head;
+			while (current) {
+				if (current.data === toNodeData) {
+					var node = new Node(data);
+					if (current === this.tail) {
+						this.add(data);
+					} else {
+						current.next.previous = node;
+						node.previous = current;
+						node.next = current.next;
+						current.next = node;
+						this.numberOfValues++;
+					}
+				}
+				current = current.next;
+			}
+		},
 
-        //attach to the tail node
-        this.tail.next = node;
-        node.prev = this.tail;
-        this.tail = node;
-      }
+		traverse: function(fn) {
+			var current = this.head;
+			while (current) {
+				if (fn) {
+					fn(current);
+				}
+				current = current.next;
+			}
+		},
 
-      //don't forget to update the count
-      this.length++;
-    },
+		traverseReverse: function(fn) {
+			var current = this.tail;
+			while (current) {
+				if (fn) {
+					fn(current);
+				}
+				current = current.previous;
+			}
+		},
 
-    insertAfter: function(data, toNodeData) {
-      var current = this.head;
-      while(current) {
-        if(current.data === toNodeData) {
-          var node = new Node(data);
-          if(current === this.tail) {
-            this.add(data);
-          } else {
-            current.next.previous = node;
-            node.previous = current;
-            node.next = current.next;
-            current.next = node;
-            this.numberOfValues++;
-          }
-        }
-        current = current.next;
-      }
-    },
+		/**
+		 * Retrieves the data in the given position in the list.
+		 * @param {int} index The zero-based index of the item whose value
+		 *      should be returned.
+		 * @return {variant} The value in the "data" portion of the given item
+		 *      or null if the item doesn't exist.
+		 * @method item
+		 */
+		item: function(index) {
+			//check for out-of-bounds values
+			if (index > -1 && index < this.length) {
+				var current = this.head,
+					i = 0;
 
-    traverse: function(fn) {
-      var current = this.head;
-      while(current) {
-        if(fn) {
-          fn(current);
-        }
-        current = current.next;
-      }
-    },
+				while (i++ < index) {
+					current = current.next;
+				}
 
-    traverseReverse: function(fn) {
-      var current = this.tail;
-      while(current) {
-        if(fn) {
-          fn(current);
-        }
-        current = current.previous;
-      }
-    },
+				return current.data;
+			} else {
+				return null;
+			}
+		},
 
-    /**
-     * Retrieves the data in the given position in the list.
-     * @param {int} index The zero-based index of the item whose value 
-     *      should be returned.
-     * @return {variant} The value in the "data" portion of the given item
-     *      or null if the item doesn't exist.
-     * @method item
-     */
-    item: function(index) {
+		/**
+		 * Removes the item from the given location in the list.
+		 * @param {int} index The zero-based index of the item to remove.
+		 * @return {variant} The data in the given position in the list or null if
+		 *      the item doesn't exist.
+		 * @method remove
+		 */
+		remove: function(index) {
+			//check for out-of-bounds values
+			if (index > -1 && index < this.length) {
+				var current = this.head,
+					i = 0;
 
-      //check for out-of-bounds values
-      if (index > -1 && index < this.length) {
-        var current = this.head,
-          i = 0;
+				//special case: removing first item
+				if (index === 0) {
+					this.head = current.next;
 
-        while (i++ < index) {
-          current = current.next;
-        }
-
-        return current.data;
-      } else {
-        return null;
-      }
-    },
-
-    /**
-     * Removes the item from the given location in the list.
-     * @param {int} index The zero-based index of the item to remove.
-     * @return {variant} The data in the given position in the list or null if
-     *      the item doesn't exist.
-     * @method remove
-     */
-    remove: function(index) {
-
-      //check for out-of-bounds values
-      if (index > -1 && index < this.length) {
-
-        var current = this.head,
-          i = 0;
-
-        //special case: removing first item
-        if (index === 0) {
-          this.head = current.next;
-
-          /*
+					/*
            * If there's only one item in the list and you remove it,
            * then this.head will be null. In that case, you should
            * also set this.tail to be null to effectively destroy
            * the list. Otherwise, set the prev pointer on the new
            * this.head to be null.
            */
-          if (!this.head) {
-            this.tail = null;
-          } else {
-            this.head.prev = null;
-          }
+					if (!this.head) {
+						this.tail = null;
+					} else {
+						this.head.prev = null;
+					}
 
-          //special case: removing last item
-        } else if (index === this.length - 1) {
-          current = this.tail;
-          this.tail = current.prev;
-          this.tail.next = null;
-        } else {
+					//special case: removing last item
+				} else if (index === this.length - 1) {
+					current = this.tail;
+					this.tail = current.prev;
+					this.tail.next = null;
+				} else {
+					//find the right location
+					while (i++ < index) {
+						current = current.next;
+					}
 
-          //find the right location
-          while (i++ < index) {
-            current = current.next;
-          }
+					//skip over the item to remove
+					current.prev.next = current.next;
+					current.next.prev = current.prev;
+				}
 
-          //skip over the item to remove
-          current.prev.next = current.next;
-          current.next.prev = current.prev;
-        }
+				//decrement the length
+				this.length--;
 
-        //decrement the length
-        this.length--;
+				//return the value
+				return current.data;
+			} else {
+				return null;
+			}
+		},
 
-        //return the value
-        return current.data;
+		reverse: function() {
+			var head = this.head,
+				current = this.head,
+				tmp;
+			while (current) {
+				tmp = current.next;
+				current.next = current.prev;
+				current.prev = tmp;
+				if (!tmp) {
+					this.head = current;
+				}
+				current = tmp;
+			}
+			return this;
+		},
 
-      } else {
-        return null;
-      }
-    },
+		delete: function(val) {
+			var current = this.head,
+				prev;
 
-    reverse: function() {
-      var head = this.head,
-        current = this.head,
-        tmp;
-      while (current) {
-        tmp = current.next;
-        current.next = current.prev;
-        current.prev = tmp;
-        if (!tmp) {
-          this.head = current;
-        }
-        current = tmp;
-      }
-      return this;
-    },
+			//delete head
+			if (current.value == val) {
+				this.head = current.next;
+				//if there is only one node, then this.head is null
+				if (this.head) this.head.prev = null;
+				return this;
+			}
 
-    delete: function(val) {
-      var current = this.head,
-        prev;
+			while (current.next) {
+				if (current.value == val) {
+					prev.next = current.next;
+					current.next.prev = prev;
+					return this;
+				}
+				prev = current;
+				current = current.next;
+			}
 
-      //delete head
-      if (current.value == val) {
-        this.head = current.next;
-        //if there is only one node, then this.head is null
-        if (this.head) this.head.prev = null;
-        return this;
-      }
+			//delete last node
+			if (current.value == val) {
+				prev.next = null;
+			}
+			return this;
+		},
 
-      while (current.next) {
-        if (current.value == val) {
-          prev.next = current.next;
-          current.next.prev = prev;
-          return this;
-        }
-        prev = current;
-        current = current.next;
-      }
+		size: function() {
+			return this.length;
+		},
 
-      //delete last node
-      if (current.value == val) {
-        prev.next = null;
-      }
-      return this;
-    },
+		toArray: function() {
+			var result = [],
+				current = this.head;
 
-    size: function() {
-      return this.length;
-    },
+			while (current) {
+				result.push(current.data);
+				current = current.next;
+			}
 
-    toArray: function() {
-      var result = [],
-        current = this.head;
+			return result;
+		},
 
-      while (current) {
-        result.push(current.data);
-        current = current.next;
-      }
+		toString: function() {
+			return this.toArray().toString();
+		}
+	};
 
-      return result;
-    },
-
-    toString: function() {
-      return this.toArray().toString();
-    }
-  };
-
-  return DoublyLinkedList;
+	return DoublyLinkedList;
 })();
 
 var doublyLinkedList = new DoublyLinkedList();
@@ -262,7 +252,9 @@ doublyLinkedList.add(6);
 doublyLinkedList.print(); // => 2 6
 doublyLinkedList.insertAfter(3, 2);
 doublyLinkedList.print(); // => 2 3 6
-doublyLinkedList.traverseReverse(function(node) { console.log(node.data); });
+doublyLinkedList.traverseReverse(function(node) {
+	console.log(node.data);
+});
 doublyLinkedList.insertAfter(4, 3);
 doublyLinkedList.print(); // => 2 3 4 6
 doublyLinkedList.insertAfter(5, 9); // insertAfter a non existing node
@@ -273,11 +265,16 @@ doublyLinkedList.print(); // => 2 3 4 5 6 7
 doublyLinkedList.add(8); // add node with normal method
 doublyLinkedList.print(); // => 2 3 4 5 6 7 8
 console.log('length is 7:', doublyLinkedList.length()); // => 7
-doublyLinkedList.traverse(function(node) { node.data = node.data + 10; });
+doublyLinkedList.traverse(function(node) {
+	node.data = node.data + 10;
+});
 doublyLinkedList.print(); // => 12 13 14 15 16 17 18
-doublyLinkedList.traverse(function(node) { console.log(node.data); }); // => 12 13 14 15 16 17 18
+doublyLinkedList.traverse(function(node) {
+	console.log(node.data);
+}); // => 12 13 14 15 16 17 18
 console.log('length is 7:', doublyLinkedList.length()); // => 7
-doublyLinkedList.traverseReverse(function(node) { console.log(node.data); }); // => 18 17 16 15 14 13 12
+doublyLinkedList.traverseReverse(function(node) {
+	console.log(node.data);
+}); // => 18 17 16 15 14 13 12
 doublyLinkedList.print(); // => 12 13 14 15 16 17 18
 console.log('length is 7:', doublyLinkedList.length()); // => 7
-
