@@ -47,9 +47,7 @@
 				values[key] = value;
 				keys[this.length++] = key;
 			} else {
-				this.inject(key, value, function(pk, pv, nk, nv, t) {
-					return t.sortfn.call(null, key, value, nk, nv) < 0;
-				});
+				this.inject(key, value, (pk, pv, nk, nv, t) => t.sortfn.call(null, key, value, nk, nv) < 0);
 			}
 			return this;
 		};

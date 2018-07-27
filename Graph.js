@@ -142,17 +142,17 @@ graph.addEdge(4, 6);
 graph.print(); // 1 -> 2, 5 | 2 -> 1, 3, 5 | 3 -> 2, 4 | 4 -> 3, 5, 6 | 5 -> 1, 2, 4 | 6 -> 4
 console.log('graph size (number of vertices):', graph.size()); // => 6
 console.log('graph relations (number of edges):', graph.relations()); // => 7
-graph.traverseDFS(1, function(vertex) {
+graph.traverseDFS(1, vertex => {
 	console.log(vertex);
 }); // => 1 2 3 4 5 6
 console.log('---');
-graph.traverseBFS(1, function(vertex) {
+graph.traverseBFS(1, vertex => {
 	console.log(vertex);
 }); // => 1 2 5 3 4 6
-graph.traverseDFS(0, function(vertex) {
+graph.traverseDFS(0, vertex => {
 	console.log(vertex);
 }); // => 'Vertex not found'
-graph.traverseBFS(0, function(vertex) {
+graph.traverseBFS(0, vertex => {
 	console.log(vertex);
 }); // => 'Vertex not found'
 console.log('path from 6 to 1:', graph.pathFromTo(6, 1)); // => 6-4-5-1

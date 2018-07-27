@@ -22,17 +22,17 @@ const Set = (function() {
 	};
 	Set.prototype.union = function(set) {
 		const newSet = new Set();
-		set.values.forEach(function(value) {
+		set.values.forEach(value => {
 			newSet.add(value);
 		});
-		this.values.forEach(function(value) {
+		this.values.forEach(value => {
 			newSet.add(value);
 		});
 		return newSet;
 	};
 	Set.prototype.intersect = function(set) {
 		const newSet = new Set();
-		this.values.forEach(function(value) {
+		this.values.forEach(value => {
 			if (set.contains(value)) {
 				newSet.add(value);
 			}
@@ -41,7 +41,7 @@ const Set = (function() {
 	};
 	Set.prototype.difference = function(set) {
 		const newSet = new Set();
-		this.values.forEach(function(value) {
+		this.values.forEach(value => {
 			if (!set.contains(value)) {
 				newSet.add(value);
 			}
