@@ -20,7 +20,7 @@ const DoublyLinkedList = (function() {
 		 * @return {Void}
 		 * @method add
 		 */
-		add: function(data) {
+		add(data) {
 			//create a new item object, place data in
 			const node = new Node(data);
 
@@ -39,7 +39,7 @@ const DoublyLinkedList = (function() {
 			this.length++;
 		},
 
-		insertAfter: function(data, toNodeData) {
+		insertAfter(data, toNodeData) {
 			let current = this.head;
 			while (current) {
 				if (current.data === toNodeData) {
@@ -58,7 +58,7 @@ const DoublyLinkedList = (function() {
 			}
 		},
 
-		traverse: function(fn) {
+		traverse(fn) {
 			let current = this.head;
 			while (current) {
 				if (fn) {
@@ -68,7 +68,7 @@ const DoublyLinkedList = (function() {
 			}
 		},
 
-		traverseReverse: function(fn) {
+		traverseReverse(fn) {
 			let current = this.tail;
 			while (current) {
 				if (fn) {
@@ -86,7 +86,7 @@ const DoublyLinkedList = (function() {
 		 *      or null if the item doesn't exist.
 		 * @method item
 		 */
-		item: function(index) {
+		item(index) {
 			//check for out-of-bounds values
 			if (index > -1 && index < this.length) {
 				let current = this.head, i = 0;
@@ -108,7 +108,7 @@ const DoublyLinkedList = (function() {
 		 *      the item doesn't exist.
 		 * @method remove
 		 */
-		remove: function(index) {
+		remove(index) {
 			//check for out-of-bounds values
 			if (index > -1 && index < this.length) {
 				let current = this.head, i = 0;
@@ -156,7 +156,7 @@ const DoublyLinkedList = (function() {
 			}
 		},
 
-		reverse: function() {
+		reverse() {
 			let head = this.head, current = this.head, tmp;
 			while (current) {
 				tmp = current.next;
@@ -170,7 +170,7 @@ const DoublyLinkedList = (function() {
 			return this;
 		},
 
-		delete: function(val) {
+		delete(val) {
 			let current = this.head, prev;
 
 			//delete head
@@ -198,11 +198,11 @@ const DoublyLinkedList = (function() {
 			return this;
 		},
 
-		size: function() {
+		size() {
 			return this.length;
 		},
 
-		toArray: function() {
+		toArray() {
 			let result = [], current = this.head;
 
 			while (current) {
@@ -213,7 +213,7 @@ const DoublyLinkedList = (function() {
 			return result;
 		},
 
-		toString: function() {
+		toString() {
 			return this.toArray().toString();
 		}
 	};

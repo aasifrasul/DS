@@ -30,7 +30,7 @@ const BalancedBST = (function() {
 	}
 
 	BBTree.prototype = {
-		find: function(key) {
+		find(key) {
 			let node = this.root, compare = this._compare;
 
 			while (node !== bottom) {
@@ -41,7 +41,7 @@ const BalancedBST = (function() {
 			return null;
 		},
 
-		insert: function(key, value) {
+		insert(key, value) {
 			let compare = this._compare, node = this.root, path = this._path;
 
 			if (!node) {
@@ -78,7 +78,7 @@ const BalancedBST = (function() {
 			return this;
 		},
 
-		_rebalance: function(path, k) {
+		_rebalance(path, k) {
 			let rotated, node, parent, updated, m = 0;
 
 			for (let i = k - 1; i >= 0; i--) {

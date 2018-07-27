@@ -12,7 +12,7 @@ const BinarySearchTree = (function() {
 	BinarySearchTree.prototype = {
 		constructor: BinarySearchTree,
 
-		add: function(value) {
+		add(value) {
 			let node = new Node(value), current;
 
 			if (this._root === null) {
@@ -41,7 +41,7 @@ const BinarySearchTree = (function() {
 			}
 		},
 
-		contains: function(value) {
+		contains(value) {
 			let found = false, current = this._root;
 
 			while (!found && current) {
@@ -57,7 +57,7 @@ const BinarySearchTree = (function() {
 			return found;
 		},
 
-		remove: function(value) {
+		remove(value) {
 			let found = false, parent = null, current = this._root, childCount, replacement, replacementParent;
 
 			while (!found && current) {
@@ -137,7 +137,7 @@ const BinarySearchTree = (function() {
 			}
 		},
 
-		traverseDF: function(callback) {
+		traverseDF(callback) {
 			const recurse = function(node) {
 				callback.call(bst, bst.value);
 				if (node.left) {
@@ -149,7 +149,7 @@ const BinarySearchTree = (function() {
 			recurse(this._root);
 		},
 
-		traverseBF: function(callback) {
+		traverseBF(callback) {
 			const queue = new Queue();
 
 			queue.enqueue(this._root);
@@ -166,23 +166,23 @@ const BinarySearchTree = (function() {
 			}
 		},
 
-		size: function() {
+		size() {
 			let length = 0;
 			this.traverse(node => length++);
 			return length;
 		},
 
-		toArray: function() {
+		toArray() {
 			const result = [];
 			this.traverse(node => result.push(node.value));
 			return result;
 		},
 
-		toString: function() {
+		toString() {
 			return this.toArray().toString();
 		},
 
-		traverse: function(process) {
+		traverse(process) {
 			function inOrder(node) {
 				if (node) {
 					if (node.left !== null) {
