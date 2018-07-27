@@ -1,18 +1,18 @@
-var DoublyList = (function() {
-	var Node = function(value) {
+const DoublyList = (function() {
+	const Node = function(value) {
 		this.data = value;
 		this.previous = null;
 		this.next = null;
 	};
 
-	var DoublyList = function() {
+	const DoublyList = function() {
 		this.length = 0;
 		this.head = null;
 		this.tail = null;
 	};
 
 	DoublyList.prototype.add = function(value) {
-		var node = new Node(value);
+		const node = new Node(value);
 
 		if (this.length) {
 			this.tail.next = node;
@@ -29,9 +29,7 @@ var DoublyList = (function() {
 	};
 
 	DoublyList.prototype.reverse = function() {
-		var head = this.head,
-			current = this.head,
-			tmp;
+		let head = this.head, current = this.head, tmp;
 		while (current) {
 			tmp = current.next;
 			current.next = current.previous;
@@ -47,10 +45,7 @@ var DoublyList = (function() {
 	};
 
 	DoublyList.prototype.searchNodeAt = function(position) {
-		var currentNode = this.head,
-			length = this.length,
-			count = 1,
-			message = { failure: 'Failure: non-existent node in this list.' };
+		let currentNode = this.head, length = this.length, count = 1, message = { failure: 'Failure: non-existent node in this list.' };
 
 		// 1st use-case: an invalid position
 		if (length === 0 || position < 1 || position > length) {
@@ -67,13 +62,7 @@ var DoublyList = (function() {
 	};
 
 	DoublyList.prototype.remove = function(position) {
-		var currentNode = this.head,
-			length = this.length,
-			count = 1,
-			message = { failure: 'Failure: non-existent node in this list.' },
-			beforeNodeToDelete = null,
-			nodeToDelete = null,
-			deletedNode = null;
+		let currentNode = this.head, length = this.length, count = 1, message = { failure: 'Failure: non-existent node in this list.' }, beforeNodeToDelete = null, nodeToDelete = null, deletedNode = null;
 
 		// 1st use-case: an invalid position
 		if (length === 0 || position < 1 || position > length) {
@@ -121,4 +110,4 @@ var DoublyList = (function() {
 	return DoublyList;
 })();
 
-var dll = DoublyList;
+const dll = DoublyList;

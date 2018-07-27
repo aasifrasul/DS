@@ -1,5 +1,5 @@
-var Stack = (function() {
-	var Stack = function() {
+const Stack = (function() {
+	const Stack = function() {
 		this.count = 0;
 		this.storage = {};
 	};
@@ -15,7 +15,7 @@ var Stack = (function() {
 		}
 
 		this.count--;
-		var result = this.storage[this.count];
+		const result = this.storage[this.count];
 		delete this.storage[this.count];
 		return result;
 	};
@@ -33,4 +33,4 @@ var Stack = (function() {
 	return Stack;
 })();
 
-var stack = new Stack();
+const stack = new Stack();

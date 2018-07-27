@@ -1,16 +1,16 @@
-var Stack = (function() {
-	var Node = function(data) {
+const Stack = (function() {
+	const Node = function(data) {
 		this.data = data;
 		this.previous = null;
 	};
 
-	var Stack = function() {
+	const Stack = function() {
 		this.top = null;
 		this.size = 0;
 	};
 
 	Stack.prototype.push = function(data) {
-		var node = new Node(data);
+		const node = new Node(data);
 
 		node.previous = this.top;
 		this.top = node;
@@ -22,7 +22,7 @@ var Stack = (function() {
 		if (!this.top) {
 			return null;
 		}
-		var temp = this.top;
+		const temp = this.top;
 		this.top = this.top.previous;
 		this.size -= 1;
 		return temp;
@@ -33,7 +33,7 @@ var Stack = (function() {
 	};
 
 	Stack.prototype.print = function() {
-		var temp = this.top;
+		const temp = this.top;
 		while (temp) {
 			console.log(temp.data);
 			temp.previous = temp;
@@ -51,4 +51,4 @@ var Stack = (function() {
 	return Stack;
 })();
 
-var stack = new Stack();
+const stack = new Stack();

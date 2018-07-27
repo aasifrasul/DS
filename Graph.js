@@ -1,5 +1,5 @@
-var Graph = (function() {
-	var Graph = function() {
+const Graph = (function() {
+	const Graph = function() {
 		this.vertices = [];
 		this.edges = [];
 		this.numberOfEdges = 0;
@@ -10,12 +10,12 @@ var Graph = (function() {
 		this.edges[vertex] = [];
 	};
 	Graph.prototype.removeVertex = function(vertex) {
-		var index = this.vertices.indexOf(vertex);
+		const index = this.vertices.indexOf(vertex);
 		if (~index) {
 			this.vertices.splice(index, 1);
 		}
 		while (this.edges[vertex].length) {
-			var adjacentVertex = this.edges[vertex].pop();
+			const adjacentVertex = this.edges[vertex].pop();
 			this.removeEdge(adjacentVertex, vertex);
 		}
 	};
@@ -25,8 +25,8 @@ var Graph = (function() {
 		this.numberOfEdges++;
 	};
 	Graph.prototype.removeEdge = function(vertex1, vertex2) {
-		var index1 = this.edges[vertex1] ? this.edges[vertex1].indexOf(vertex2) : -1;
-		var index2 = this.edges[vertex2] ? this.edges[vertex2].indexOf(vertex1) : -1;
+		const index1 = this.edges[vertex1] ? this.edges[vertex1].indexOf(vertex2) : -1;
+		const index2 = this.edges[vertex2] ? this.edges[vertex2].indexOf(vertex1) : -1;
 		if (~index1) {
 			this.edges[vertex1].splice(index1, 1);
 			this.numberOfEdges--;
@@ -45,7 +45,7 @@ var Graph = (function() {
 		if (!~this.vertices.indexOf(vertex)) {
 			return console.log('Vertex not found');
 		}
-		var visited = [];
+		const visited = [];
 		this._traverseDFS(vertex, visited, fn);
 	};
 	Graph.prototype._traverseDFS = function(vertex, visited, fn) {
@@ -53,7 +53,7 @@ var Graph = (function() {
 		if (this.edges[vertex] !== undefined) {
 			fn(vertex);
 		}
-		for (var i = 0; i < this.edges[vertex].length; i++) {
+		for (let i = 0; i < this.edges[vertex].length; i++) {
 			if (!visited[this.edges[vertex][i]]) {
 				this._traverseDFS(this.edges[vertex][i], visited, fn);
 			}
@@ -63,15 +63,15 @@ var Graph = (function() {
 		if (!~this.vertices.indexOf(vertex)) {
 			return console.log('Vertex not found');
 		}
-		var queue = [];
+		const queue = [];
 		queue.push(vertex);
-		var visited = [];
+		const visited = [];
 		visited[vertex] = true;
 
 		while (queue.length) {
 			vertex = queue.shift();
 			fn(vertex);
-			for (var i = 0; i < this.edges[vertex].length; i++) {
+			for (let i = 0; i < this.edges[vertex].length; i++) {
 				if (!visited[this.edges[vertex][i]]) {
 					visited[this.edges[vertex][i]] = true;
 					queue.push(this.edges[vertex][i]);
@@ -83,15 +83,15 @@ var Graph = (function() {
 		if (!~this.vertices.indexOf(vertexSource)) {
 			return console.log('Vertex not found');
 		}
-		var queue = [];
+		const queue = [];
 		queue.push(vertexSource);
-		var visited = [];
+		const visited = [];
 		visited[vertexSource] = true;
-		var paths = [];
+		const paths = [];
 
 		while (queue.length) {
-			var vertex = queue.shift();
-			for (var i = 0; i < this.edges[vertex].length; i++) {
+			const vertex = queue.shift();
+			for (let i = 0; i < this.edges[vertex].length; i++) {
 				if (!visited[this.edges[vertex][i]]) {
 					visited[this.edges[vertex][i]] = true;
 					queue.push(this.edges[vertex][i]);
@@ -104,7 +104,7 @@ var Graph = (function() {
 			return undefined;
 		}
 
-		var path = [];
+		const path = [];
 		for (var j = vertexDestination; j != vertexSource; j = paths[j]) {
 			path.push(j);
 		}
@@ -124,7 +124,7 @@ var Graph = (function() {
 	return Stack;
 })();
 
-var graph = new Graph();
+const graph = new Graph();
 graph.addVertex(1);
 graph.addVertex(2);
 graph.addVertex(3);

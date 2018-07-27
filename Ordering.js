@@ -11,9 +11,8 @@
 */
 
 (function() {
-	var Ordering = (this.Ordering = function(obj, sf) {
-		var keys = [],
-			values = {};
+	const Ordering = (this.Ordering = function(obj, sf) {
+		const keys = [], values = {};
 
 		this.length = 0;
 		this.sortfn = null;
@@ -41,7 +40,7 @@
 		};
 
 		this.set = function(key, value) {
-			var index = keys.indexOf(key);
+			const index = keys.indexOf(key);
 			if (index !== -1) {
 				values[key] = value;
 			} else if (this.sortfn === null) {
@@ -64,7 +63,7 @@
 		};
 
 		this.erase = function(key) {
-			var index = keys.indexOf(key);
+			const index = keys.indexOf(key);
 			if (index !== -1) {
 				keys.splice(index, 1);
 				delete values[key];
@@ -74,25 +73,21 @@
 		};
 
 		this.each = function(fn, bind) {
-			for (var i = 0, l = this.length; i < l; i++) {
+			for (let i = 0, l = this.length; i < l; i++) {
 				if (fn.call(bind, keys[i], values[keys[i]], this) === false) break;
 			}
 			return this;
 		};
 
 		this.inject = function(newKey, newVal, fn, bind) {
-			var prevKey = null,
-				prevVal = null,
-				inserted = false,
-				keyslength = this.length;
+			let prevKey = null, prevVal = null, inserted = false, keyslength = this.length;
 
 			if (values[newKey] !== undefined) return false;
 
 			values[newKey] = newVal;
 
-			for (var i = 0; i < keyslength; i++) {
-				var currKey = keys[i],
-					currVal = values[currKey];
+			for (let i = 0; i < keyslength; i++) {
+				const currKey = keys[i], currVal = values[currKey];
 
 				if (!inserted && fn.call(bind, prevKey, prevVal, currKey, currVal, this)) {
 					keys.splice(i, 0, newKey);
@@ -124,47 +119,46 @@
 		};
 
 		this.filter = function(fn, bind) {
-			var c = this.clone();
-			for (var i = 0, l = this.length; i < l; i++) {
+			const c = this.clone();
+			for (let i = 0, l = this.length; i < l; i++) {
 				if (!fn.call(bind, keys[i], values[keys[i]], c)) c.erase(k);
 			}
 			return c;
 		};
 
 		this.subset = function(arr) {
-			var c = new Ordering();
-			for (var i = 0, l = this.length; i < l; i++) {
+			const c = new Ordering();
+			for (let i = 0, l = this.length; i < l; i++) {
 				if (arr.indexOf(keys[i]) >= 0) c.set(keys[i], values[keys[i]]);
 			}
 			return c;
 		};
 
 		this.slice = function(start, end) {
-			var c = new Ordering(),
-				ks = this.keys().slice(start, end);
-			for (var i = 0, l = ks.length; i < l; i++) {
+			const c = new Ordering(), ks = this.keys().slice(start, end);
+			for (let i = 0, l = ks.length; i < l; i++) {
 				c.set(ks[i], values[ks[i]]);
 			}
 			return c;
 		};
 
 		this.some = function(fn, bind) {
-			for (var i = 0, l = this.length; i < l; i++) {
+			for (let i = 0, l = this.length; i < l; i++) {
 				if (fn.call(bind, keys[i], values[keys[i]], this)) return true;
 			}
 			return false;
 		};
 
 		this.every = function(fn, bind) {
-			for (var i = 0, l = this.length; i < l; i++) {
+			for (let i = 0, l = this.length; i < l; i++) {
 				if (!fn.call(bind, keys[i], values[keys[i]], this)) return false;
 			}
 			return true;
 		};
 
 		this.map = function(fn, bind) {
-			var c = this.clone();
-			for (var i = 0, l = this.length; i < l; i++) {
+			const c = this.clone();
+			for (let i = 0, l = this.length; i < l; i++) {
 				c.set(keys[i], fn.call(bind, keys[i], values[keys[i]], c));
 			}
 			return c;

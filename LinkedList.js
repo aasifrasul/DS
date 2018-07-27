@@ -1,10 +1,10 @@
-var LinkedList = (function() {
-	var Node = function(data) {
+const LinkedList = (function() {
+	const Node = function(data) {
 		this.data = data;
 		this.next = null;
 	};
 
-	var LinkedList = function() {
+	const LinkedList = function() {
 		this.length = 0;
 		this.head = null;
 	};
@@ -22,8 +22,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.toArray = function() {
-		var result = [],
-			current = this.head;
+		let result = [], current = this.head;
 
 		while (current) {
 			result.push(current.data);
@@ -38,8 +37,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.add = function(value) {
-		var node = new Node(value),
-			cur = this.head;
+		let node = new Node(value), cur = this.head;
 
 		this.increment();
 
@@ -57,10 +55,10 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.insertAfter = function(data, toNodeData) {
-		var current = this.head;
+		let current = this.head;
 		while (current) {
 			if (current.data === toNodeData) {
-				var node = new Node(data);
+				const node = new Node(data);
 				if (current === this.tail) {
 					this.tail.next = node;
 					this.tail = node;
@@ -75,7 +73,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.traverse = function(fn) {
-		var current = this.head;
+		let current = this.head;
 		while (current) {
 			if (fn) {
 				fn(current);
@@ -85,8 +83,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.addTop = function(value) {
-		var node = new Node(value),
-			cur = this.head;
+		const node = new Node(value), cur = this.head;
 
 		this.increment();
 
@@ -101,7 +98,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.print = function(key = 'data') {
-		var curr = this.head;
+		let curr = this.head;
 		while (curr) {
 			console.log(curr[key]);
 			curr = curr.next;
@@ -109,8 +106,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.clone = function(pos) {
-		var cur = this.head,
-			clonedLL = new LinkedList();
+		let cur = this.head, clonedLL = new LinkedList();
 
 		while (cur) {
 			clonedLL.add(cur.data);
@@ -121,8 +117,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.get = function(pos) {
-		var cur = this.head,
-			count = 0;
+		let cur = this.head, count = 0;
 
 		if (pos > this.length) {
 			return "Doesn't Exist!";
@@ -135,9 +130,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.remove = function(pos) {
-		var cur = this.head,
-			count = 0,
-			prevNode = null;
+		let cur = this.head, count = 0, prevNode = null;
 		if (pos > this.length) {
 			return "Doesn't Exist!";
 		}
@@ -225,13 +218,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.remove = function(pos) {
-		var cur = this.head,
-			length = this.length,
-			count = 0,
-			message = { failure: 'Failure: non-existent node in this list.' },
-			beforeNodeToDelete = null,
-			nodeToDelete = null,
-			deletedNode = null;
+		let cur = this.head, length = this.length, count = 0, message = { failure: 'Failure: non-existent node in this list.' }, beforeNodeToDelete = null, nodeToDelete = null, deletedNode = null;
 
 		if (typeof pos === 'undefined' || pos < 0 || pos > length) {
 			throw new Error(message.failure);
@@ -267,8 +254,8 @@ var LinkedList = (function() {
 	LinkedList.prototype.reverse = function() {
 		if (!this.head || !this.head.next) return this;
 
-		var cur = this.head;
-		var reversedLL = new LinkedList();
+		let cur = this.head;
+		const reversedLL = new LinkedList();
 
 		while (cur) {
 			reversedLL.addTop(cur.data);
@@ -279,8 +266,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.detectLoop = function() {
-		var slow = this.head,
-			fast = this.head;
+		let slow = this.head, fast = this.head;
 
 		while (slow && fast) {
 			slow = slow.next;
@@ -294,8 +280,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.findLoopStart = function() {
-		var slow = this.head,
-			fast = this.head;
+		let slow = this.head, fast = this.head;
 		while (slow && fast) {
 			slow = slow.next;
 
@@ -319,10 +304,7 @@ var LinkedList = (function() {
 		if (!val) {
 			return null;
 		}
-		var head = this.head,
-			cur = head,
-			node = new Node(val),
-			previous;
+		let head = this.head, cur = head, node = new Node(val), previous;
 
 		this.increment();
 
@@ -355,10 +337,7 @@ var LinkedList = (function() {
 		if (!val) {
 			return null;
 		}
-		var head = this.head,
-			cur = head,
-			node = new Node(val),
-			previous;
+		let head = this.head, cur = head, node = new Node(val), previous;
 
 		this.increment();
 
@@ -387,9 +366,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.kthFromEnd = function(k) {
-		var node = this.head,
-			i = 1,
-			kthNode;
+		let node = this.head, i = 1, kthNode;
 		if (k <= 0) return;
 
 		while (node) {
@@ -405,10 +382,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.deleteKthFromEnd = function(k) {
-		var node = this.head,
-			i = 1,
-			kthNode,
-			previous;
+		let node = this.head, i = 1, kthNode, previous;
 		if (k <= 0) return this;
 
 		while (node) {
@@ -430,8 +404,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.findLoopStart = function() {
-		var slow = this.head,
-			fast = this.head;
+		let slow = this.head, fast = this.head;
 		while (slow && fast) {
 			slow = slow.next;
 
@@ -452,12 +425,8 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.getLength = function() {
-		var head = this.head,
-			cur = head,
-			pointer = head,
-			anotherPtr,
-			len = 0;
-		var loopStartNode = head.findLoopStart();
+		let head = this.head, cur = head, pointer = head, anotherPtr, len = 0;
+		const loopStartNode = head.findLoopStart();
 		if (!loopStartNode) {
 			while (cur) {
 				cur = cur.next;
@@ -476,10 +445,7 @@ var LinkedList = (function() {
 	};
 
 	LinkedList.prototype.rotateByKthNode = function(k) {
-		var prevHead = this.head,
-			previous = this.head,
-			cur = this.head,
-			i = 1;
+		let prevHead = this.head, previous = this.head, cur = this.head, i = 1;
 		while (cur.next) {
 			if (i == k + 1) {
 				this.head = cur;
@@ -582,7 +548,7 @@ var LinkedList = (function() {
 		this.add(1);
 		this.add(1);
 
-		var cur = this.head;
+		let cur = this.head;
 
 		while (n-- > 2) {
 			this.add(cur.data + cur.next.data);
@@ -659,4 +625,4 @@ var LinkedList = (function() {
 	return LinkedList;
 })();
 
-var linkedList = new LinkedList();
+const linkedList = new LinkedList();

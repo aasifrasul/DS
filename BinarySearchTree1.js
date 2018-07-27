@@ -1,20 +1,20 @@
-var BinarySearchTree = (function() {
-	var Node = function(data) {
+const BinarySearchTree = (function() {
+	const Node = function(data) {
 		this.data = data;
 		this.left = null;
 		this.right = null;
 	};
 
-	var BinarySearchTree = function() {
+	const BinarySearchTree = function() {
 		this.root = null;
 	};
 
 	BinarySearchTree.prototype.add = function(data) {
-		var node = new Node(data);
+		const node = new Node(data);
 		if (!this.root) {
 			this.root = node;
 		} else {
-			var current = this.root;
+			let current = this.root;
 			while (current) {
 				if (node.data < current.data) {
 					if (!current.left) {
@@ -35,8 +35,8 @@ var BinarySearchTree = (function() {
 		}
 	};
 	BinarySearchTree.prototype.remove = function(data) {
-		var that = this;
-		var removeNode = function(node, data) {
+		const that = this;
+		const removeNode = function(node, data) {
 			if (!node) {
 				return null;
 			}
@@ -51,7 +51,7 @@ var BinarySearchTree = (function() {
 					return node.left;
 				}
 				// 2 children
-				var temp = that.getMin(node.right);
+				const temp = that.getMin(node.right);
 				node.data = temp;
 				node.right = removeNode(node.right, temp);
 				return node;
@@ -66,7 +66,7 @@ var BinarySearchTree = (function() {
 		this.root = removeNode(this.root, data);
 	};
 	BinarySearchTree.prototype.contains = function(data) {
-		var current = this.root;
+		let current = this.root;
 		while (current) {
 			if (data === current.data) {
 				return true;
@@ -107,7 +107,7 @@ var BinarySearchTree = (function() {
 		}
 	};
 	BinarySearchTree.prototype.traverseDFS = function(fn, method) {
-		var current = this.root;
+		const current = this.root;
 		if (method) {
 			this['_' + method](current, fn);
 		} else {
@@ -118,7 +118,7 @@ var BinarySearchTree = (function() {
 		this.queue = [];
 		this.queue.push(this.root);
 		while (this.queue.length) {
-			var node = this.queue.shift();
+			const node = this.queue.shift();
 			if (fn) {
 				fn(node);
 			}
@@ -134,11 +134,11 @@ var BinarySearchTree = (function() {
 		if (!this.root) {
 			return console.log('No root node found');
 		}
-		var newline = new Node('|');
-		var queue = [this.root, newline];
-		var string = '';
+		const newline = new Node('|');
+		const queue = [this.root, newline];
+		let string = '';
 		while (queue.length) {
-			var node = queue.shift();
+			const node = queue.shift();
 			string += node.data.toString() + ' ';
 			if (node === newline && queue.length) {
 				queue.push(newline);
@@ -156,11 +156,11 @@ var BinarySearchTree = (function() {
 		if (!this.root) {
 			return console.log('No root node found');
 		}
-		var newline = new Node('\n');
-		var queue = [this.root, newline];
-		var string = '';
+		const newline = new Node('\n');
+		const queue = [this.root, newline];
+		let string = '';
 		while (queue.length) {
-			var node = queue.shift();
+			const node = queue.shift();
 			string += node.data.toString() + (node.data !== '\n' ? ' ' : '');
 			if (node === newline && queue.length) {
 				queue.push(newline);
@@ -196,8 +196,8 @@ var BinarySearchTree = (function() {
 		if (!node) {
 			return -1;
 		}
-		var left = this._getHeight(node.left);
-		var right = this._getHeight(node.right);
+		const left = this._getHeight(node.left);
+		const right = this._getHeight(node.right);
 		return Math.max(left, right) + 1;
 	};
 	BinarySearchTree.prototype.getHeight = function(node) {
@@ -210,9 +210,9 @@ var BinarySearchTree = (function() {
 		if (!node) {
 			return true;
 		}
-		var heigthLeft = this._getHeight(node.left);
-		var heigthRight = this._getHeight(node.right);
-		var diff = Math.abs(heigthLeft - heigthRight);
+		const heigthLeft = this._getHeight(node.left);
+		const heigthRight = this._getHeight(node.right);
+		const diff = Math.abs(heigthLeft - heigthRight);
 		if (diff > 1) {
 			return false;
 		} else {
@@ -229,15 +229,15 @@ var BinarySearchTree = (function() {
 		if (!node) {
 			return 0;
 		}
-		var left = this._checkHeight(node.left);
+		const left = this._checkHeight(node.left);
 		if (left === -1) {
 			return -1;
 		}
-		var right = this._checkHeight(node.right);
+		const right = this._checkHeight(node.right);
 		if (right === -1) {
 			return -1;
 		}
-		var diff = Math.abs(left - right);
+		const diff = Math.abs(left - right);
 		if (diff > 1) {
 			return -1;
 		} else {
@@ -261,7 +261,7 @@ var BinarySearchTree = (function() {
 	return BinarySearchTree;
 })();
 
-var binarySearchTree = new BinarySearchTree();
+const binarySearchTree = new BinarySearchTree();
 binarySearchTree.add(5);
 binarySearchTree.add(3);
 binarySearchTree.add(7);

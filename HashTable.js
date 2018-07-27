@@ -1,12 +1,12 @@
-var HashTable = (function() {
-	var HashTable = function(size) {
+const HashTable = (function() {
+	const HashTable = function(size) {
 		this.values = {};
 		this.numberOfValues = 0;
 		this.size = size;
 	};
 
 	HashTable.prototype.add = function(key, value) {
-		var hash = this.calculateHash(key);
+		const hash = this.calculateHash(key);
 		if (!this.values.hasOwnProperty(hash)) {
 			this.values[hash] = {};
 		}
@@ -16,7 +16,7 @@ var HashTable = (function() {
 		this.values[hash][key] = value;
 	};
 	HashTable.prototype.remove = function(key) {
-		var hash = this.calculateHash(key);
+		const hash = this.calculateHash(key);
 		if (this.values.hasOwnProperty(hash) && this.values[hash].hasOwnProperty(key)) {
 			delete this.values[hash][key];
 			this.numberOfValues--;
@@ -26,7 +26,7 @@ var HashTable = (function() {
 		return key.toString().length % this.size;
 	};
 	HashTable.prototype.search = function(key) {
-		var hash = this.calculateHash(key);
+		const hash = this.calculateHash(key);
 		if (this.values.hasOwnProperty(hash) && this.values[hash].hasOwnProperty(key)) {
 			return this.values[hash][key];
 		} else {
@@ -37,9 +37,9 @@ var HashTable = (function() {
 		return this.numberOfValues;
 	};
 	HashTable.prototype.print = function() {
-		var string = '';
-		for (var value in this.values) {
-			for (var key in this.values[value]) {
+		let string = '';
+		for (const value in this.values) {
+			for (const key in this.values[value]) {
 				string += this.values[value][key] + ' ';
 			}
 		}
@@ -49,7 +49,7 @@ var HashTable = (function() {
 	return HashTable;
 })();
 
-var hashTable = new HashTable(3);
+const hashTable = new HashTable(3);
 hashTable.add('first', 1);
 hashTable.add('second', 2);
 hashTable.add('third', 3);

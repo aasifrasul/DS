@@ -1,9 +1,9 @@
-var DoublyLinkedList = (function() {
-	var Node = function(data) {
+const DoublyLinkedList = (function() {
+	const Node = function(data) {
 		(this.data = data), (this.next = null), (this.prev = null);
 	};
 
-	var DoublyLinkedList = function() {
+	const DoublyLinkedList = function() {
 		this.head = null;
 		this.tail = null;
 		this.length = 0;
@@ -22,7 +22,7 @@ var DoublyLinkedList = (function() {
 		 */
 		add: function(data) {
 			//create a new item object, place data in
-			var node = new Node(data);
+			const node = new Node(data);
 
 			//special case: no items in the list yet
 			if (this.length == 0) {
@@ -40,10 +40,10 @@ var DoublyLinkedList = (function() {
 		},
 
 		insertAfter: function(data, toNodeData) {
-			var current = this.head;
+			let current = this.head;
 			while (current) {
 				if (current.data === toNodeData) {
-					var node = new Node(data);
+					const node = new Node(data);
 					if (current === this.tail) {
 						this.add(data);
 					} else {
@@ -59,7 +59,7 @@ var DoublyLinkedList = (function() {
 		},
 
 		traverse: function(fn) {
-			var current = this.head;
+			let current = this.head;
 			while (current) {
 				if (fn) {
 					fn(current);
@@ -69,7 +69,7 @@ var DoublyLinkedList = (function() {
 		},
 
 		traverseReverse: function(fn) {
-			var current = this.tail;
+			let current = this.tail;
 			while (current) {
 				if (fn) {
 					fn(current);
@@ -89,8 +89,7 @@ var DoublyLinkedList = (function() {
 		item: function(index) {
 			//check for out-of-bounds values
 			if (index > -1 && index < this.length) {
-				var current = this.head,
-					i = 0;
+				let current = this.head, i = 0;
 
 				while (i++ < index) {
 					current = current.next;
@@ -112,8 +111,7 @@ var DoublyLinkedList = (function() {
 		remove: function(index) {
 			//check for out-of-bounds values
 			if (index > -1 && index < this.length) {
-				var current = this.head,
-					i = 0;
+				let current = this.head, i = 0;
 
 				//special case: removing first item
 				if (index === 0) {
@@ -159,9 +157,7 @@ var DoublyLinkedList = (function() {
 		},
 
 		reverse: function() {
-			var head = this.head,
-				current = this.head,
-				tmp;
+			let head = this.head, current = this.head, tmp;
 			while (current) {
 				tmp = current.next;
 				current.next = current.prev;
@@ -175,8 +171,7 @@ var DoublyLinkedList = (function() {
 		},
 
 		delete: function(val) {
-			var current = this.head,
-				prev;
+			let current = this.head, prev;
 
 			//delete head
 			if (current.value == val) {
@@ -208,8 +203,7 @@ var DoublyLinkedList = (function() {
 		},
 
 		toArray: function() {
-			var result = [],
-				current = this.head;
+			let result = [], current = this.head;
 
 			while (current) {
 				result.push(current.data);
@@ -227,7 +221,7 @@ var DoublyLinkedList = (function() {
 	return DoublyLinkedList;
 })();
 
-var doublyLinkedList = new DoublyLinkedList();
+const doublyLinkedList = new DoublyLinkedList();
 doublyLinkedList.print(); // => ''
 doublyLinkedList.add(1);
 doublyLinkedList.add(2);

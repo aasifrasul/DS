@@ -1,11 +1,11 @@
-var BinarySearchTree = (function() {
-	var Node = function(value) {
+const BinarySearchTree = (function() {
+	const Node = function(value) {
 		this.value = value;
 		this.left = null;
 		this.right = null;
 	};
 
-	var BinarySearchTree = function() {
+	const BinarySearchTree = function() {
 		this._root = null;
 	};
 
@@ -13,8 +13,7 @@ var BinarySearchTree = (function() {
 		constructor: BinarySearchTree,
 
 		add: function(value) {
-			var node = new Node(value),
-				current;
+			let node = new Node(value), current;
 
 			if (this._root === null) {
 				this._root = node;
@@ -43,8 +42,7 @@ var BinarySearchTree = (function() {
 		},
 
 		contains: function(value) {
-			var found = false,
-				current = this._root;
+			let found = false, current = this._root;
 
 			while (!found && current) {
 				if (value < current.value) {
@@ -60,12 +58,7 @@ var BinarySearchTree = (function() {
 		},
 
 		remove: function(value) {
-			var found = false,
-				parent = null,
-				current = this._root,
-				childCount,
-				replacement,
-				replacementParent;
+			let found = false, parent = null, current = this._root, childCount, replacement, replacementParent;
 
 			while (!found && current) {
 				if (value < current.value) {
@@ -145,7 +138,7 @@ var BinarySearchTree = (function() {
 		},
 
 		traverseDF: function(callback) {
-			var recurse = function(node) {
+			const recurse = function(node) {
 				callback.call(bst, bst.value);
 				if (node.left) {
 					recurse(node.left);
@@ -157,14 +150,14 @@ var BinarySearchTree = (function() {
 		},
 
 		traverseBF: function(callback) {
-			var queue = new Queue();
+			const queue = new Queue();
 
 			queue.enqueue(this._root);
 
 			currentTree = queue.dequeue();
 
 			while (currentTree) {
-				for (var i = 0, length = currentTree.children.length; i < length; i++) {
+				for (let i = 0, length = currentTree.children.length; i < length; i++) {
 					queue.enqueue(currentTree.children[i]);
 				}
 
@@ -174,13 +167,13 @@ var BinarySearchTree = (function() {
 		},
 
 		size: function() {
-			var length = 0;
+			let length = 0;
 			this.traverse(node => length++);
 			return length;
 		},
 
 		toArray: function() {
-			var result = [];
+			const result = [];
 			this.traverse(node => result.push(node.value));
 			return result;
 		},

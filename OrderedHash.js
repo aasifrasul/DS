@@ -1,5 +1,5 @@
-var OrderedHash = (function() {
-	var OrderedHash = function() {
+const OrderedHash = (function() {
+	const OrderedHash = function() {
 		this.keys = [];
 		this.vals = {};
 	};
@@ -18,7 +18,7 @@ var OrderedHash = (function() {
 	 */
 	OrderedHash.prototype.find = function(k) {
 		if (this.exists(k)) {
-			for (var i = 0; i < this.keys.length; i++) {
+			for (let i = 0; i < this.keys.length; i++) {
 				if (this.keys[i] === k) {
 					return i;
 				}
@@ -45,8 +45,8 @@ var OrderedHash = (function() {
 		if (howMany === void 0) {
 			howMany = 1;
 		}
-		var k = this.keys.splice(pos, howMany);
-		for (var i = 0; i < this.keys.length; i++) {
+		const k = this.keys.splice(pos, howMany);
+		for (let i = 0; i < this.keys.length; i++) {
 			delete this.vals[k[i]];
 		}
 	};
@@ -56,7 +56,7 @@ var OrderedHash = (function() {
 	 */
 	OrderedHash.prototype.delete = function(k) {
 		if (this.exists(k)) {
-			for (var i = 0; i < this.keys.length; i++) {
+			for (let i = 0; i < this.keys.length; i++) {
 				if (this.keys[i] === k) {
 					this.remove(i);
 					return true;
@@ -77,4 +77,4 @@ var OrderedHash = (function() {
 	return OrderedHash;
 })();
 
-var oHash = new OrderedHash();
+const oHash = new OrderedHash();

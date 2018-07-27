@@ -1,4 +1,4 @@
-var BalancedBST = (function() {
+const BalancedBST = (function() {
 	'use strict';
 
 	if (typeof module !== 'undefined') module.exports = BalancedBST;
@@ -12,7 +12,7 @@ var BalancedBST = (function() {
 		this.right = right;
 	}
 
-	var bottom = new Node(null, null, 0);
+	const bottom = new Node(null, null, 0);
 	bottom.left = bottom;
 	bottom.right = bottom;
 
@@ -31,11 +31,10 @@ var BalancedBST = (function() {
 
 	BBTree.prototype = {
 		find: function(key) {
-			var node = this.root,
-				compare = this._compare;
+			let node = this.root, compare = this._compare;
 
 			while (node !== bottom) {
-				var c = compare(key, node.key);
+				const c = compare(key, node.key);
 				if (c === 0) return node;
 				node = c < 0 ? node.left : node.right;
 			}
@@ -43,19 +42,17 @@ var BalancedBST = (function() {
 		},
 
 		insert: function(key, value) {
-			var compare = this._compare,
-				node = this.root,
-				path = this._path;
+			let compare = this._compare, node = this.root, path = this._path;
 
 			if (!node) {
 				this.root = newNode(key, value);
 				return this;
 			}
 
-			var k = 0;
+			let k = 0;
 
 			while (true) {
-				var c = compare(key, node.key);
+				const c = compare(key, node.key);
 				if (!c) return this;
 
 				path[k] = node;
@@ -82,13 +79,9 @@ var BalancedBST = (function() {
 		},
 
 		_rebalance: function(path, k) {
-			var rotated,
-				node,
-				parent,
-				updated,
-				m = 0;
+			let rotated, node, parent, updated, m = 0;
 
-			for (var i = k - 1; i >= 0; i--) {
+			for (let i = k - 1; i >= 0; i--) {
 				rotated = node = path[i];
 
 				if (node.level === node.left.level && node.level === node.right.level) {
@@ -119,7 +112,7 @@ var BalancedBST = (function() {
 
 	function skew(node) {
 		if (node.left.level === node.level) {
-			var temp = node;
+			const temp = node;
 			node = node.left;
 			temp.left = node.right;
 			node.right = temp;
@@ -129,7 +122,7 @@ var BalancedBST = (function() {
 
 	function split(node) {
 		if (node.right.right.level === node.level) {
-			var temp = node;
+			const temp = node;
 			node = node.right;
 			temp.right = node.left;
 			node.left = temp;

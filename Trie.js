@@ -1,12 +1,12 @@
-var Trie = (function() {
-	var Node = function(data) {
+const Trie = (function() {
+	const Node = function(data) {
 		this.data = data;
 		this.isWord = false;
 		this.prefixes = 0;
 		this.children = {};
 	};
 
-	var Trie = function() {
+	const Trie = function() {
 		this.root = new Node('');
 	};
 
@@ -21,13 +21,13 @@ var Trie = (function() {
 			return null;
 		}
 		node.prefixes++;
-		var letter = word.charAt(0);
-		var child = node.children[letter];
+		const letter = word.charAt(0);
+		let child = node.children[letter];
 		if (!child) {
 			child = new Node(letter);
 			node.children[letter] = child;
 		}
-		var remainder = word.substring(1);
+		const remainder = word.substring(1);
 		if (!remainder) {
 			child.isWord = true;
 		}
@@ -46,11 +46,11 @@ var Trie = (function() {
 			return;
 		}
 		node.prefixes--;
-		var letter = word.charAt(0);
+		const letter = word.charAt(0);
 
-		var child = node.children[letter];
+		const child = node.children[letter];
 		if (child) {
-			var remainder = word.substring(1);
+			const remainder = word.substring(1);
 			if (remainder) {
 				if (child.prefixes === 1) {
 					delete node.children[letter];
@@ -76,10 +76,10 @@ var Trie = (function() {
 		if (!node || !word) {
 			return false;
 		}
-		var letter = word.charAt(0);
-		var child = node.children[letter];
+		const letter = word.charAt(0);
+		const child = node.children[letter];
 		if (child) {
-			var remainder = word.substring(1);
+			const remainder = word.substring(1);
 			if (!remainder && child.isWord) {
 				return true;
 			} else {
@@ -93,14 +93,14 @@ var Trie = (function() {
 		if (!this.root) {
 			return console.log('No root node found');
 		}
-		var queue = [this.root];
-		var counter = 0;
+		const queue = [this.root];
+		let counter = 0;
 		while (queue.length) {
-			var node = queue.shift();
+			const node = queue.shift();
 			if (node.isWord) {
 				counter++;
 			}
-			for (var child in node.children) {
+			for (const child in node.children) {
 				if (node.children.hasOwnProperty(child)) {
 					queue.push(node.children[child]);
 				}
@@ -109,13 +109,13 @@ var Trie = (function() {
 		return counter;
 	};
 	Trie.prototype.getWords = function() {
-		var words = [];
-		var word = '';
+		const words = [];
+		const word = '';
 		this._getWords(this.root, words, words, word);
 		return words;
 	};
 	Trie.prototype._getWords = function(node, words, word) {
-		for (var child in node.children) {
+		for (const child in node.children) {
 			if (node.children.hasOwnProperty(child)) {
 				word += child;
 				if (node.children[child].isWord) {
@@ -130,16 +130,16 @@ var Trie = (function() {
 		if (!this.root) {
 			return console.log('No root node found');
 		}
-		var newline = new Node('|');
-		var queue = [this.root, newline];
-		var string = '';
+		const newline = new Node('|');
+		const queue = [this.root, newline];
+		let string = '';
 		while (queue.length) {
-			var node = queue.shift();
+			const node = queue.shift();
 			string += node.data.toString() + ' ';
 			if (node === newline && queue.length) {
 				queue.push(newline);
 			}
-			for (var child in node.children) {
+			for (const child in node.children) {
 				if (node.children.hasOwnProperty(child)) {
 					queue.push(node.children[child]);
 				}
@@ -151,16 +151,16 @@ var Trie = (function() {
 		if (!this.root) {
 			return console.log('No root node found');
 		}
-		var newline = new Node('\n');
-		var queue = [this.root, newline];
-		var string = '';
+		const newline = new Node('\n');
+		const queue = [this.root, newline];
+		let string = '';
 		while (queue.length) {
-			var node = queue.shift();
+			const node = queue.shift();
 			string += node.data.toString() + (node.data !== '\n' ? ' ' : '');
 			if (node === newline && queue.length) {
 				queue.push(newline);
 			}
-			for (var child in node.children) {
+			for (const child in node.children) {
 				if (node.children.hasOwnProperty(child)) {
 					queue.push(node.children[child]);
 				}
@@ -172,7 +172,7 @@ var Trie = (function() {
 	return Trie;
 })();
 
-var trie = new Trie();
+const trie = new Trie();
 trie.add('one');
 trie.add('two');
 trie.add('fifth');

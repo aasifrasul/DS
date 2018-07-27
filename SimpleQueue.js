@@ -1,5 +1,5 @@
-var Queue = (function() {
-	var Queue = function() {
+const Queue = (function() {
+	const Queue = function() {
 		this.storage = {};
 		this.count = 0;
 		this.lowestCount = 0;
@@ -17,7 +17,7 @@ var Queue = (function() {
 			return undefined;
 		}
 
-		var result = this.storage[this.lowestCount];
+		const result = this.storage[this.lowestCount];
 		delete this.storage[this.lowestCount];
 		this.lowestCount++;
 		return result;
@@ -30,4 +30,4 @@ var Queue = (function() {
 	return Queue;
 })();
 
-var queue = new Queue();
+const queue = new Queue();

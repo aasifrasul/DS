@@ -1,18 +1,16 @@
-var CircularLinkedList = (function() {
-	var Node = function(value) {
+const CircularLinkedList = (function() {
+	const Node = function(value) {
 		this.value = value;
 		this.previous = null;
 		this.next = null;
 	};
 
-	var CircularLinkedList = function() {
+	const CircularLinkedList = function() {
 		this.head = null;
 	};
 
 	CircularLinkedList.prototype.push = function(val) {
-		var head = this.head,
-			temp = head,
-			node = new Node(val);
+		let head = this.head, temp = head, node = new Node(val);
 
 		if (!head) {
 			node.next = node;
@@ -34,4 +32,4 @@ var CircularLinkedList = (function() {
 	return CircularLinkedList;
 })();
 
-var cll = CircularLinkedList;
+const cll = CircularLinkedList;

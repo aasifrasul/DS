@@ -1,21 +1,21 @@
-var Queue = (function() {
-	var Node = function(data) {
+const Queue = (function() {
+	const Node = function(data) {
 		this.data = data;
 		this.next = null;
 	};
 
-	var Queue = function() {
+	const Queue = function() {
 		this.first = null;
 		this.size = 0;
 	};
 
 	Queue.prototype.enqueue = function(data) {
-		var node = new Node(data);
+		const node = new Node(data);
 
 		if (!this.first) {
 			this.first = node;
 		} else {
-			var temp = this.first;
+			let temp = this.first;
 			while (temp.next) {
 				temp = temp.next;
 			}
@@ -30,7 +30,7 @@ var Queue = (function() {
 		if (!this.first) {
 			return null;
 		}
-		var temp = this.first;
+		const temp = this.first;
 		this.first = this.first.next;
 		this.size -= 1;
 		return temp;
@@ -39,10 +39,10 @@ var Queue = (function() {
 	Queue.prototype.peekAt = function(index) {
 		//anything smaller than 0 and equal or greater than count is not at the queue
 		if (index > -1 && index < count) {
-			var current = head;
+			let current = head;
 
 			//Navigates through the queue to find the item
-			for (var i = 0; i < index; i++) {
+			for (let i = 0; i < index; i++) {
 				current = current.next;
 			}
 
@@ -55,7 +55,7 @@ var Queue = (function() {
 	};
 
 	Queue.prototype.print = function() {
-		var curr = this.first;
+		let curr = this.first;
 		while (curr) {
 			console.log(curr.data);
 			curr = curr.next;
@@ -73,4 +73,4 @@ var Queue = (function() {
 	return Queue;
 })();
 
-var queue = new Queue();
+const queue = new Queue();

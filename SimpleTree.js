@@ -1,16 +1,16 @@
-var Tree = (function() {
-	var Node = function(data) {
+const Tree = (function() {
+	const Node = function(data) {
 		this.data = data;
 		this.children = [];
 	};
 
-	var Tree = function() {
+	const Tree = function() {
 		this.root = null;
 	};
 
 	Tree.prototype.add = function(data, toNodeData) {
-		var node = new Node(data);
-		var parent = toNodeData ? this.findBFS(toNodeData) : null;
+		const node = new Node(data);
+		const parent = toNodeData ? this.findBFS(toNodeData) : null;
 		if (parent) {
 			parent.children.push(node);
 		} else {
@@ -26,10 +26,10 @@ var Tree = (function() {
 			this.root = null;
 		}
 
-		var queue = [this.root];
+		const queue = [this.root];
 		while (queue.length) {
-			var node = queue.shift();
-			for (var i = 0; i < node.children.length; i++) {
+			const node = queue.shift();
+			for (let i = 0; i < node.children.length; i++) {
 				if (node.children[i].data === data) {
 					node.children.splice(i, 1);
 				} else {
@@ -42,13 +42,13 @@ var Tree = (function() {
 		return this.findBFS(data) ? true : false;
 	};
 	Tree.prototype.findBFS = function(data) {
-		var queue = [this.root];
+		const queue = [this.root];
 		while (queue.length) {
-			var node = queue.shift();
+			const node = queue.shift();
 			if (node.data === data) {
 				return node;
 			}
-			for (var i = 0; i < node.children.length; i++) {
+			for (let i = 0; i < node.children.length; i++) {
 				queue.push(node.children[i]);
 			}
 		}
@@ -59,14 +59,14 @@ var Tree = (function() {
 			if (fn) {
 				fn(node);
 			}
-			for (var i = 0; i < node.children.length; i++) {
+			for (let i = 0; i < node.children.length; i++) {
 				this._preOrder(node.children[i], fn);
 			}
 		}
 	};
 	Tree.prototype._postOrder = function(node, fn) {
 		if (node) {
-			for (var i = 0; i < node.children.length; i++) {
+			for (let i = 0; i < node.children.length; i++) {
 				this._postOrder(node.children[i], fn);
 			}
 			if (fn) {
@@ -75,7 +75,7 @@ var Tree = (function() {
 		}
 	};
 	Tree.prototype.traverseDFS = function(fn, method) {
-		var current = this.root;
+		const current = this.root;
 		if (method) {
 			this['_' + method](current, fn);
 		} else {
@@ -83,13 +83,13 @@ var Tree = (function() {
 		}
 	};
 	Tree.prototype.traverseBFS = function(fn) {
-		var queue = [this.root];
+		const queue = [this.root];
 		while (queue.length) {
-			var node = queue.shift();
+			const node = queue.shift();
 			if (fn) {
 				fn(node);
 			}
-			for (var i = 0; i < node.children.length; i++) {
+			for (let i = 0; i < node.children.length; i++) {
 				queue.push(node.children[i]);
 			}
 		}
@@ -98,16 +98,16 @@ var Tree = (function() {
 		if (!this.root) {
 			return console.log('No root node found');
 		}
-		var newline = new Node('|');
-		var queue = [this.root, newline];
-		var string = '';
+		const newline = new Node('|');
+		const queue = [this.root, newline];
+		let string = '';
 		while (queue.length) {
-			var node = queue.shift();
+			const node = queue.shift();
 			string += node.data.toString() + ' ';
 			if (node === newline && queue.length) {
 				queue.push(newline);
 			}
-			for (var i = 0; i < node.children.length; i++) {
+			for (let i = 0; i < node.children.length; i++) {
 				queue.push(node.children[i]);
 			}
 		}
@@ -117,16 +117,16 @@ var Tree = (function() {
 		if (!this.root) {
 			return console.log('No root node found');
 		}
-		var newline = new Node('\n');
-		var queue = [this.root, newline];
-		var string = '';
+		const newline = new Node('\n');
+		const queue = [this.root, newline];
+		let string = '';
 		while (queue.length) {
-			var node = queue.shift();
+			const node = queue.shift();
 			string += node.data.toString() + (node.data !== '\n' ? ' ' : '');
 			if (node === newline && queue.length) {
 				queue.push(newline);
 			}
-			for (var i = 0; i < node.children.length; i++) {
+			for (let i = 0; i < node.children.length; i++) {
 				queue.push(node.children[i]);
 			}
 		}
@@ -136,7 +136,7 @@ var Tree = (function() {
 	return Tree;
 })();
 
-var tree = new Tree();
+const tree = new Tree();
 tree.add('ceo');
 tree.add('cto', 'ceo');
 tree.add('dev1', 'cto');

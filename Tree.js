@@ -1,18 +1,18 @@
-var Tree = (function() {
-	var Node = function(data) {
+const Tree = (function() {
+	const Node = function(data) {
 		this.data = data;
 		this.parent = null;
 		this.children = [];
 	};
 
-	var Tree = function(data) {
-		var node = new Node(data);
+	const Tree = function(data) {
+		const node = new Node(data);
 		this._root = node;
 	};
 
 	Tree.prototype.traverseDF = function(callback) {
 		(function recurse(currentNode) {
-			for (var i = 0, length = currentNode.children.length; i < length; i++) {
+			for (let i = 0, length = currentNode.children.length; i < length; i++) {
 				recurse(currentNode.children[i]);
 			}
 			callback(currentNode);
@@ -20,14 +20,14 @@ var Tree = (function() {
 	};
 
 	Tree.prototype.traverseBF = function(callback) {
-		var queue = new Queue();
+		const queue = new Queue();
 
 		queue.enqueue(this._root);
 
 		currentTree = queue.dequeue();
 
 		while (currentTree) {
-			for (var i = 0, length = currentTree.children.length; i < length; i++) {
+			for (let i = 0, length = currentTree.children.length; i < length; i++) {
 				queue.enqueue(currentTree.children[i]);
 			}
 			callback(currentTree);
@@ -40,9 +40,9 @@ var Tree = (function() {
 	};
 
 	Tree.prototype.add = function(data, toData, traversal) {
-		var child = new Node(data),
-			parent = null,
-			callback = function(node) {
+		let child = new Node(data),
+            parent = null,
+            callback = function(node) {
 				if (node.data === toData) {
 					parent = node;
 				}
@@ -59,12 +59,9 @@ var Tree = (function() {
 	};
 
 	Tree.prototype.remove = function(data, fromData, traversal) {
-		var tree = this,
-			parent = null,
-			childToRemove = null,
-			index;
+		let tree = this, parent = null, childToRemove = null, index;
 
-		var callback = function(node) {
+		const callback = function(node) {
 			if (node.data === fromData) {
 				parent = node;
 			}
@@ -88,9 +85,9 @@ var Tree = (function() {
 	};
 
 	function findIndex(arr, data) {
-		var index;
+		let index;
 
-		for (var i = 0; i < arr.length; i++) {
+		for (let i = 0; i < arr.length; i++) {
 			if (arr[i].data === data) {
 				index = i;
 			}
@@ -102,4 +99,4 @@ var Tree = (function() {
 	return Tree;
 })();
 
-var tree = new Tree();
+const tree = new Tree();
