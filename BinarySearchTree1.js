@@ -109,7 +109,7 @@ const BinarySearchTree = (function() {
 	BinarySearchTree.prototype.traverseDFS = function(fn, method) {
 		const current = this.root;
 		if (method) {
-			this['_' + method](current, fn);
+			this[`_${method}`](current, fn);
 		} else {
 			this._preOrder(current, fn);
 		}
@@ -139,7 +139,7 @@ const BinarySearchTree = (function() {
 		let string = '';
 		while (queue.length) {
 			const node = queue.shift();
-			string += node.data.toString() + ' ';
+			string += `${node.data.toString()} `;
 			if (node === newline && queue.length) {
 				queue.push(newline);
 			}
@@ -161,7 +161,7 @@ const BinarySearchTree = (function() {
 		let string = '';
 		while (queue.length) {
 			const node = queue.shift();
-			string += node.data.toString() + (node.data !== '\n' ? ' ' : '');
+			string += `${node.data.toString()}${node.data !== '\n' ? ' ' : ''}`;
 			if (node === newline && queue.length) {
 				queue.push(newline);
 			}

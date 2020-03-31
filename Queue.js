@@ -5,21 +5,21 @@ const Queue = (function() {
 	};
 
 	const Queue = function() {
-		this.first = null;
+		this.head = null;
 		this.size = 0;
 	};
 
 	Queue.prototype.enqueue = function(data) {
 		const node = new Node(data);
 
-		if (!this.first) {
-			this.first = node;
-		} else {
-			let temp = this.first;
+		if (this.head) {
+			let temp = this.head;
 			while (temp.next) {
 				temp = temp.next;
 			}
 			temp.next = node;
+		} else {
+			this.head = node;
 		}
 
 		this.size += 1;
@@ -27,11 +27,11 @@ const Queue = (function() {
 	};
 
 	Queue.prototype.dequeue = function() {
-		if (!this.first) {
+		if (!this.head) {
 			return null;
 		}
-		const temp = this.first;
-		this.first = this.first.next;
+		const temp = this.head;
+		this.head = this.head.next;
 		this.size -= 1;
 		return temp;
 	};
@@ -55,7 +55,7 @@ const Queue = (function() {
 	};
 
 	Queue.prototype.print = function() {
-		let curr = this.first;
+		let curr = this.head;
 		while (curr) {
 			console.log(curr.data);
 			curr = curr.next;
@@ -63,11 +63,11 @@ const Queue = (function() {
 	};
 
 	Queue.prototype.hasNext = function() {
-		return this.first.next != undefined;
+		return this.head.next != undefined;
 	};
 
 	Queue.prototype.isEmpty = function() {
-		return this.first == null;
+		return this.head == null;
 	};
 
 	return Queue;

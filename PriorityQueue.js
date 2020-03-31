@@ -9,10 +9,10 @@
  * @return {PriorityQueue}
  * @api public
  */
-const PriorityQueue = (function() {
+const PriorityQueue = (function () {
 	function PriorityQueue(comparator) {
-		this._comparator = comparator || PriorityQueue.DEFAULT_COMPARATOR;
-		this._elements = [];
+		this.comparator = comparator || PriorityQueue.DEFAULT_COMPARATOR;
+		this.elements = [];
 	}
 
 	/**
@@ -24,7 +24,7 @@ const PriorityQueue = (function() {
 	 * @return {Number}
 	 * @api public
 	 */
-	PriorityQueue.DEFAULT_COMPARATOR = function(a, b) {
+	PriorityQueue.DEFAULT_COMPARATOR = function (a, b) {
 		if (typeof a === 'number' && typeof b === 'number') {
 			return a - b;
 		} else {
@@ -43,7 +43,7 @@ const PriorityQueue = (function() {
 	 * @return {Boolean}
 	 * @api public
 	 */
-	PriorityQueue.prototype.isEmpty = function() {
+	PriorityQueue.prototype.isEmpty = function () {
 		return this.size() === 0;
 	};
 
@@ -54,10 +54,10 @@ const PriorityQueue = (function() {
 	 * @throws {Error} when the queue is empty.
 	 * @api public
 	 */
-	PriorityQueue.prototype.peek = function() {
+	PriorityQueue.prototype.peek = function () {
 		if (this.isEmpty()) throw new Error('PriorityQueue is empty');
 
-		return this._elements[0];
+		return this.elements[0];
 	};
 
 	/**
@@ -67,14 +67,14 @@ const PriorityQueue = (function() {
 	 * @throws {Error} when the queue is empty.
 	 * @api public
 	 */
-	PriorityQueue.prototype.deq = function() {
+	PriorityQueue.prototype.deq = function () {
 		const first = this.peek();
-		const last = this._elements.pop();
+		const last = this.elements.pop();
 		const size = this.size();
 
 		if (size === 0) return first;
 
-		this._elements[0] = last;
+		this.elements[0] = last;
 		let current = 0;
 
 		while (current < size) {
@@ -82,17 +82,17 @@ const PriorityQueue = (function() {
 			const left = 2 * current + 1;
 			const right = 2 * current + 2;
 
-			if (left < size && this._compare(left, largest) >= 0) {
+			if (left < size && this.compare(left, largest) >= 0) {
 				largest = left;
 			}
 
-			if (right < size && this._compare(right, largest) >= 0) {
+			if (right < size && this.compare(right, largest) >= 0) {
 				largest = right;
 			}
 
 			if (largest === current) break;
 
-			this._swap(largest, current);
+			this.swap(largest, current);
 			current = largest;
 		}
 
@@ -106,16 +106,16 @@ const PriorityQueue = (function() {
 	 * @return {Number}
 	 * @api public
 	 */
-	PriorityQueue.prototype.enq = function(element) {
-		const size = this._elements.push(element);
+	PriorityQueue.prototype.enq = function (element) {
+		const size = this.elements.push(element);
 		let current = size - 1;
 
 		while (current > 0) {
 			const parent = Math.floor((current - 1) / 2);
 
-			if (this._compare(current, parent) <= 0) break;
+			if (this.compare(current, parent) <= 0) break;
 
-			this._swap(parent, current);
+			this.swap(parent, current);
 			current = parent;
 		}
 
@@ -128,8 +128,8 @@ const PriorityQueue = (function() {
 	 * @return {Number}
 	 * @api public
 	 */
-	PriorityQueue.prototype.size = function() {
-		return this._elements.length;
+	PriorityQueue.prototype.size = function () {
+		return this.elements.length;
 	};
 
 	/**
@@ -137,8 +137,8 @@ const PriorityQueue = (function() {
 	 *
 	 *  @param {Function} fn
 	 */
-	PriorityQueue.prototype.forEach = function(fn) {
-		return this._elements.forEach(fn);
+	PriorityQueue.prototype.forEach = function (fn) {
+		return this.elements.forEach(fn);
 	};
 
 	/**
@@ -150,8 +150,8 @@ const PriorityQueue = (function() {
 	 * @return {Number}
 	 * @api private
 	 */
-	PriorityQueue.prototype._compare = function(a, b) {
-		return this._comparator(this._elements[a], this._elements[b]);
+	PriorityQueue.prototype.compare = function (a, b) {
+		return this.comparator(this.elements[a], this.elements[b]);
 	};
 
 	/**
@@ -161,11 +161,13 @@ const PriorityQueue = (function() {
 	 * @param {Number} b
 	 * @api private
 	 */
-	PriorityQueue.prototype._swap = function(a, b) {
-		const aux = this._elements[a];
-		this._elements[a] = this._elements[b];
-		this._elements[b] = aux;
+	PriorityQueue.prototype.swap = function (a, b) {
+		const aux = this.elements[a];
+		this.elements[a] = this.elements[b];
+		this.elements[b] = aux;
 	};
 
 	return PriorityQueue;
 })();
+
+const pq = new PriorityQueue();

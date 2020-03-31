@@ -8,7 +8,7 @@ function add(n) {
 		sum += m;
 		return f;
 	};
-	f.toString = function() {
+	f.toString = function () {
 		return sum;
 	};
 	return f;
@@ -20,7 +20,7 @@ function mul(n) {
 		res *= m;
 		return f;
 	};
-	f.toString = function() {
+	f.toString = function () {
 		return res;
 	};
 	return f;
@@ -45,7 +45,8 @@ function isPrime(n) {
 }
 
 function primeFactors(n) {
-	let factors = {}, divisor = 3;
+	let factors = {},
+		divisor = 3;
 	if (n === 1 || n === 2) {
 		return true;
 	}
@@ -63,15 +64,14 @@ function primeFactors(n) {
 	return Object.keys(factors);
 }
 
-function dedupe(arr) {
-	const cleaned = {};
-	return arr.filter(n => !cleaned[n] && (cleaned[n] = true));
-}
-
 const greatestCommonDivisor = (a, b) => (b == 0 ? a : greatestCommonDivisor(b, a % b));
 
 function mergeSortedArray(a, b) {
-	let merged = [], aElm = a[0], bElm = b[0], i = 1, j = 1;
+	let merged = [],
+		aElm = a[0],
+		bElm = b[0],
+		i = 1,
+		j = 1;
 
 	if (a.length == 0) return b;
 	if (b.length == 0) return a;
@@ -94,21 +94,10 @@ function mergeSortedArray(a, b) {
 	return merged;
 }
 
-const reverse = str => (str === '' ? '' : reverse(str.substr(1)) + str.charAt(0));
-
-function reverseWords(str) {
-	let rev = [], wordLen = 0;
-	for (let i = str.length - 1; i >= 0; i--) {
-		if (str[i] == ' ' || i == 0) {
-			rev.push(str.substr(i, wordLen + 1));
-			wordLen = 0;
-		} else wordLen++;
-	}
-	return rev.join(' ');
-}
 
 function firstNonRepeatChar(str) {
-	let len = str.length, char, charCount = {};
+	let len = str.length,
+		char, charCount = {};
 	for (let i = 0; i < len; i++) {
 		char = str[i];
 		if (charCount[char]) {
@@ -120,34 +109,11 @@ function firstNonRepeatChar(str) {
 	}
 }
 
-function removeDuplicateChar(str) {
-	let len = str.length, char, charCount = {}, newStr = '';
-	for (let i = 0; i < len; i++) {
-		char = str[i];
-		if (charCount[char]) {
-			charCount[char]++;
-		} else charCount[char] = 1;
-	}
-	return false;
-}
-
-// Gives the diff between Biggest and Smallest element
-const getMaxDifference = arr => Math.max.apply(null, arr) - Math.min.apply(null, arr);
-
-function maxDifference(arr) {
-	let min = arr[0], max = arr[0], len = arr.length, num, i;
-
-	for (i = 0; i < len; i++) {
-		num = arr[i];
-		min = min > num ? num : min;
-		max = max < num ? num : max;
-	}
-
-	return max - min;
-}
-
 function topSum(arr) {
-	let biggest = arr[0], second = arr[1], len = arr.length, i = 2;
+	let biggest = arr[0],
+		second = arr[1],
+		len = arr.length,
+		i = 2;
 
 	if (len < 2) return null;
 
@@ -177,7 +143,11 @@ function countZeroes(n) {
 }
 
 function findSubString(str, subStr) {
-	let idx = 0, i = 0, j = 0, len = str.length, subLen = subStr.length;
+	let idx = 0,
+		i = 0,
+		j = 0,
+		len = str.length,
+		subLen = subStr.length;
 
 	for (; i < len; i++) {
 		if (str[i] == subStr[j]) j++;
@@ -192,7 +162,10 @@ function findSubString(str, subStr) {
 }
 
 function permutations(str) {
-	let arr = str.split(''), len = arr.length, perms = [], rest, picked, restPerms, next;
+	let arr = str.split(''),
+		len = arr.length,
+		perms = [],
+		rest, picked, restPerms, next;
 
 	if (len == 0) return [str];
 
@@ -259,7 +232,9 @@ const isAnagaram = (str1, str2) => {
 };
 
 function binarySearch(items, value) {
-	let startIndex = 0, stopIndex = items.length - 1, middle = Math.floor((stopIndex + startIndex) / 2);
+	let startIndex = 0,
+		stopIndex = items.length - 1,
+		middle = Math.floor((stopIndex + startIndex) / 2);
 
 	while (items[middle] != value && startIndex < stopIndex) {
 		//adjust search area
@@ -280,7 +255,8 @@ function binarySearch(items, value) {
 // Compare 2 Objects
 // Irrespective of order of the keys
 function isEqual(a, b) {
-	const aProps = Object.getOwnPropertyNames(a), bProps = Object.getOwnPropertyNames(b);
+	const aProps = Object.getOwnPropertyNames(a),
+		bProps = Object.getOwnPropertyNames(b);
 
 	if (aProps.length != bProps.length) {
 		return false;
@@ -296,13 +272,14 @@ function isEqual(a, b) {
 	return true;
 }
 
-var fib = function(n) {
+var fib = function (n) {
 	return n === 0 || n === 1 ? n : fib(n - 1) + fib(n - 2);
 };
 
 // memmoized Versiom
-var fib = (function(n) {
+var fib = (function (n) {
 	const hash = {};
+
 	function f(n) {
 		if (n in hash) return hash[n];
 		if (n === 0 || n === 1) {
@@ -316,12 +293,13 @@ var fib = (function(n) {
 	return f;
 })();
 
+
 // Generic function to memoize another function
-const memoize = function(func) {
+const memoize = function (func) {
 	const memo = {};
 	const slice = Array.prototype.slice;
 
-	return function() {
+	return function () {
 		const args = slice.call(arguments);
 		return args in memo ? memo[args] : (memo[args] = func.apply(this, args));
 	};
@@ -330,9 +308,9 @@ const memoize = function(func) {
 // Shim for bind
 Function.prototype.bind =
 	Function.prototype.bind ||
-	function(context) {
+	function (context) {
 		const self = this;
-		return function() {
+		return function () {
 			return self.apply(context, arguments);
 		};
 	};
@@ -340,7 +318,7 @@ Function.prototype.bind =
 // Shim For forEach
 Array.prototype.forEach =
 	Array.prototype.forEach ||
-	function(callback, thisArg) {
+	function (callback, thisArg) {
 		if (!Array.isArray(this) || typeof callback != 'function') return;
 
 		for (i in this) {
@@ -354,7 +332,7 @@ function moveLeft(elem, distance) {
 
 	function frame() {
 		left++;
-		elem.style.left = left + 'px';
+		elem.style.left = `${left}px`;
 
 		if (left == distance) clearInterval(timeId);
 	}
@@ -362,13 +340,13 @@ function moveLeft(elem, distance) {
 	var timeId = setInterval(frame, 10);
 }
 
-Function.prototype.curry = function() {
+Function.prototype.curry = function () {
 	if (arguments.length < 1) {
 		return this;
 	}
 	const self = this;
 	const args = toArray(arguments);
-	return function() {
+	return function () {
 		return self.apply(this, args.concat(toArray(arguments)));
 	};
 };

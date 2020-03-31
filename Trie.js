@@ -135,7 +135,7 @@ const Trie = (function() {
 		let string = '';
 		while (queue.length) {
 			const node = queue.shift();
-			string += node.data.toString() + ' ';
+			string += `${node.data.toString()} `;
 			if (node === newline && queue.length) {
 				queue.push(newline);
 			}
@@ -156,7 +156,7 @@ const Trie = (function() {
 		let string = '';
 		while (queue.length) {
 			const node = queue.shift();
-			string += node.data.toString() + (node.data !== '\n' ? ' ' : '');
+			string += `${node.data.toString()}${node.data !== '\n' ? ' ' : ''}`;
 			if (node === newline && queue.length) {
 				queue.push(newline);
 			}

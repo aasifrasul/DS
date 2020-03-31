@@ -40,7 +40,7 @@ const HashTable = (function() {
 		let string = '';
 		for (const value in this.values) {
 			for (const key in this.values[value]) {
-				string += this.values[value][key] + ' ';
+				string += `${this.values[value][key]} `;
 			}
 		}
 		console.log(string.trim());

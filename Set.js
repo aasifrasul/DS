@@ -1,26 +1,26 @@
-const Set = (function() {
-	const Set = function() {
+const Set = (function () {
+	const Set = function () {
 		this.values = [];
 		this.count = 0;
 	};
 
-	Set.prototype.add = function(value) {
+	Set.prototype.add = function (value) {
 		if (!~this.values.indexOf(value)) {
 			this.values.push(value);
 			this.count++;
 		}
 	};
-	Set.prototype.remove = function(value) {
+	Set.prototype.remove = function (value) {
 		const index = this.values.indexOf(value);
 		if (~index) {
 			this.values.splice(index, 1);
 			this.count--;
 		}
 	};
-	Set.prototype.contains = function(value) {
+	Set.prototype.contains = function (value) {
 		return this.values.indexOf(value) !== -1;
 	};
-	Set.prototype.union = function(set) {
+	Set.prototype.union = function (set) {
 		const newSet = new Set();
 		set.values.forEach(value => {
 			newSet.add(value);
@@ -30,7 +30,7 @@ const Set = (function() {
 		});
 		return newSet;
 	};
-	Set.prototype.intersect = function(set) {
+	Set.prototype.intersect = function (set) {
 		const newSet = new Set();
 		this.values.forEach(value => {
 			if (set.contains(value)) {
@@ -39,7 +39,7 @@ const Set = (function() {
 		});
 		return newSet;
 	};
-	Set.prototype.difference = function(set) {
+	Set.prototype.difference = function (set) {
 		const newSet = new Set();
 		this.values.forEach(value => {
 			if (!set.contains(value)) {
@@ -48,15 +48,15 @@ const Set = (function() {
 		});
 		return newSet;
 	};
-	Set.prototype.isSubset = function(set) {
-		return set.values.every(function(value) {
+	Set.prototype.isSubset = function (set) {
+		return set.values.every(function (value) {
 			return this.contains(value);
 		}, this);
 	};
-	Set.prototype.length = function() {
+	Set.prototype.length = function () {
 		return this.count;
 	};
-	Set.prototype.print = function() {
+	Set.prototype.print = function () {
 		console.log(this.values.join(' '));
 	};
 

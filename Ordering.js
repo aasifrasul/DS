@@ -1,23 +1,24 @@
 /*
-* Ordering Object
-* By: Trent Richardson [http://trentrichardson.com]
-* Version 0.1
-* Last Modified: 02/02/2011
-* 
-* Copyright 2011 Trent Richardson
-* Dual licensed under the MIT and GPL licenses.
-* http://trentrichardson.com/Impromptu/GPL-LICENSE.txt
-* http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
-*/
+ * Ordering Object
+ * By: Trent Richardson [http://trentrichardson.com]
+ * Version 0.1
+ * Last Modified: 02/02/2011
+ * 
+ * Copyright 2011 Trent Richardson
+ * Dual licensed under the MIT and GPL licenses.
+ * http://trentrichardson.com/Impromptu/GPL-LICENSE.txt
+ * http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
+ */
 
-(function() {
-	const Ordering = (this.Ordering = function(obj, sf) {
-		const keys = [], values = {};
+(function () {
+	const Ordering = (this.Ordering = function (obj, sf) {
+		const keys = [],
+			values = {};
 
 		this.length = 0;
 		this.sortfn = null;
 
-		this.feed = function(obj) {
+		this.feed = function (obj) {
 			for (k in obj) {
 				if (obj.hasOwnProperty(k)) {
 					this.set(k, obj[k]);
@@ -26,20 +27,20 @@
 			return this;
 		};
 
-		this.get = function(key) {
+		this.get = function (key) {
 			return values[key];
 		};
 
-		this.getAt = function(index) {
+		this.getAt = function (index) {
 			if (index >= this.length) return null;
 			return values[key[index]];
 		};
 
-		this.indexOf = function(key) {
+		this.indexOf = function (key) {
 			return keys.indexOf(key);
 		};
 
-		this.set = function(key, value) {
+		this.set = function (key, value) {
 			const index = keys.indexOf(key);
 			if (index !== -1) {
 				values[key] = value;
@@ -47,20 +48,24 @@
 				values[key] = value;
 				keys[this.length++] = key;
 			} else {
-				this.inject(key, value, (pk, pv, nk, nv, t) => t.sortfn.call(null, key, value, nk, nv) < 0);
+				this.inject(
+					key,
+					value,
+					(pk, pv, nk, nv, t) => t.sortfn.call(null, key, value, nk, nv) < 0
+				);
 			}
 			return this;
 		};
 
-		this.clone = function() {
+		this.clone = function () {
 			return new Ordering(values, this.sortfn);
 		};
 
-		this.keys = function() {
+		this.keys = function () {
 			return keys.slice(0);
 		};
 
-		this.erase = function(key) {
+		this.erase = function (key) {
 			const index = keys.indexOf(key);
 			if (index !== -1) {
 				keys.splice(index, 1);
@@ -70,22 +75,26 @@
 			return this;
 		};
 
-		this.each = function(fn, bind) {
+		this.each = function (fn, bind) {
 			for (let i = 0, l = this.length; i < l; i++) {
 				if (fn.call(bind, keys[i], values[keys[i]], this) === false) break;
 			}
 			return this;
 		};
 
-		this.inject = function(newKey, newVal, fn, bind) {
-			let prevKey = null, prevVal = null, inserted = false, keyslength = this.length;
+		this.inject = function (newKey, newVal, fn, bind) {
+			let prevKey = null,
+				prevVal = null,
+				inserted = false,
+				keyslength = this.length;
 
 			if (values[newKey] !== undefined) return false;
 
 			values[newKey] = newVal;
 
 			for (let i = 0; i < keyslength; i++) {
-				const currKey = keys[i], currVal = values[currKey];
+				const currKey = keys[i],
+					currVal = values[currKey];
 
 				if (!inserted && fn.call(bind, prevKey, prevVal, currKey, currVal, this)) {
 					keys.splice(i, 0, newKey);
@@ -103,20 +112,20 @@
 			return this;
 		};
 
-		this.sort = function(fn, bind) {
+		this.sort = function (fn, bind) {
 			if (fn === undefined && this.sortfn === undefined) {
 				keys.sort();
 			} else {
 				if (fn === undefined) fn = this.sortfn;
 
-				keys.sort(function(a, b) {
+				keys.sort(function (a, b) {
 					return fn.call(bind, a, values[a], b, values[b], this);
 				});
 			}
 			return this;
 		};
 
-		this.filter = function(fn, bind) {
+		this.filter = function (fn, bind) {
 			const c = this.clone();
 			for (let i = 0, l = this.length; i < l; i++) {
 				if (!fn.call(bind, keys[i], values[keys[i]], c)) c.erase(k);
@@ -124,7 +133,7 @@
 			return c;
 		};
 
-		this.subset = function(arr) {
+		this.subset = function (arr) {
 			const c = new Ordering();
 			for (let i = 0, l = this.length; i < l; i++) {
 				if (arr.indexOf(keys[i]) >= 0) c.set(keys[i], values[keys[i]]);
@@ -132,29 +141,30 @@
 			return c;
 		};
 
-		this.slice = function(start, end) {
-			const c = new Ordering(), ks = this.keys().slice(start, end);
+		this.slice = function (start, end) {
+			const c = new Ordering(),
+				ks = this.keys().slice(start, end);
 			for (let i = 0, l = ks.length; i < l; i++) {
 				c.set(ks[i], values[ks[i]]);
 			}
 			return c;
 		};
 
-		this.some = function(fn, bind) {
+		this.some = function (fn, bind) {
 			for (let i = 0, l = this.length; i < l; i++) {
 				if (fn.call(bind, keys[i], values[keys[i]], this)) return true;
 			}
 			return false;
 		};
 
-		this.every = function(fn, bind) {
+		this.every = function (fn, bind) {
 			for (let i = 0, l = this.length; i < l; i++) {
 				if (!fn.call(bind, keys[i], values[keys[i]], this)) return false;
 			}
 			return true;
 		};
 
-		this.map = function(fn, bind) {
+		this.map = function (fn, bind) {
 			const c = this.clone();
 			for (let i = 0, l = this.length; i < l; i++) {
 				c.set(keys[i], fn.call(bind, keys[i], values[keys[i]], c));

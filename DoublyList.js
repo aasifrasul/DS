@@ -1,17 +1,17 @@
-const DoublyList = (function() {
-	const Node = function(value) {
+const DoublyList = (function () {
+	const Node = function (value) {
 		this.data = value;
 		this.previous = null;
 		this.next = null;
 	};
 
-	const DoublyList = function() {
+	const DoublyList = function () {
 		this.length = 0;
 		this.head = null;
 		this.tail = null;
 	};
 
-	DoublyList.prototype.add = function(value) {
+	DoublyList.prototype.add = function (value) {
 		const node = new Node(value);
 
 		if (this.length) {
@@ -28,8 +28,10 @@ const DoublyList = (function() {
 		return node;
 	};
 
-	DoublyList.prototype.reverse = function() {
-		let head = this.head, current = this.head, tmp;
+	DoublyList.prototype.reverse = function () {
+		let head = this.head,
+			current = this.head,
+			tmp;
 		while (current) {
 			tmp = current.next;
 			current.next = current.previous;
@@ -44,8 +46,13 @@ const DoublyList = (function() {
 		return this;
 	};
 
-	DoublyList.prototype.searchNodeAt = function(position) {
-		let currentNode = this.head, length = this.length, count = 1, message = { failure: 'Failure: non-existent node in this list.' };
+	DoublyList.prototype.searchNodeAt = function (position) {
+		let currentNode = this.head,
+			length = this.length,
+			count = 1,
+			message = {
+				failure: 'Failure: non-existent node in this list.'
+			};
 
 		// 1st use-case: an invalid position
 		if (length === 0 || position < 1 || position > length) {
@@ -61,8 +68,16 @@ const DoublyList = (function() {
 		return currentNode;
 	};
 
-	DoublyList.prototype.remove = function(position) {
-		let currentNode = this.head, length = this.length, count = 1, message = { failure: 'Failure: non-existent node in this list.' }, beforeNodeToDelete = null, nodeToDelete = null, deletedNode = null;
+	DoublyList.prototype.remove = function (position) {
+		let currentNode = this.head,
+			length = this.length,
+			count = 1,
+			message = {
+				failure: 'Failure: non-existent node in this list.'
+			},
+			beforeNodeToDelete = null,
+			nodeToDelete = null,
+			deletedNode = null;
 
 		// 1st use-case: an invalid position
 		if (length === 0 || position < 1 || position > length) {

@@ -1,18 +1,18 @@
-const Queue = (function() {
-	const Queue = function() {
+const Queue = (function () {
+	const Queue = function () {
 		this.storage = {};
 		this.count = 0;
 		this.lowestCount = 0;
 	};
 
-	Queue.prototype.enqueue = function(value) {
+	Queue.prototype.enqueue = function (value) {
 		if (value) {
 			this.storage[this.count] = value;
 			this.count++;
 		}
 	};
 
-	Queue.prototype.dequeue = function() {
+	Queue.prototype.dequeue = function () {
 		if (this.count - this.lowestCount === 0) {
 			return undefined;
 		}
@@ -23,7 +23,7 @@ const Queue = (function() {
 		return result;
 	};
 
-	Queue.prototype.size = function() {
+	Queue.prototype.size = function () {
 		return this.count - this.lowestCount;
 	};
 

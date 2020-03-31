@@ -1,9 +1,9 @@
-const DoublyLinkedList = (function() {
-	const Node = function(data) {
+const DoublyLinkedList = (function () {
+	const Node = function (data) {
 		(this.data = data), (this.next = null), (this.prev = null);
 	};
 
-	const DoublyLinkedList = function() {
+	const DoublyLinkedList = function () {
 		this.head = null;
 		this.tail = null;
 		this.length = 0;
@@ -89,7 +89,8 @@ const DoublyLinkedList = (function() {
 		item(index) {
 			//check for out-of-bounds values
 			if (index > -1 && index < this.length) {
-				let current = this.head, i = 0;
+				let current = this.head,
+					i = 0;
 
 				while (i++ < index) {
 					current = current.next;
@@ -111,19 +112,20 @@ const DoublyLinkedList = (function() {
 		remove(index) {
 			//check for out-of-bounds values
 			if (index > -1 && index < this.length) {
-				let current = this.head, i = 0;
+				let current = this.head,
+					i = 0;
 
 				//special case: removing first item
 				if (index === 0) {
 					this.head = current.next;
 
 					/*
-           * If there's only one item in the list and you remove it,
-           * then this.head will be null. In that case, you should
-           * also set this.tail to be null to effectively destroy
-           * the list. Otherwise, set the prev pointer on the new
-           * this.head to be null.
-           */
+					 * If there's only one item in the list and you remove it,
+					 * then this.head will be null. In that case, you should
+					 * also set this.tail to be null to effectively destroy
+					 * the list. Otherwise, set the prev pointer on the new
+					 * this.head to be null.
+					 */
 					if (!this.head) {
 						this.tail = null;
 					} else {
@@ -157,7 +159,9 @@ const DoublyLinkedList = (function() {
 		},
 
 		reverse() {
-			let head = this.head, current = this.head, tmp;
+			let head = this.head,
+				current = this.head,
+				tmp;
 			while (current) {
 				tmp = current.next;
 				current.next = current.prev;
@@ -171,7 +175,8 @@ const DoublyLinkedList = (function() {
 		},
 
 		delete(val) {
-			let current = this.head, prev;
+			let current = this.head,
+				prev;
 
 			//delete head
 			if (current.value == val) {
@@ -203,7 +208,8 @@ const DoublyLinkedList = (function() {
 		},
 
 		toArray() {
-			let result = [], current = this.head;
+			let result = [],
+				current = this.head;
 
 			while (current) {
 				result.push(current.data);
@@ -212,12 +218,17 @@ const DoublyLinkedList = (function() {
 
 			return result;
 		},
-
 		toString() {
 			return this.toArray().toString();
+		},
+		print() {
+			let curr = this.head;
+			while (curr) {
+				console.log(curr['data']);
+				curr = curr.next;
+			}
 		}
 	};
-
 	return DoublyLinkedList;
 })();
 
@@ -228,7 +239,7 @@ doublyLinkedList.add(2);
 doublyLinkedList.add(3);
 doublyLinkedList.add(4);
 doublyLinkedList.print(); // => 1 2 3 4
-console.log('length is 4:', doublyLinkedList.length()); // => 4
+console.log('length is 4:', doublyLinkedList.size()); // => 4
 doublyLinkedList.remove(3); // remove value
 doublyLinkedList.print(); // => 1 2 4
 doublyLinkedList.remove(9); // remove non existing value
@@ -237,10 +248,10 @@ doublyLinkedList.remove(1); // remove head
 doublyLinkedList.print(); // => 2 4
 doublyLinkedList.remove(4); // remove tail
 doublyLinkedList.print(); // => 2
-console.log('length is 1:', doublyLinkedList.length()); // => 1
+console.log('length is 1:', doublyLinkedList.size()); // => 1
 doublyLinkedList.remove(2); // remove tail, the list should be empty
 doublyLinkedList.print(); // => ''
-console.log('length is 0:', doublyLinkedList.length()); // => 0
+console.log('length is 0:', doublyLinkedList.size()); // => 0
 doublyLinkedList.add(2);
 doublyLinkedList.add(6);
 doublyLinkedList.print(); // => 2 6
@@ -258,7 +269,7 @@ doublyLinkedList.insertAfter(7, 6); // insertAfter the tail
 doublyLinkedList.print(); // => 2 3 4 5 6 7
 doublyLinkedList.add(8); // add node with normal method
 doublyLinkedList.print(); // => 2 3 4 5 6 7 8
-console.log('length is 7:', doublyLinkedList.length()); // => 7
+console.log('length is 7:', doublyLinkedList.size()); // => 7
 doublyLinkedList.traverse(node => {
 	node.data = node.data + 10;
 });
@@ -266,9 +277,9 @@ doublyLinkedList.print(); // => 12 13 14 15 16 17 18
 doublyLinkedList.traverse(node => {
 	console.log(node.data);
 }); // => 12 13 14 15 16 17 18
-console.log('length is 7:', doublyLinkedList.length()); // => 7
+console.log('length is 7:', doublyLinkedList.size()); // => 7
 doublyLinkedList.traverseReverse(node => {
 	console.log(node.data);
 }); // => 18 17 16 15 14 13 12
 doublyLinkedList.print(); // => 12 13 14 15 16 17 18
-console.log('length is 7:', doublyLinkedList.length()); // => 7
+console.log('length is 7:', doublyLinkedList.size()); // => 7
