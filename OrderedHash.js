@@ -1,14 +1,14 @@
-const OrderedHash = (function() {
-	const OrderedHash = function() {
+const OrderedHash = (function () {
+	const OrderedHash = function () {
 		this.keys = [];
 		this.vals = {};
 	};
 
-	OrderedHash.prototype.exists = function(k) {
+	OrderedHash.prototype.exists = function (k) {
 		return k in this.vals;
 	};
 
-	OrderedHash.prototype.push = function(k, v) {
+	OrderedHash.prototype.push = function (k, v) {
 		if (!this.exists(k)) this.keys.push(k);
 		this.vals[k] = v;
 	};
@@ -16,7 +16,7 @@ const OrderedHash = (function() {
 	 * Find the index of a key (linear search is O(n)).
 	 * @returns {Number} The index of the key, if present, or -1.
 	 */
-	OrderedHash.prototype.find = function(k) {
+	OrderedHash.prototype.find = function (k) {
 		if (this.exists(k)) {
 			for (let i = 0; i < this.keys.length; i++) {
 				if (this.keys[i] === k) {
@@ -30,7 +30,7 @@ const OrderedHash = (function() {
 	 * Inserts a key and value at the specified position.
 	 * @returns {Boolean} true if inserted or false if the key already exists.
 	 */
-	OrderedHash.prototype.insert = function(pos, k, v) {
+	OrderedHash.prototype.insert = function (pos, k, v) {
 		if (this.exists(k)) {
 			return false;
 		}
@@ -41,8 +41,8 @@ const OrderedHash = (function() {
 	/**
 	 * Removes one or more elements starting at the specified position.
 	 */
-	OrderedHash.prototype.remove = function(pos, howMany) {
-		if (howMany === void 0) {
+	OrderedHash.prototype.remove = function (pos, howMany) {
+		if (!howMany) {
 			howMany = 1;
 		}
 		const k = this.keys.splice(pos, howMany);
@@ -54,7 +54,7 @@ const OrderedHash = (function() {
 	 * Removes an element by key (linear search is O(n)).
 	 * @returns {Boolean} true if removed, false otherwise.
 	 */
-	OrderedHash.prototype.delete = function(k) {
+	OrderedHash.prototype.delete = function (k) {
 		if (this.exists(k)) {
 			for (let i = 0; i < this.keys.length; i++) {
 				if (this.keys[i] === k) {
@@ -66,11 +66,11 @@ const OrderedHash = (function() {
 		return false;
 	};
 
-	OrderedHash.prototype.value = function(k) {
+	OrderedHash.prototype.value = function (k) {
 		return this.vals[k];
 	};
 
-	OrderedHash.prototype.length = function() {
+	OrderedHash.prototype.length = function () {
 		return this.keys.length;
 	};
 

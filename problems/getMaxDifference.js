@@ -1,4 +1,3 @@
-
 // Gives the diff between Biggest and Smallest element
 
 // const getMaxDifference = arr => Math.max.apply(null, arr) - Math.min.apply(null, arr);
@@ -9,7 +8,8 @@ function getMaxDifference(arr) {
 	let min = arr[0],
 		max = arr[0],
 		len = arr.length,
-		num, i;
+		num,
+		i;
 
 	for (i = 0; i < len; i++) {
 		num = arr[i];

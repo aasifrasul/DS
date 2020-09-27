@@ -9,7 +9,7 @@ var pubsub = {};
 		var token = (++subUid).toString();
 		topics[topic].push({
 			token,
-			func
+			func,
 		});
 		return token;
 	};
@@ -42,4 +42,4 @@ var pubsub = {};
 		}
 		return false;
 	};
-}(pubsub));
+})(pubsub);

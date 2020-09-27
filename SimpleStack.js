@@ -1,15 +1,15 @@
-const Stack = (function() {
-	const Stack = function() {
+const Stack = (function () {
+	const Stack = function () {
 		this.count = 0;
 		this.storage = {};
 	};
 
-	Stack.prototype.push = function(value) {
+	Stack.prototype.push = function (value) {
 		this.storage[this.count] = value;
 		this.count++;
 	};
 
-	Stack.prototype.pop = function() {
+	Stack.prototype.pop = function () {
 		if (this.count === 0) {
 			return undefined;
 		}
@@ -20,11 +20,11 @@ const Stack = (function() {
 		return result;
 	};
 
-	Stack.prototype.size = function() {
+	Stack.prototype.size = function () {
 		return this.count;
 	};
 
-	Stack.prototype.print = function() {
+	Stack.prototype.print = function () {
 		while (this.count) {
 			console.log(this.pop());
 		}

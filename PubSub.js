@@ -5,7 +5,7 @@ License: MIT - http://mrgnrdrck.mit-license.org
 https://github.com/mroderick/PubSubJS
 */
 (function (root, factory) {
-	'use strict';
+	"use strict";
 
 	const PubSub = {};
 	root.PubSub = PubSub;
@@ -15,19 +15,19 @@ https://github.com/mroderick/PubSubJS
 	factory(PubSub);
 
 	// AMD support
-	if (typeof define === 'function' && define.amd) {
+	if (typeof define === "function" && define.amd) {
 		define(() => PubSub);
 
 		// CommonJS and Node.js module support
-	} else if (typeof exports === 'object') {
+	} else if (typeof exports === "object") {
 		if (module !== undefined && module.exports) {
 			exports = module.exports = PubSub; // Node.js specific `module.exports`
 		}
 		exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
 		module.exports = exports = PubSub; // CommonJS
 	}
-})((typeof window === 'object' && window) || this, PubSub => {
-	'use strict';
+})((typeof window === "object" && window) || this, (PubSub) => {
+	"use strict";
 
 	let messages = {},
 		lastUid = -1;
@@ -65,11 +65,16 @@ https://github.com/mroderick/PubSubJS
 		subscriber(message, data);
 	}
 
-	function deliverMessage(originalMessage, matchedMessage, data, immediateExceptions) {
+	function deliverMessage(
+		originalMessage,
+		matchedMessage,
+		data,
+		immediateExceptions
+	) {
 		let subscribers = messages[matchedMessage],
-			callSubscriber = immediateExceptions ?
-			callSubscriberWithImmediateExceptions :
-			callSubscriberWithDelayedExceptions,
+			callSubscriber = immediateExceptions
+				? callSubscriberWithImmediateExceptions
+				: callSubscriberWithDelayedExceptions,
 			s;
 
 		if (!messages.hasOwnProperty(matchedMessage)) {
@@ -86,7 +91,7 @@ https://github.com/mroderick/PubSubJS
 	function createDeliveryFunction(message, data, immediateExceptions) {
 		return function deliverNamespaced() {
 			let topic = String(message),
-				position = topic.lastIndexOf('.');
+				position = topic.lastIndexOf(".");
 
 			// deliver the message as it is now
 			deliverMessage(message, message, data, immediateExceptions);
@@ -94,7 +99,7 @@ https://github.com/mroderick/PubSubJS
 			// trim the hierarchy and deliver message to each level
 			while (position !== -1) {
 				topic = topic.substr(0, position);
-				position = topic.lastIndexOf('.');
+				position = topic.lastIndexOf(".");
 				deliverMessage(message, topic, data, immediateExceptions);
 			}
 		};
@@ -102,20 +107,28 @@ https://github.com/mroderick/PubSubJS
 
 	function messageHasSubscribers(message) {
 		let topic = String(message),
-			found = Boolean(messages.hasOwnProperty(topic) && hasKeys(messages[topic])),
-			position = topic.lastIndexOf('.');
+			found = Boolean(
+				messages.hasOwnProperty(topic) && hasKeys(messages[topic])
+			),
+			position = topic.lastIndexOf(".");
 
 		while (!found && position !== -1) {
 			topic = topic.substr(0, position);
-			position = topic.lastIndexOf('.');
-			found = Boolean(messages.hasOwnProperty(topic) && hasKeys(messages[topic]));
+			position = topic.lastIndexOf(".");
+			found = Boolean(
+				messages.hasOwnProperty(topic) && hasKeys(messages[topic])
+			);
 		}
 
 		return found;
 	}
 
 	function publish(message, data, sync, immediateExceptions) {
-		const deliver = createDeliveryFunction(message, data, immediateExceptions),
+		const deliver = createDeliveryFunction(
+				message,
+				data,
+				immediateExceptions
+			),
 			hasSubscribers = messageHasSubscribers(message);
 
 		if (!hasSubscribers) {
@@ -158,7 +171,7 @@ https://github.com/mroderick/PubSubJS
 	 *  you need to unsubscribe
 	 **/
 	PubSub.subscribe = function (message, func) {
-		if (typeof func !== 'function') {
+		if (typeof func !== "function") {
 			return false;
 		}
 
@@ -225,10 +238,11 @@ https://github.com/mroderick/PubSubJS
 				return false;
 			},
 			isTopic =
-			typeof value === 'string' &&
-			(messages.hasOwnProperty(value) || descendantTopicExists(value)),
-			isToken = !isTopic && typeof value === 'string',
-			isFunction = typeof value === 'function',
+				typeof value === "string" &&
+				(messages.hasOwnProperty(value) ||
+					descendantTopicExists(value)),
+			isToken = !isTopic && typeof value === "string",
+			isFunction = typeof value === "function",
 			result = false,
 			m,
 			message,

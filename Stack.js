@@ -1,7 +1,7 @@
 const Stack = (function () {
 	const Node = function (data) {
 		this.data = data;
-		this.previous = null;
+		this.next = null;
 	};
 
 	const Stack = function () {
@@ -12,7 +12,7 @@ const Stack = (function () {
 	Stack.prototype.push = function (data) {
 		const node = new Node(data);
 
-		node.previous = this.top;
+		node.next = this.top;
 		this.top = node;
 		this.size += 1;
 		return this.top;
@@ -23,29 +23,28 @@ const Stack = (function () {
 			return null;
 		}
 		const temp = this.top;
-		this.top = this.top.previous;
+		this.top = this.top.next;
 		this.size -= 1;
 		return temp;
 	};
 
-	Stack.prototype.Peek = function () {
+	Stack.prototype.peek = function () {
 		return (this.top || {}).data;
 	};
 
 	Stack.prototype.print = function () {
 		const temp = this.top;
 		while (temp) {
-			console.log(temp.data);
-			temp.previous = temp;
+			temp.next = temp;
 		}
 	};
 
 	Stack.prototype.hasNext = function () {
-		return this.previous != undefined;
+		return !!this.next;
 	};
 
 	Stack.prototype.isEmpty = function () {
-		return this.top == undefined;
+		return !this.top;
 	};
 
 	return Stack;

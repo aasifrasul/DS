@@ -64,7 +64,8 @@ function primeFactors(n) {
 	return Object.keys(factors);
 }
 
-const greatestCommonDivisor = (a, b) => (b == 0 ? a : greatestCommonDivisor(b, a % b));
+const greatestCommonDivisor = (a, b) =>
+	b == 0 ? a : greatestCommonDivisor(b, a % b);
 
 function mergeSortedArray(a, b) {
 	let merged = [],
@@ -94,10 +95,10 @@ function mergeSortedArray(a, b) {
 	return merged;
 }
 
-
 function firstNonRepeatChar(str) {
 	let len = str.length,
-		char, charCount = {};
+		char,
+		charCount = {};
 	for (let i = 0; i < len; i++) {
 		char = str[i];
 		if (charCount[char]) {
@@ -162,10 +163,13 @@ function findSubString(str, subStr) {
 }
 
 function permutations(str) {
-	let arr = str.split(''),
+	let arr = str.split(""),
 		len = arr.length,
 		perms = [],
-		rest, picked, restPerms, next;
+		rest,
+		picked,
+		restPerms,
+		next;
 
 	if (len == 0) return [str];
 
@@ -173,11 +177,11 @@ function permutations(str) {
 		rest = Object.create(arr);
 		picked = rest.splice(i, 1);
 
-		restPerms = permutations(rest.join(''));
+		restPerms = permutations(rest.join(""));
 
 		for (let j = 0, jLen = restPerms.length; j < jLen; j++) {
 			next = picked.concat(restPerms[j]);
-			perms.push(next.join(''));
+			perms.push(next.join(""));
 		}
 	}
 	return perms;
@@ -189,13 +193,13 @@ Object.compare = (obj1, obj2) => {
 		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
 
 		switch (typeof obj1[p]) {
-			case 'object':
+			case "object":
 				if (!Object.compare(obj1[p], obj2[p])) return false;
 				break;
-			case 'function':
+			case "function":
 				if (
-					typeof obj2[p] == 'undefined' ||
-					(p != 'compare' && obj1[p].toString() != obj2[p].toString())
+					typeof obj2[p] == "undefined" ||
+					(p != "compare" && obj1[p].toString() != obj2[p].toString())
 				)
 					return false;
 				break;
@@ -205,13 +209,13 @@ Object.compare = (obj1, obj2) => {
 	}
 
 	for (p in obj2) {
-		if (typeof obj1[p] == 'undefined') return false;
+		if (typeof obj1[p] == "undefined") return false;
 	}
 	return true;
 };
 
 const isAnagaram = (str1, str2) => {
-	const hash = str =>
+	const hash = (str) =>
 		Array.prototype.slice.call(str).reduce((hash, item) => {
 			hash[item] = item;
 			return hash;
@@ -293,7 +297,6 @@ var fib = (function (n) {
 	return f;
 })();
 
-
 // Generic function to memoize another function
 const memoize = function (func) {
 	const memo = {};
@@ -301,7 +304,9 @@ const memoize = function (func) {
 
 	return function () {
 		const args = slice.call(arguments);
-		return args in memo ? memo[args] : (memo[args] = func.apply(this, args));
+		return args in memo
+			? memo[args]
+			: (memo[args] = func.apply(this, args));
 	};
 };
 
@@ -319,7 +324,7 @@ Function.prototype.bind =
 Array.prototype.forEach =
 	Array.prototype.forEach ||
 	function (callback, thisArg) {
-		if (!Array.isArray(this) || typeof callback != 'function') return;
+		if (!Array.isArray(this) || typeof callback != "function") return;
 
 		for (i in this) {
 			callback.call(thisArg || this, this[i], i, this);
@@ -340,13 +345,15 @@ function moveLeft(elem, distance) {
 	var timeId = setInterval(frame, 10);
 }
 
-Function.prototype.curry = function () {
-	if (arguments.length < 1) {
-		return this;
-	}
-	const self = this;
-	const args = toArray(arguments);
-	return function () {
-		return self.apply(this, args.concat(toArray(arguments)));
+Function.prototype.curry =
+	Function.prototype.curry ||
+	function () {
+		if (arguments.length < 1) {
+			return this;
+		}
+		const self = this;
+		const args = toArray(arguments);
+		return function () {
+			return self.apply(this, args.concat(toArray(arguments)));
+		};
 	};
-};

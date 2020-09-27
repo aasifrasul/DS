@@ -1,19 +1,19 @@
-const Queue = (function() {
-	const Node = function(data) {
+const Queue = (function () {
+	const Node = function (data) {
 		this.data = data;
 		this.next = null;
 	};
 
-	const Queue = function() {
+	const Queue = function () {
 		this.head = null;
 		this.size = 0;
 	};
 
-	Queue.prototype.enqueue = function(data) {
+	Queue.prototype.enqueue = function (data) {
 		const node = new Node(data);
+		let temp = this.head;
 
-		if (this.head) {
-			let temp = this.head;
+		if (temp) {
 			while (temp.next) {
 				temp = temp.next;
 			}
@@ -26,7 +26,7 @@ const Queue = (function() {
 		return node;
 	};
 
-	Queue.prototype.dequeue = function() {
+	Queue.prototype.dequeue = function () {
 		if (!this.head) {
 			return null;
 		}
@@ -36,7 +36,7 @@ const Queue = (function() {
 		return temp;
 	};
 
-	Queue.prototype.peekAt = function(index) {
+	Queue.prototype.peekAt = function (index) {
 		//anything smaller than 0 and equal or greater than count is not at the queue
 		if (index > -1 && index < count) {
 			let current = head;
@@ -54,7 +54,7 @@ const Queue = (function() {
 		}
 	};
 
-	Queue.prototype.print = function() {
+	Queue.prototype.print = function () {
 		let curr = this.head;
 		while (curr) {
 			console.log(curr.data);
@@ -62,11 +62,11 @@ const Queue = (function() {
 		}
 	};
 
-	Queue.prototype.hasNext = function() {
+	Queue.prototype.hasNext = function () {
 		return this.head.next != undefined;
 	};
 
-	Queue.prototype.isEmpty = function() {
+	Queue.prototype.isEmpty = function () {
 		return this.head == null;
 	};
 

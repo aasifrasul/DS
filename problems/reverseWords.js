@@ -1,13 +1,13 @@
-const reverseWords = str => {
-	if (typeof str !== 'string') {
-		return '';
+const reverseWords = (str) => {
+	if (typeof str !== "string") {
+		return "";
 	}
-	var reversedWords = '';
+	var reversedWords = "";
 	var flag = 0;
-	var subStr = '';
+	var subStr = "";
 	const count = str.length;
 	for (i = 0; i < count; i++) {
-		if (str[i] === ' ' || i === count - 1) {
+		if (str[i] === " " || i === count - 1) {
 			if (flag) {
 				if (i === count - 1) {
 					subStr = str.substr(flag + 1, i - flag);
@@ -17,9 +17,11 @@ const reverseWords = str => {
 			} else {
 				subStr = str.substr(flag, i - flag);
 			}
-			reversedWords = reversedWords ? `${subStr} ${reversedWords}` : subStr;
+			reversedWords = reversedWords
+				? `${subStr} ${reversedWords}`
+				: subStr;
 			flag = i;
 		}
 	}
 	return reversedWords;
-}
+};

@@ -1,11 +1,11 @@
-
-const deDupeChars = str => {
-	if (typeof str !== 'string' || !str) {
-		return '';
+const deDupeChars = (str) => {
+	if (typeof str !== "string" || !str) {
+		return "";
 	}
 	let len = str.length,
-		char, hash = {},
-		newStr = '';
+		char,
+		hash = {},
+		newStr = "";
 	for (let i = 0; i < len; i++) {
 		char = str[i];
 		if (!hash[char]) {

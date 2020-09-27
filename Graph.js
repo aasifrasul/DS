@@ -1,15 +1,15 @@
-const Graph = (function() {
-	const Graph = function() {
+const Graph = (function () {
+	const Graph = function () {
 		this.vertices = [];
 		this.edges = [];
 		this.numberOfEdges = 0;
 	};
 
-	Graph.prototype.addVertex = function(vertex) {
+	Graph.prototype.addVertex = function (vertex) {
 		this.vertices.push(vertex);
 		this.edges[vertex] = [];
 	};
-	Graph.prototype.removeVertex = function(vertex) {
+	Graph.prototype.removeVertex = function (vertex) {
 		const index = this.vertices.indexOf(vertex);
 		if (~index) {
 			this.vertices.splice(index, 1);
@@ -19,14 +19,18 @@ const Graph = (function() {
 			this.removeEdge(adjacentVertex, vertex);
 		}
 	};
-	Graph.prototype.addEdge = function(vertex1, vertex2) {
+	Graph.prototype.addEdge = function (vertex1, vertex2) {
 		this.edges[vertex1].push(vertex2);
 		this.edges[vertex2].push(vertex1);
 		this.numberOfEdges++;
 	};
-	Graph.prototype.removeEdge = function(vertex1, vertex2) {
-		const index1 = this.edges[vertex1] ? this.edges[vertex1].indexOf(vertex2) : -1;
-		const index2 = this.edges[vertex2] ? this.edges[vertex2].indexOf(vertex1) : -1;
+	Graph.prototype.removeEdge = function (vertex1, vertex2) {
+		const index1 = this.edges[vertex1]
+			? this.edges[vertex1].indexOf(vertex2)
+			: -1;
+		const index2 = this.edges[vertex2]
+			? this.edges[vertex2].indexOf(vertex1)
+			: -1;
 		if (~index1) {
 			this.edges[vertex1].splice(index1, 1);
 			this.numberOfEdges--;
@@ -35,20 +39,20 @@ const Graph = (function() {
 			this.edges[vertex2].splice(index2, 1);
 		}
 	};
-	Graph.prototype.size = function() {
+	Graph.prototype.size = function () {
 		return this.vertices.length;
 	};
-	Graph.prototype.relations = function() {
+	Graph.prototype.relations = function () {
 		return this.numberOfEdges;
 	};
-	Graph.prototype.traverseDFS = function(vertex, fn) {
+	Graph.prototype.traverseDFS = function (vertex, fn) {
 		if (!~this.vertices.indexOf(vertex)) {
-			return console.log('Vertex not found');
+			return console.log("Vertex not found");
 		}
 		const visited = [];
 		this._traverseDFS(vertex, visited, fn);
 	};
-	Graph.prototype._traverseDFS = function(vertex, visited, fn) {
+	Graph.prototype._traverseDFS = function (vertex, visited, fn) {
 		visited[vertex] = true;
 		if (this.edges[vertex] !== undefined) {
 			fn(vertex);
@@ -59,9 +63,9 @@ const Graph = (function() {
 			}
 		}
 	};
-	Graph.prototype.traverseBFS = function(vertex, fn) {
+	Graph.prototype.traverseBFS = function (vertex, fn) {
 		if (!~this.vertices.indexOf(vertex)) {
-			return console.log('Vertex not found');
+			return console.log("Vertex not found");
 		}
 		const queue = [];
 		queue.push(vertex);
@@ -79,9 +83,9 @@ const Graph = (function() {
 			}
 		}
 	};
-	Graph.prototype.pathFromTo = function(vertexSource, vertexDestination) {
+	Graph.prototype.pathFromTo = function (vertexSource, vertexDestination) {
 		if (!~this.vertices.indexOf(vertexSource)) {
-			return console.log('Vertex not found');
+			return console.log("Vertex not found");
 		}
 		const queue = [];
 		queue.push(vertexSource);
@@ -109,15 +113,17 @@ const Graph = (function() {
 			path.push(j);
 		}
 		path.push(j);
-		return path.reverse().join('-');
+		return path.reverse().join("-");
 	};
-	Graph.prototype.print = function() {
+	Graph.prototype.print = function () {
 		console.log(
 			this.vertices
-				.map(function(vertex) {
-					return (`${vertex} -> ${this.edges[vertex].join(', ')}`).trim();
+				.map(function (vertex) {
+					return `${vertex} -> ${this.edges[vertex].join(
+						", "
+					)}`.trim();
 				}, this)
-				.join(' | ')
+				.join(" | ")
 		);
 	};
 
@@ -140,33 +146,33 @@ graph.addEdge(3, 4);
 graph.addEdge(4, 5);
 graph.addEdge(4, 6);
 graph.print(); // 1 -> 2, 5 | 2 -> 1, 3, 5 | 3 -> 2, 4 | 4 -> 3, 5, 6 | 5 -> 1, 2, 4 | 6 -> 4
-console.log('graph size (number of vertices):', graph.size()); // => 6
-console.log('graph relations (number of edges):', graph.relations()); // => 7
-graph.traverseDFS(1, vertex => {
+console.log("graph size (number of vertices):", graph.size()); // => 6
+console.log("graph relations (number of edges):", graph.relations()); // => 7
+graph.traverseDFS(1, (vertex) => {
 	console.log(vertex);
 }); // => 1 2 3 4 5 6
-console.log('---');
-graph.traverseBFS(1, vertex => {
+console.log("---");
+graph.traverseBFS(1, (vertex) => {
 	console.log(vertex);
 }); // => 1 2 5 3 4 6
-graph.traverseDFS(0, vertex => {
+graph.traverseDFS(0, (vertex) => {
 	console.log(vertex);
 }); // => 'Vertex not found'
-graph.traverseBFS(0, vertex => {
+graph.traverseBFS(0, (vertex) => {
 	console.log(vertex);
 }); // => 'Vertex not found'
-console.log('path from 6 to 1:', graph.pathFromTo(6, 1)); // => 6-4-5-1
-console.log('path from 3 to 5:', graph.pathFromTo(3, 5)); // => 3-2-5
+console.log("path from 6 to 1:", graph.pathFromTo(6, 1)); // => 6-4-5-1
+console.log("path from 3 to 5:", graph.pathFromTo(3, 5)); // => 3-2-5
 graph.removeEdge(1, 2);
 graph.removeEdge(4, 5);
 graph.removeEdge(10, 11);
-console.log('graph relations (number of edges):', graph.relations()); // => 5
-console.log('path from 6 to 1:', graph.pathFromTo(6, 1)); // => 6-4-3-2-5-1
+console.log("graph relations (number of edges):", graph.relations()); // => 5
+console.log("path from 6 to 1:", graph.pathFromTo(6, 1)); // => 6-4-3-2-5-1
 graph.addEdge(1, 2);
 graph.addEdge(4, 5);
-console.log('graph relations (number of edges):', graph.relations()); // => 7
-console.log('path from 6 to 1:', graph.pathFromTo(6, 1)); // => 6-4-5-1
+console.log("graph relations (number of edges):", graph.relations()); // => 7
+console.log("path from 6 to 1:", graph.pathFromTo(6, 1)); // => 6-4-5-1
 graph.removeVertex(5);
-console.log('graph size (number of vertices):', graph.size()); // => 5
-console.log('graph relations (number of edges):', graph.relations()); // => 4
-console.log('path from 6 to 1:', graph.pathFromTo(6, 1)); // => 6-4-3-2-1
+console.log("graph size (number of vertices):", graph.size()); // => 5
+console.log("graph relations (number of edges):", graph.relations()); // => 4
+console.log("path from 6 to 1:", graph.pathFromTo(6, 1)); // => 6-4-3-2-1

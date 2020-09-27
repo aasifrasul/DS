@@ -1,24 +1,25 @@
-const BinarySearchTree = (function() {
-	const Node = function(value) {
+const BinarySearchTree = (function () {
+	const Node = function (value) {
 		this.value = value;
 		this.left = null;
 		this.right = null;
 	};
 
-	const BinarySearchTree = function() {
-		this._root = null;
+	const BinarySearchTree = function () {
+		this.root = null;
 	};
 
 	BinarySearchTree.prototype = {
 		constructor: BinarySearchTree,
 
 		add(value) {
-			let node = new Node(value), current;
+			let node = new Node(value),
+				current;
 
-			if (this._root === null) {
-				this._root = node;
+			if (!this.root) {
+				this.root = node;
 			} else {
-				current = this._root;
+				current = this.root;
 				while (true) {
 					if (value < current.value) {
 						if (current.left === null) {
@@ -39,10 +40,12 @@ const BinarySearchTree = (function() {
 					}
 				}
 			}
+			return this;
 		},
 
 		contains(value) {
-			let found = false, current = this._root;
+			let found = false,
+				current = this.root;
 
 			while (!found && current) {
 				if (value < current.value) {
@@ -58,7 +61,12 @@ const BinarySearchTree = (function() {
 		},
 
 		remove(value) {
-			let found = false, parent = null, current = this._root, childCount, replacement, replacementParent;
+			let found = false,
+				parent = null,
+				current = this.root,
+				childCount,
+				replacement,
+				replacementParent;
 
 			while (!found && current) {
 				if (value < current.value) {
@@ -73,31 +81,36 @@ const BinarySearchTree = (function() {
 			}
 
 			if (found) {
-				childCount = (current.left !== null ? 1 : 0) + (current.right !== null ? 1 : 0);
+				childCount =
+					(current.left !== null ? 1 : 0) +
+					(current.right !== null ? 1 : 0);
 
-				if (current === this._root) {
+				if (current === this.root) {
 					switch (childCount) {
 						case 0:
-							this._root = null;
+							this.root = null;
 							break;
 						case 1:
-							this._root = current.right === null ? current.left : current.right;
+							this.root =
+								current.right === null
+									? current.left
+									: current.right;
 							break;
 						case 2:
-							replacement = this._root.left;
+							replacement = this.root.left;
 							while (replacement.right !== null) {
 								replacementParent = replacement;
 								replacement = replacement.right;
 							}
 							if (replacementParent !== null) {
 								replacementParent.right = replacement.left;
-								replacement.right = this._root.right;
-								replacement.left = this._root.left;
+								replacement.right = this.root.right;
+								replacement.left = this.root.left;
 							} else {
-								replacement.right = this._root.right;
+								replacement.right = this.root.right;
 							}
 
-							this._root = replacement;
+							this.root = replacement;
 					}
 				} else {
 					switch (childCount) {
@@ -110,9 +123,15 @@ const BinarySearchTree = (function() {
 							break;
 						case 1:
 							if (current.value < parent.value) {
-								parent.left = current.left === null ? current.right : current.left;
+								parent.left =
+									current.left === null
+										? current.right
+										: current.left;
 							} else {
-								parent.right = current.left === null ? current.right : current.left;
+								parent.right =
+									current.left === null
+										? current.right
+										: current.left;
 							}
 							break;
 						case 2:
@@ -138,26 +157,33 @@ const BinarySearchTree = (function() {
 		},
 
 		traverseDF(callback) {
-			const recurse = function(node) {
-				callback.call(bst, bst.value);
-				if (node.left) {
-					recurse(node.left);
-				} else {
-					recurse(node.right);
+			const recurse = function (node) {
+				if (node) {
+					const { left, right, value } = node;
+					callback.call(this, value);
+					if (!!left) {
+						recurse(left);
+					} else {
+						recurse(right);
+					}
 				}
 			};
-			recurse(this._root);
+			recurse(this.root);
 		},
 
 		traverseBF(callback) {
 			const queue = new Queue();
 
-			queue.enqueue(this._root);
+			queue.enqueue(this.root);
 
 			currentTree = queue.dequeue();
 
 			while (currentTree) {
-				for (let i = 0, length = currentTree.children.length; i < length; i++) {
+				for (
+					let i = 0, length = currentTree.children.length;
+					i < length;
+					i++
+				) {
 					queue.enqueue(currentTree.children[i]);
 				}
 
@@ -168,13 +194,13 @@ const BinarySearchTree = (function() {
 
 		size() {
 			let length = 0;
-			this.traverse(node => length++);
+			this.traverse((node) => length++);
 			return length;
 		},
 
 		toArray() {
 			const result = [];
-			this.traverse(node => result.push(node.value));
+			this.traverse((node) => result.push(node.value));
 			return result;
 		},
 
@@ -185,21 +211,22 @@ const BinarySearchTree = (function() {
 		traverse(process) {
 			function inOrder(node) {
 				if (node) {
-					if (node.left !== null) {
-						inOrder(node.left);
+					const { left, right, value } = node;
+					if (!!left) {
+						inOrder(left);
 					}
-					process.call(this, node);
-					if (node.right !== null) {
-						inOrder(node.right);
+					process.call(this, value);
+					if (!!right) {
+						inOrder(right);
 					}
 				}
 			}
 
-			inOrder(this._root);
-		}
+			inOrder(this.root);
+		},
 	};
 
 	return BinarySearchTree;
 })();
 
-var bst = new BinarySearchTree();
+const bst = new BinarySearchTree();

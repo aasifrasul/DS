@@ -1,5 +1,4 @@
-
-const deDupeArray = arr => {
+const deDupeArray = (arr) => {
 	if (!Array.isArray(arr) || arr.length <= 1) {
 		return [];
 	}
@@ -15,9 +14,12 @@ const deDupeArray = arr => {
 		}
 	}
 	return uniqueVals;
-}
+};
 
 function dedupe(arr) {
 	const cleaned = {};
-	return Array.isArray(arr) && arr.filter(n => !cleaned[n] && (cleaned[n] = true));
+	return (
+		Array.isArray(arr) &&
+		arr.filter((n) => !cleaned[n] && (cleaned[n] = true))
+	);
 }

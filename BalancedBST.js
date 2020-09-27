@@ -1,7 +1,7 @@
-const BalancedBST = (function() {
-	'use strict';
+const BalancedBST = (function () {
+	"use strict";
 
-	if (typeof module !== 'undefined') module.exports = BalancedBST;
+	if (typeof module !== "undefined") module.exports = BalancedBST;
 
 	function Node(key, value, level, left, right) {
 		this.key = key;
@@ -25,84 +25,92 @@ const BalancedBST = (function() {
 	}
 
 	function BBTree(compareFn) {
-		this._compare = compareFn || defaultCompare;
-		this._path = [];
+		this.compare = compareFn || defaultCompare;
+		this.path = [];
 	}
 
-	BBTree.prototype = {
-		find(key) {
-			let node = this.root, compare = this._compare;
+	BBTree.prototype.find = function (key) {
+		let node = this.root,
+			compare = this.compare;
 
-			while (node !== bottom) {
-				const c = compare(key, node.key);
-				if (c === 0) return node;
-				node = c < 0 ? node.left : node.right;
-			}
-			return null;
-		},
+		while (node !== bottom) {
+			const c = compare(key, node.key);
+			if (c === 0) return node;
+			node = c < 0 ? node.left : node.right;
+		}
+		return null;
+	};
 
-		insert(key, value) {
-			let compare = this._compare, node = this.root, path = this._path;
+	BBTree.prototype.insert = function (key, value) {
+		let compare = this.compare,
+			node = this.root,
+			path = this.path;
 
-			if (!node) {
-				this.root = newNode(key, value);
-				return this;
-			}
-
-			let k = 0;
-
-			while (true) {
-				const c = compare(key, node.key);
-				if (!c) return this;
-
-				path[k] = node;
-				k++;
-
-				if (c < 0) {
-					if (node.left === bottom) {
-						node.left = newNode(key, value);
-						break;
-					}
-					node = node.left;
-				} else {
-					if (node.right === bottom) {
-						node.right = newNode(key, value);
-						break;
-					}
-					node = node.right;
-				}
-			}
-
-			this._rebalance(path, k);
-
+		if (!node) {
+			this.root = newNode(key, value);
 			return this;
-		},
+		}
 
-		_rebalance(path, k) {
-			let rotated, node, parent, updated, m = 0;
+		let k = 0;
 
-			for (let i = k - 1; i >= 0; i--) {
-				rotated = node = path[i];
+		while (true) {
+			const c = compare(key, node.key);
+			if (!c) return this;
 
-				if (node.level === node.left.level && node.level === node.right.level) {
-					updated = true;
-					node.level++;
-				} else {
-					rotated = skew(node);
-					rotated = split(rotated);
+			path[k] = node;
+			k++;
+
+			if (c < 0) {
+				if (node.left === bottom) {
+					node.left = newNode(key, value);
+					break;
 				}
-
-				if (rotated !== node) {
-					updated = true;
-					if (i) {
-						parent = path[i - 1];
-						if (parent.left === node) parent.left = rotated;
-						else parent.right = rotated;
-					} else this.root = rotated;
+				node = node.left;
+			} else {
+				if (node.right === bottom) {
+					node.right = newNode(key, value);
+					break;
 				}
-				if (!updated) m++;
-				if (m === 2) break;
+				node = node.right;
 			}
+		}
+
+		this.rebalance(path, k);
+
+		return this;
+	};
+
+	BBTree.prototype.rebalance = function (path, k) {
+		let rotated,
+			node,
+			parent,
+			updated,
+			m = 0;
+
+		for (let i = k - 1; i >= 0; i--) {
+			rotated = node = path[i];
+
+			if (
+				node.level === node.left.level &&
+				node.level === node.right.level
+			) {
+				updated = true;
+				node.level++;
+			} else {
+				rotated = skew(node);
+				rotated = split(rotated);
+			}
+
+			if (rotated !== node) {
+				updated = true;
+				if (i) {
+					parent = path[i - 1];
+					if (parent.left === node) parent.left = rotated;
+					else parent.right = rotated;
+				} else this.root = rotated;
+			}
+			if (!updated) m++;
+			if (m === 2) break;
 		}
 	};
 
@@ -133,3 +141,5 @@ const BalancedBST = (function() {
 
 	return BalancedBST;
 })();
+
+const balancedBST = new BalancedBST();
