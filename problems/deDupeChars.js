@@ -1,11 +1,11 @@
 const deDupeChars = (str) => {
-	if (typeof str !== "string" || !str) {
-		return "";
+	if (typeof str !== 'string' || !str) {
+		return '';
 	}
 	let len = str.length,
 		char,
 		hash = {},
-		newStr = "";
+		newStr = '';
 	for (let i = 0; i < len; i++) {
 		char = str[i];
 		if (!hash[char]) {

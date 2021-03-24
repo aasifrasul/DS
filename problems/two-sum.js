@@ -30,7 +30,7 @@ var twoSum = function (nums, target) {
 	var diff = 0;
 	for (i = 0; i < nums.length; i++) {
 		diff = target - nums[i];
-		if (typeof hash[diff] !== "undefined") {
+		if (typeof hash[diff] !== 'undefined') {
 			return [hash[diff], i];
 		} else {
 			hash[nums[i]] = i;
@@ -38,34 +38,4 @@ var twoSum = function (nums, target) {
 	}
 };
 
-twoSum(
-	[
-		0,
-		2,
-		4,
-		6,
-		8,
-		10,
-		12,
-		14,
-		16,
-		18,
-		20,
-		22,
-		24,
-		26,
-		28,
-		30,
-		32,
-		34,
-		36,
-		38,
-		40,
-		42,
-		44,
-		46,
-		48,
-		50,
-	],
-	10
-);
+twoSum([0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50], 10);

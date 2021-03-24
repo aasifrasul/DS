@@ -48,12 +48,7 @@
 				values[key] = value;
 				keys[this.length++] = key;
 			} else {
-				this.inject(
-					key,
-					value,
-					(pk, pv, nk, nv, t) =>
-						t.sortfn.call(null, key, value, nk, nv) < 0
-				);
+				this.inject(key, value, (pk, pv, nk, nv, t) => t.sortfn.call(null, key, value, nk, nv) < 0);
 			}
 			return this;
 		};
@@ -78,8 +73,7 @@
 
 		this.each = function (fn, bind) {
 			for (let i = 0, l = this.length; i < l; i++) {
-				if (fn.call(bind, keys[i], values[keys[i]], this) === false)
-					break;
+				if (fn.call(bind, keys[i], values[keys[i]], this) === false) break;
 			}
 			return this;
 		};
@@ -98,10 +92,7 @@
 				const currKey = keys[i],
 					currVal = values[currKey];
 
-				if (
-					!inserted &&
-					fn.call(bind, prevKey, prevVal, currKey, currVal, this)
-				) {
+				if (!inserted && fn.call(bind, prevKey, prevVal, currKey, currVal, this)) {
 					keys.splice(i, 0, newKey);
 					inserted = true;
 				}
@@ -164,8 +155,7 @@
 
 		this.every = function (fn, bind) {
 			for (let i = 0, l = this.length; i < l; i++) {
-				if (!fn.call(bind, keys[i], values[keys[i]], this))
-					return false;
+				if (!fn.call(bind, keys[i], values[keys[i]], this)) return false;
 			}
 			return true;
 		};
@@ -183,5 +173,5 @@
 		if (this.length > 1 && this.sortfn !== null) this.sort(this.sortfn);
 	});
 
-	if (this.Type) new Type("Ordering", Ordering);
+	if (this.Type) new Type('Ordering', Ordering);
 })();

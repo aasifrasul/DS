@@ -25,7 +25,7 @@ const PriorityQueue = (function () {
 	 * @api public
 	 */
 	PriorityQueue.DEFAULT_COMPARATOR = function (a, b) {
-		if (typeof a === "number" && typeof b === "number") {
+		if (typeof a === 'number' && typeof b === 'number') {
 			return a - b;
 		} else {
 			a = a.toString();
@@ -55,7 +55,7 @@ const PriorityQueue = (function () {
 	 * @api public
 	 */
 	PriorityQueue.prototype.peek = function () {
-		if (this.isEmpty()) throw new Error("PriorityQueue is empty");
+		if (this.isEmpty()) throw new Error('PriorityQueue is empty');
 
 		return this.elements[0];
 	};

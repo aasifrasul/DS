@@ -1,5 +1,5 @@
 var isPalinDrome = function (str) {
-	if (typeof str !== "string" || str.length === 0) {
+	if (typeof str !== 'string' || str.length === 0) {
 		return false;
 	}
 

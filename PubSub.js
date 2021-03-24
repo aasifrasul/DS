@@ -1,42 +1,46 @@
-/*
-Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
-License: MIT - http://mrgnrdrck.mit-license.org
+/**
+ * Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
+ * License: MIT - http://mrgnrdrck.mit-license.org
+ *
+ * https://github.com/mroderick/PubSubJS
+ */
 
-https://github.com/mroderick/PubSubJS
-*/
+const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
 (function (root, factory) {
-	"use strict";
+	'use strict';
 
-	const PubSub = {};
+	var PubSub = Object.create(null);
 	root.PubSub = PubSub;
-
-	const define = root.define;
-
 	factory(PubSub);
-
-	// AMD support
-	if (typeof define === "function" && define.amd) {
-		define(() => PubSub);
-
-		// CommonJS and Node.js module support
-	} else if (typeof exports === "object") {
+	// CommonJS and Node.js module support
+	if (typeof exports === 'object') {
 		if (module !== undefined && module.exports) {
 			exports = module.exports = PubSub; // Node.js specific `module.exports`
 		}
 		exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
 		module.exports = exports = PubSub; // CommonJS
 	}
-})((typeof window === "object" && window) || this, (PubSub) => {
-	"use strict";
+	// AMD support
+	/* eslint-disable no-undef */
+	else if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return PubSub;
+		});
+		/* eslint-enable no-undef */
+	}
+})((typeof window === 'object' && window) || this, function (PubSub) {
+	'use strict';
 
-	let messages = {},
-		lastUid = -1;
+	var messages = Object.create(null),
+		lastUid = -1,
+		ALL_SUBSCRIBING_MSG = '*';
 
 	function hasKeys(obj) {
-		let key;
+		var key;
 
 		for (key in obj) {
-			if (obj.hasOwnProperty(key)) {
+			if (hasOwnProperty(obj, key)) {
 				return true;
 			}
 		}
@@ -44,8 +48,10 @@ https://github.com/mroderick/PubSubJS
 	}
 
 	/**
-	 *  Returns a function that throws the passed exception, for use as argument for setTimeout
-	 *  @param { Object } ex An Error object
+	 * Returns a function that throws the passed exception, for use as argument for setTimeout
+	 * @alias throwException
+	 * @function
+	 * @param { Object } ex An Error object
 	 */
 	function throwException(ex) {
 		return function reThrowException() {
@@ -65,24 +71,19 @@ https://github.com/mroderick/PubSubJS
 		subscriber(message, data);
 	}
 
-	function deliverMessage(
-		originalMessage,
-		matchedMessage,
-		data,
-		immediateExceptions
-	) {
-		let subscribers = messages[matchedMessage],
+	function deliverMessage(originalMessage, matchedMessage, data, immediateExceptions) {
+		var subscribers = messages[matchedMessage],
 			callSubscriber = immediateExceptions
 				? callSubscriberWithImmediateExceptions
 				: callSubscriberWithDelayedExceptions,
 			s;
 
-		if (!messages.hasOwnProperty(matchedMessage)) {
+		if (!hasOwnProperty(messages, matchedMessage)) {
 			return;
 		}
 
 		for (s in subscribers) {
-			if (subscribers.hasOwnProperty(s)) {
+			if (hasOwnProperty(subscribers, s)) {
 				callSubscriber(subscribers[s], originalMessage, data);
 			}
 		}
@@ -90,8 +91,8 @@ https://github.com/mroderick/PubSubJS
 
 	function createDeliveryFunction(message, data, immediateExceptions) {
 		return function deliverNamespaced() {
-			let topic = String(message),
-				position = topic.lastIndexOf(".");
+			var topic = String(message),
+				position = topic.lastIndexOf('.');
 
 			// deliver the message as it is now
 			deliverMessage(message, message, data, immediateExceptions);
@@ -99,36 +100,39 @@ https://github.com/mroderick/PubSubJS
 			// trim the hierarchy and deliver message to each level
 			while (position !== -1) {
 				topic = topic.substr(0, position);
-				position = topic.lastIndexOf(".");
+				position = topic.lastIndexOf('.');
 				deliverMessage(message, topic, data, immediateExceptions);
 			}
+
+			deliverMessage(message, ALL_SUBSCRIBING_MSG, data, immediateExceptions);
 		};
 	}
 
+	function hasDirectSubscribersFor(message) {
+		var topic = String(message),
+			found = Boolean(hasOwnProperty(messages, topic) && hasKeys(messages[topic]));
+
+		return found;
+	}
+
 	function messageHasSubscribers(message) {
-		let topic = String(message),
-			found = Boolean(
-				messages.hasOwnProperty(topic) && hasKeys(messages[topic])
-			),
-			position = topic.lastIndexOf(".");
+		var topic = String(message),
+			found = hasDirectSubscribersFor(topic) || hasDirectSubscribersFor(ALL_SUBSCRIBING_MSG),
+			position = topic.lastIndexOf('.');
 
 		while (!found && position !== -1) {
 			topic = topic.substr(0, position);
-			position = topic.lastIndexOf(".");
-			found = Boolean(
-				messages.hasOwnProperty(topic) && hasKeys(messages[topic])
-			);
+			position = topic.lastIndexOf('.');
+			found = hasDirectSubscribersFor(topic);
 		}
 
 		return found;
 	}
 
 	function publish(message, data, sync, immediateExceptions) {
-		const deliver = createDeliveryFunction(
-				message,
-				data,
-				immediateExceptions
-			),
+		message = typeof message === 'symbol' ? message.toString() : message;
+
+		var deliver = createDeliveryFunction(message, data, immediateExceptions),
 			hasSubscribers = messageHasSubscribers(message);
 
 		if (!hasSubscribers) {
@@ -144,92 +148,163 @@ https://github.com/mroderick/PubSubJS
 	}
 
 	/**
-	 *  PubSub.publish( message[, data] ) -> Boolean
-	 *  - message (String): The message to publish
-	 *  - data: The data to pass to subscribers
-	 *  Publishes the the message, passing the data to it's subscribers
-	 **/
+	 * Publishes the message, passing the data to it's subscribers
+	 * @function
+	 * @alias publish
+	 * @param { String } message The message to publish
+	 * @param {} data The data to pass to subscribers
+	 * @return { Boolean }
+	 */
 	PubSub.publish = function (message, data) {
 		return publish(message, data, false, PubSub.immediateExceptions);
 	};
 
 	/**
-	 *  PubSub.publishSync( message[, data] ) -> Boolean
-	 *  - message (String): The message to publish
-	 *  - data: The data to pass to subscribers
-	 *  Publishes the the message synchronously, passing the data to it's subscribers
-	 **/
+	 * Publishes the message synchronously, passing the data to it's subscribers
+	 * @function
+	 * @alias publishSync
+	 * @param { String } message The message to publish
+	 * @param {} data The data to pass to subscribers
+	 * @return { Boolean }
+	 */
 	PubSub.publishSync = function (message, data) {
 		return publish(message, data, true, PubSub.immediateExceptions);
 	};
 
 	/**
-	 *  PubSub.subscribe( message, func ) -> String
-	 *  - message (String): The message to subscribe to
-	 *  - func (Function): The function to call when a new message is published
-	 *  Subscribes the passed function to the passed message. Every returned token is unique and should be stored if
-	 *  you need to unsubscribe
-	 **/
+	 * Subscribes the passed function to the passed message. Every returned token is unique and should be stored if you need to unsubscribe
+	 * @function
+	 * @alias subscribe
+	 * @param { String } message The message to subscribe to
+	 * @param { Function } func The function to call when a new message is published
+	 * @return { String }
+	 */
 	PubSub.subscribe = function (message, func) {
-		if (typeof func !== "function") {
+		if (typeof func !== 'function') {
 			return false;
 		}
 
+		message = typeof message === 'symbol' ? message.toString() : message;
+
 		// message is not registered yet
-		if (!messages.hasOwnProperty(message)) {
-			messages[message] = {};
+		if (!hasOwnProperty(messages, message)) {
+			messages[message] = Object.create(null);
 		}
 
 		// forcing token as String, to allow for future expansions without breaking usage
 		// and allow for easy use as key names for the 'messages' object
-		const token = `uid_${String(++lastUid)}`;
+		var token = 'uid_' + String(++lastUid);
 		messages[message][token] = func;
 
 		// return token for unsubscribing
 		return token;
 	};
 
-	/* Public: Clears all subscriptions
+	PubSub.subscribeAll = (func) => PubSub.subscribe(ALL_SUBSCRIBING_MSG, func);
+
+	/**
+	 * Subscribes the passed function to the passed message once
+	 * @function
+	 * @alias subscribeOnce
+	 * @param { String } message The message to subscribe to
+	 * @param { Function } func The function to call when a new message is published
+	 * @return { PubSub }
 	 */
-	PubSub.clearAllSubscriptions = function clearAllSubscriptions() {
-		messages = {};
+	PubSub.subscribeOnce = function (message, func) {
+		var token = PubSub.subscribe(message, function () {
+			// before func apply, unsubscribe message
+			PubSub.unsubscribe(token);
+			func.apply(this, arguments);
+		});
+		return PubSub;
 	};
 
-	/*Public: Clear subscriptions by the topic
+	/**
+	 * Clears all subscriptions
+	 * @function
+	 * @public
+	 * @alias clearAllSubscriptions
+	 */
+	PubSub.clearAllSubscriptions = function clearAllSubscriptions() {
+		messages = Object.create(null);
+	};
+
+	/**
+	 * Clear subscriptions by the topic
+	 * @function
+	 * @public
+	 * @alias clearAllSubscriptions
+	 * @return { int }
 	 */
 	PubSub.clearSubscriptions = function clearSubscriptions(topic) {
-		let m;
+		var m;
 		for (m in messages) {
-			if (messages.hasOwnProperty(m) && m.indexOf(topic) === 0) {
+			if (hasOwnProperty(messages, m) && m.indexOf(topic) === 0) {
 				delete messages[m];
 			}
 		}
 	};
 
-	/* Public: removes subscriptions.
-	 * When passed a token, removes a specific subscription.
-	 * When passed a function, removes all subscriptions for that function
-	 * When passed a topic, removes all subscriptions for that topic (hierarchy)
+	/**
+       Count subscriptions by the topic
+     * @function
+     * @public
+     * @alias countSubscriptions
+     * @return { Array }
+    */
+	PubSub.countSubscriptions = function countSubscriptions(topic) {
+		var m;
+		var count = 0;
+		for (m in messages) {
+			if (hasOwnProperty(messages, m) && m.indexOf(topic) === 0) {
+				count++;
+			}
+		}
+		return count;
+	};
+
+	/**
+       Gets subscriptions by the topic
+     * @function
+     * @public
+     * @alias getSubscriptions
+    */
+	PubSub.getSubscriptions = function getSubscriptions(topic) {
+		var m;
+		var list = [];
+		for (m in messages) {
+			if (hasOwnProperty(messages, m) && m.indexOf(topic) === 0) {
+				list.push(m);
+			}
+		}
+		return list;
+	};
+
+	/**
+	 * Removes subscriptions
 	 *
-	 * value - A token, function or topic to unsubscribe.
+	 * - When passed a token, removes a specific subscription.
 	 *
-	 * Examples
+	 * - When passed a function, removes all subscriptions for that function
 	 *
-	 *      // Example 1 - unsubscribing with a token
-	 *      var token = PubSub.subscribe('mytopic', myFunc);
-	 *      PubSub.unsubscribe(token);
-	 *
-	 *      // Example 2 - unsubscribing with a function
-	 *      PubSub.unsubscribe(myFunc);
-	 *
-	 *      // Example 3 - unsubscribing a topic
-	 *      PubSub.unsubscribe('mytopic');
+	 * - When passed a topic, removes all subscriptions for that topic (hierarchy)
+	 * @function
+	 * @public
+	 * @alias subscribeOnce
+	 * @param { String | Function } value A token, function or topic to unsubscribe from
+	 * @example // Unsubscribing with a token
+	 * var token = PubSub.subscribe('mytopic', myFunc);
+	 * PubSub.unsubscribe(token);
+	 * @example // Unsubscribing with a function
+	 * PubSub.unsubscribe(myFunc);
+	 * @example // Unsubscribing from a topic
+	 * PubSub.unsubscribe('mytopic');
 	 */
 	PubSub.unsubscribe = function (value) {
-		let descendantTopicExists = function (topic) {
-				let m;
+		var descendantTopicExists = function (topic) {
+				var m;
 				for (m in messages) {
-					if (messages.hasOwnProperty(m) && m.indexOf(topic) === 0) {
+					if (hasOwnProperty(messages, m) && m.indexOf(topic) === 0) {
 						// a descendant of the topic exists:
 						return true;
 					}
@@ -237,12 +312,9 @@ https://github.com/mroderick/PubSubJS
 
 				return false;
 			},
-			isTopic =
-				typeof value === "string" &&
-				(messages.hasOwnProperty(value) ||
-					descendantTopicExists(value)),
-			isToken = !isTopic && typeof value === "string",
-			isFunction = typeof value === "function",
+			isTopic = typeof value === 'string' && (hasOwnProperty(messages, value) || descendantTopicExists(value)),
+			isToken = !isTopic && typeof value === 'string',
+			isFunction = typeof value === 'function',
 			result = false,
 			m,
 			message,
@@ -254,7 +326,7 @@ https://github.com/mroderick/PubSubJS
 		}
 
 		for (m in messages) {
-			if (messages.hasOwnProperty(m)) {
+			if (hasOwnProperty(messages, m)) {
 				message = messages[m];
 
 				if (isToken && message[value]) {
@@ -266,7 +338,7 @@ https://github.com/mroderick/PubSubJS
 
 				if (isFunction) {
 					for (t in message) {
-						if (message.hasOwnProperty(t) && message[t] === value) {
+						if (hasOwnProperty(message, t) && message[t] === value) {
 							delete message[t];
 							result = true;
 						}

@@ -44,7 +44,7 @@ class BST {
 
 	preOrder(root) {
 		if (!root) {
-			return "Tree is empty";
+			return 'Tree is empty';
 		} else {
 			console.log(root.value);
 			this.preOrder(root.left);
@@ -54,7 +54,7 @@ class BST {
 
 	inOrder(root) {
 		if (!root) {
-			return "Tree is empty";
+			return 'Tree is empty';
 		} else {
 			this.inOrder(root.left);
 			console.log(root.value);
@@ -64,7 +64,7 @@ class BST {
 
 	postOrder(root) {
 		if (!root) {
-			return "Tree is empty";
+			return 'Tree is empty';
 		} else {
 			this.postOrder(root.left);
 			this.postOrder(root.right);
@@ -75,7 +75,7 @@ class BST {
 	// Remove a node with the value passed
 	remove(value) {
 		if (!this.root) {
-			return "Tree is empty!";
+			return 'Tree is empty!';
 		} else {
 			this.removeNode(this.root, value);
 		}
@@ -135,7 +135,7 @@ class BST {
 	// Return boolean value depending on the existence of the value in the tree
 	search(value) {
 		if (!this.root) {
-			return "Tree is empty";
+			return 'Tree is empty';
 		} else {
 			return Boolean(this.searchNode(this.root, value));
 		}

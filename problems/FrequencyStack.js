@@ -2,9 +2,9 @@ const FrequencyStore = (function () {
 	const FrequencyStore = function () {
 		this.pos = 0;
 		this.count = 0;
-		this.storage = {};
-		this.frequency = {};
-		this.frequencyStore = {};
+		this.storage = Object.create(null);
+		this.frequency = Object.create(null);
+		this.frequencyStore = Object.create(null);
 		this.maxFrequency = 0;
 	};
 
@@ -33,12 +33,12 @@ const FrequencyStore = (function () {
 
 		this.count -= 1;
 
-		const result = this.frequencyStore[this.maxFrequency].pop() || {};
+		const result = this.frequencyStore[this.maxFrequency].pop() || Object.create(null);
 		this.frequency[result.value] -= 1;
 		delete this.storage[result.pos];
 		if (!this.frequencyStore[this.maxFrequency].length) {
 			delete this.frequencyStore[this.maxFrequency];
-			this.maxFrequency = this.maxFrequency - 1;
+			this.maxFrequency -= 1;
 		}
 		return result;
 	};
@@ -48,7 +48,7 @@ const FrequencyStore = (function () {
 	};
 
 	FrequencyStore.prototype.print = function () {
-		let count = this.count;
+		let { count } = this;
 		while (--count) {
 			console.log(this.storage[count]);
 		}

@@ -51,7 +51,7 @@ const DoublyList = (function () {
 			length = this.length,
 			count = 1,
 			message = {
-				failure: "Failure: non-existent node in this list.",
+				failure: 'Failure: non-existent node in this list.',
 			};
 
 		// 1st use-case: an invalid position
@@ -73,7 +73,7 @@ const DoublyList = (function () {
 			length = this.length,
 			count = 1,
 			message = {
-				failure: "Failure: non-existent node in this list.",
+				failure: 'Failure: non-existent node in this list.',
 			},
 			beforeNodeToDelete = null,
 			nodeToDelete = null,

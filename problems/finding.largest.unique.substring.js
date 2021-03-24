@@ -1,30 +1,46 @@
-var lengthOfLongestSubstring = function (s) {
-	if (typeof s !== "string" || s.length === 0) {
-		return 0;
-	}
 
-	var maxLength = 0;
-	var curMaxLength = 0;
-	var hash = Object.create(null);
+// Generic function to memoize another function
+var memoize = function (func) {
+	const memo = Object.create(null);;
+	const slice = Array.prototype.slice;
 
-	for (var i = 0; i < s.length; i++) {
-		console.log("Current hash => ", hash);
-		console.log("Current Cahr => ", s[i]);
-		if (hash[s[i]]) {
-			console.log("Match Found => ");
-			console.log("Max length => ", maxLength);
-			console.log("Cur Max length => ", curMaxLength);
-			hash = Object.create(null);
-			if (curMaxLength > maxLength) {
-				maxLength = curMaxLength;
-			}
-			curMaxLength = 0;
-		} else {
-			curMaxLength++;
-			console.log("Cur Max length => ", curMaxLength);
-		}
-		hash[s[i]] = true;
-	}
-
-	return Math.max(maxLength, curMaxLength);
+	return function () {
+		const args = slice.call(arguments);
+		return args in memo ? memo[args] : (memo[args] = func.apply(this, args));
+	};
 };
+
+var longestSubString = function(str) {
+	var len = str.length;
+	var maxLength = 0;
+	for (var i = 0; i < len; i++) {
+		for (var j = i + 1; j <= len; j++) {
+			var subStr = str.slice(i, j);
+			console.log('subStr =>', subStr);
+			if (isStringUnique(subStr)) {
+				maxLength = Math.max(maxLength, subStr.length);
+				console.log('maxLength changed =>', maxLength);
+			}
+			
+		}
+	}
+
+	return maxLength;
+}
+
+var isStringUnique = function(str) {
+	var len = str.length;
+	var hash = Object.create(null);
+	for (var i = 0; i < len; i++) {
+		if (hash[str[i]]) {
+			return false;
+		}
+		hash[str[i]] = true;
+	}
+	return true;
+}
+
+lengthOfLongestSubstring = memoize(longestSubString);
+
+
+longestSubString("yfntvbzviexurkstwsmjzfkjqniwsmlqralmbm")

@@ -18,8 +18,5 @@ const deDupeArray = (arr) => {
 
 function dedupe(arr) {
 	const cleaned = {};
-	return (
-		Array.isArray(arr) &&
-		arr.filter((n) => !cleaned[n] && (cleaned[n] = true))
-	);
+	return Array.isArray(arr) && arr.filter((n) => !cleaned[n] && (cleaned[n] = true));
 }

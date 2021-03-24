@@ -71,7 +71,7 @@ const hashLetters = {
 
 const Anagram = function (arr) {
 	if (!Array.isArray(arr) || !arr.length) {
-		console.log("Invalid Array");
+		console.log('Invalid Array');
 		return arr;
 	}
 	let i,
@@ -82,12 +82,12 @@ const Anagram = function (arr) {
 
 	for (i = 0; i < arr.length; i++) {
 		str = arr[i];
-		console.log("str", str);
+		console.log('str', str);
 		for (var j = 0; j < str.length; j++) {
 			key *= hashLetters[str[j]];
 		}
-		console.log("key", key);
-		console.log("hash[key]", hash[key]);
+		console.log('key', key);
+		console.log('hash[key]', hash[key]);
 		if (!hash[key]) {
 			hash[key] = true;
 		}
@@ -97,7 +97,7 @@ const Anagram = function (arr) {
 			}
 			res[key].push(str);
 		}
-		console.log("hash[key]", hash[key]);
+		console.log('hash[key]', hash[key]);
 		key = 1;
 	}
 	return res;
@@ -105,7 +105,7 @@ const Anagram = function (arr) {
 
 const Anagram = function (arr) {
 	if (!Array.isArray(arr) || !arr.length) {
-		console.log("Invalid Array");
+		console.log('Invalid Array');
 		return arr;
 	}
 	let i,
@@ -116,12 +116,12 @@ const Anagram = function (arr) {
 
 	for (i = 0; i < arr.length; i++) {
 		str = arr[i];
-		console.log("str", str);
+		console.log('str', str);
 		for (var j = 0; j < str.length; j++) {
 			key *= hashLetters[str[j]];
 		}
-		console.log("key", key);
-		console.log("hash[key]", hash[key]);
+		console.log('key', key);
+		console.log('hash[key]', hash[key]);
 		if (!hash[key]) {
 			hash[key] = true;
 		}
@@ -131,7 +131,7 @@ const Anagram = function (arr) {
 			}
 			res[key].push(str);
 		}
-		console.log("hash[key]", hash[key]);
+		console.log('hash[key]', hash[key]);
 		key = 1;
 	}
 	return res;
@@ -139,16 +139,16 @@ const Anagram = function (arr) {
 
 const Anagram = function (arr) {
 	if (!Array.isArray(arr) || !arr.length) {
-		console.log("Invalid Array");
+		console.log('Invalid Array');
 		return arr;
 	}
 	let i,
-		key = "";
+		key = '';
 	const hash = {};
 
 	for (i = 0; i < arr.length; i++) {
-		key = arr[i] || "";
-		key = key.split("").sort();
+		key = arr[i] || '';
+		key = key.split('').sort();
 		if (!hash[key]) {
 			hash[key] = [];
 		}

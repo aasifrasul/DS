@@ -1,7 +1,7 @@
 const BalancedBST = (function () {
-	"use strict";
+	'use strict';
 
-	if (typeof module !== "undefined") module.exports = BalancedBST;
+	if (typeof module !== 'undefined') module.exports = BalancedBST;
 
 	function Node(key, value, level, left, right) {
 		this.key = key;
@@ -90,10 +90,7 @@ const BalancedBST = (function () {
 		for (let i = k - 1; i >= 0; i--) {
 			rotated = node = path[i];
 
-			if (
-				node.level === node.left.level &&
-				node.level === node.right.level
-			) {
+			if (node.level === node.left.level && node.level === node.right.level) {
 				updated = true;
 				node.level++;
 			} else {

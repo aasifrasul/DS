@@ -7,7 +7,7 @@ const Trie = (function () {
 	};
 
 	const Trie = function () {
-		this.root = new Node("");
+		this.root = new Node('');
 	};
 
 	Trie.prototype.add = function (word) {
@@ -91,7 +91,7 @@ const Trie = (function () {
 	};
 	Trie.prototype.countWords = function () {
 		if (!this.root) {
-			return console.log("No root node found");
+			return console.log('No root node found');
 		}
 		const queue = [this.root];
 		let counter = 0;
@@ -110,7 +110,7 @@ const Trie = (function () {
 	};
 	Trie.prototype.getWords = function () {
 		const words = [];
-		const word = "";
+		const word = '';
 		this._getWords(this.root, words, words, word);
 		return words;
 	};
@@ -128,11 +128,11 @@ const Trie = (function () {
 	};
 	Trie.prototype.print = function () {
 		if (!this.root) {
-			return console.log("No root node found");
+			return console.log('No root node found');
 		}
-		const newline = new Node("|");
+		const newline = new Node('|');
 		const queue = [this.root, newline];
-		let string = "";
+		let string = '';
 		while (queue.length) {
 			const node = queue.shift();
 			string += `${node.data.toString()} `;
@@ -149,14 +149,14 @@ const Trie = (function () {
 	};
 	Trie.prototype.printByLevel = function () {
 		if (!this.root) {
-			return console.log("No root node found");
+			return console.log('No root node found');
 		}
-		const newline = new Node("\n");
+		const newline = new Node('\n');
 		const queue = [this.root, newline];
-		let string = "";
+		let string = '';
 		while (queue.length) {
 			const node = queue.shift();
-			string += `${node.data.toString()}${node.data !== "\n" ? " " : ""}`;
+			string += `${node.data.toString()}${node.data !== '\n' ? ' ' : ''}`;
 			if (node === newline && queue.length) {
 				queue.push(newline);
 			}
@@ -173,17 +173,17 @@ const Trie = (function () {
 })();
 
 const trie = new Trie();
-trie.add("one");
-trie.add("two");
-trie.add("fifth");
-trie.add("fifty");
+trie.add('one');
+trie.add('two');
+trie.add('fifth');
+trie.add('fifty');
 trie.print(); // => | o t f | n w i | e o f | t | h y
 trie.printByLevel(); // => o t f \n n w i \n e o f \n t \n h y
-console.log("words are: one, two, fifth, fifty:", trie.getWords()); // => [ 'one', 'two', 'fifth', 'fifty' ]
-console.log("trie count words is 4:", trie.countWords()); // => 4
-console.log("trie contains one is true:", trie.contains("one")); // => true
-console.log("trie contains on is false:", trie.contains("on")); // => false
-trie.remove("one");
-console.log("trie contains one is false:", trie.contains("one")); // => false
-console.log("trie count words is 3:", trie.countWords()); // => 3
-console.log("words are two, fifth, fifty:", trie.getWords()); // => [ 'two', 'fifth', 'fifty' ]
+console.log('words are: one, two, fifth, fifty:', trie.getWords()); // => [ 'one', 'two', 'fifth', 'fifty' ]
+console.log('trie count words is 4:', trie.countWords()); // => 4
+console.log('trie contains one is true:', trie.contains('one')); // => true
+console.log('trie contains on is false:', trie.contains('on')); // => false
+trie.remove('one');
+console.log('trie contains one is false:', trie.contains('one')); // => false
+console.log('trie count words is 3:', trie.countWords()); // => 3
+console.log('words are two, fifth, fifty:', trie.getWords()); // => [ 'two', 'fifth', 'fifty' ]

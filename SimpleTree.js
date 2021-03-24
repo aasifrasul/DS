@@ -17,7 +17,7 @@ const Tree = (function () {
 			if (!this.root) {
 				this.root = node;
 			} else {
-				return "Root node is already assigned";
+				return 'Root node is already assigned';
 			}
 		}
 	};
@@ -96,11 +96,11 @@ const Tree = (function () {
 	};
 	Tree.prototype.print = function () {
 		if (!this.root) {
-			return console.log("No root node found");
+			return console.log('No root node found');
 		}
-		const newline = new Node("|");
+		const newline = new Node('|');
 		const queue = [this.root, newline];
-		let string = "";
+		let string = '';
 		while (queue.length) {
 			const node = queue.shift();
 			string += `${node.data.toString()} `;
@@ -115,14 +115,14 @@ const Tree = (function () {
 	};
 	Tree.prototype.printByLevel = function () {
 		if (!this.root) {
-			return console.log("No root node found");
+			return console.log('No root node found');
 		}
-		const newline = new Node("\n");
+		const newline = new Node('\n');
 		const queue = [this.root, newline];
-		let string = "";
+		let string = '';
 		while (queue.length) {
 			const node = queue.shift();
-			string += `${node.data.toString()}${node.data !== "\n" ? " " : ""}`;
+			string += `${node.data.toString()}${node.data !== '\n' ? ' ' : ''}`;
 			if (node === newline && queue.length) {
 				queue.push(newline);
 			}
@@ -137,31 +137,31 @@ const Tree = (function () {
 })();
 
 const tree = new Tree();
-tree.add("ceo");
-tree.add("cto", "ceo");
-tree.add("dev1", "cto");
-tree.add("dev2", "cto");
-tree.add("dev3", "cto");
-tree.add("cfo", "ceo");
-tree.add("accountant", "cfo");
-tree.add("cmo", "ceo");
+tree.add('ceo');
+tree.add('cto', 'ceo');
+tree.add('dev1', 'cto');
+tree.add('dev2', 'cto');
+tree.add('dev3', 'cto');
+tree.add('cfo', 'ceo');
+tree.add('accountant', 'cfo');
+tree.add('cmo', 'ceo');
 tree.print(); // => ceo | cto cfo cmo | dev1 dev2 dev3 accountant
 tree.printByLevel(); // => ceo \n cto cfo cmo \n dev1 dev2 dev3 accountant
-console.log("tree contains dev1 is true:", tree.contains("dev1")); // => true
-console.log("tree contains dev4 is false:", tree.contains("dev4")); // => false
-console.log("--- BFS");
+console.log('tree contains dev1 is true:', tree.contains('dev1')); // => true
+console.log('tree contains dev4 is false:', tree.contains('dev4')); // => false
+console.log('--- BFS');
 tree.traverseBFS((node) => {
 	console.log(node.data);
 }); // => ceo cto cfo cmo dev1 dev2 dev3 accountant
-console.log("--- DFS preOrder");
+console.log('--- DFS preOrder');
 tree.traverseDFS((node) => {
 	console.log(node.data);
-}, "preOrder"); // => ceo cto dev1 dev2 dev3 cfo accountant cmo
-console.log("--- DFS postOrder");
+}, 'preOrder'); // => ceo cto dev1 dev2 dev3 cfo accountant cmo
+console.log('--- DFS postOrder');
 tree.traverseDFS((node) => {
 	console.log(node.data);
-}, "postOrder"); // => dev1 dev2 dev3 cto accountant cfo cmo ceo
-tree.remove("cmo");
+}, 'postOrder'); // => dev1 dev2 dev3 cto accountant cfo cmo ceo
+tree.remove('cmo');
 tree.print(); // => ceo | cto cfo | dev1 dev2 dev3 accountant
-tree.remove("cfo");
+tree.remove('cfo');
 tree.print();

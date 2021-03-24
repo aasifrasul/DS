@@ -20,7 +20,7 @@
  * see: http://github.com/dcodeIO/btree.js for details
  */
 (function (module, console) {
-	"use strict";
+	'use strict';
 
 	/**
 	 * Concatenates multiple arrays into a new one.
@@ -107,9 +107,9 @@
 	 */
 	btree.create = function (order, compare) {
 		// Validate order
-		if (typeof order == "undefined") {
+		if (typeof order == 'undefined') {
 			order = 52; // Benchmarks proofed that this is close to the optimum
-		} else if (typeof order == "number") {
+		} else if (typeof order == 'number') {
 			order = Math.floor(order);
 		} else {
 			order = parseInt(order, 10);
@@ -118,7 +118,7 @@
 		const minOrder = order > 1 ? Math.floor(order / 2) : 1;
 
 		// Use numcmp by default
-		if (typeof compare != "function") {
+		if (typeof compare != 'function') {
 			compare = btree.numcmp;
 		}
 
@@ -131,22 +131,16 @@
 			// This function will be stripped by the compiler
 			if (node instanceof Tree) return;
 			if (node.leaves.length + 1 != node.nodes.length) {
-				console.log(
-					`ERROR: Illegal leaf/node count in ${node}: ${node.leaves.length}/${node.nodes.length}`
-				);
+				console.log(`ERROR: Illegal leaf/node count in ${node}: ${node.leaves.length}/${node.nodes.length}`);
 			}
 			for (var i = 0; i < node.leaves.length; i++) {
 				if (!node.leaves[i]) {
-					console.log(
-						`ERROR: Illegal leaf in ${node} at ${i}: ${node.leaves[i]}`
-					);
+					console.log(`ERROR: Illegal leaf in ${node} at ${i}: ${node.leaves[i]}`);
 				}
 			}
 			for (i = 0; i < node.nodes.length; i++) {
-				if (typeof node.nodes[i] == "undefined") {
-					console.log(
-						`ERROR: Illegal node in ${node} at ${i}: undefined`
-					);
+				if (typeof node.nodes[i] == 'undefined') {
+					console.log(`ERROR: Illegal node in ${node} at ${i}: undefined`);
 				}
 			}
 		}
@@ -240,7 +234,7 @@
 		TreeNode.prototype.put = function (key, value, overwrite) {
 			const result = this.search(key);
 			if (result.leaf) {
-				if (typeof overwrite !== "undefined" && !overwrite) {
+				if (typeof overwrite !== 'undefined' && !overwrite) {
 					return false;
 				}
 				result.leaf.value = value;
@@ -299,10 +293,7 @@
 			}
 			const index = asearch(this.parent.nodes, this),
 				left = index > 0 ? this.parent.nodes[index - 1] : null,
-				right =
-					this.parent.nodes.length > index + 1
-						? this.parent.nodes[index + 1]
-						: null;
+				right = this.parent.nodes.length > index + 1 ? this.parent.nodes[index + 1] : null;
 			let sep, leaf, rest;
 			if (right !== null && right.leaves.length > minOrder) {
 				// Append the seperator from parent to this
@@ -358,11 +349,7 @@
 					this.parent.nodes.splice(index - 1, 2, subst);
 				} else {
 					// We should never end here
-					throw new Error(
-						`Internal error: ${this.toString(
-							true
-						)} has neither a left nor a right sibling`
-					);
+					throw new Error(`Internal error: ${this.toString(true)} has neither a left nor a right sibling`);
 				}
 				this.parent.balance();
 			}
@@ -408,25 +395,13 @@
 			const index = Math.floor(this.leaves.length / 2);
 			if (this.parent instanceof Tree) {
 				this.nodes = [
-					new TreeNode(
-						this,
-						this.leaves.slice(0, index),
-						this.nodes.slice(0, index + 1)
-					),
-					new TreeNode(
-						this,
-						this.leaves.slice(index + 1),
-						this.nodes.slice(index + 1)
-					),
+					new TreeNode(this, this.leaves.slice(0, index), this.nodes.slice(0, index + 1)),
+					new TreeNode(this, this.leaves.slice(index + 1), this.nodes.slice(index + 1)),
 				];
 				this.leaves = [this.leaves[index]];
 			} else {
 				const leaf = this.leaves[index];
-				const rest = new TreeNode(
-					this.parent,
-					this.leaves.slice(index + 1),
-					this.nodes.slice(index + 1)
-				);
+				const rest = new TreeNode(this.parent, this.leaves.slice(index + 1), this.nodes.slice(index + 1));
 				this.leaves = this.leaves.slice(0, index);
 				this.nodes = this.nodes.slice(0, index + 1);
 				this.parent.unsplit(leaf, rest);
@@ -443,9 +418,7 @@
 			for (var i = 0; i < this.leaves.length; i++) {
 				val.push(this.leaves[i].key);
 			}
-			let s = `[${val.toString()}]${
-				this.parent instanceof Tree ? ":*" : `:${this.parent}`
-			}`;
+			let s = `[${val.toString()}]${this.parent instanceof Tree ? ':*' : `:${this.parent}`}`;
 			if (includeNodes) {
 				for (i = 0; i < this.nodes.length; i++) {
 					s += ` -> ${this.nodes[i]}`;
@@ -459,16 +432,11 @@
 		 * @param {number} indent
 		 */
 		TreeNode.prototype.print = function (indent) {
-			let space = "";
-			for (var i = 0; i < indent; i++) space += " ";
+			let space = '';
+			for (var i = 0; i < indent; i++) space += ' ';
 			for (i = this.leaves.length - 1; i >= 0; i--) {
-				if (this.nodes[i + 1] !== null)
-					this.nodes[i + 1].print(indent + 2);
-				console.log(
-					space +
-						this.leaves[i].key +
-						(this.parent instanceof Tree ? "*" : "")
-				);
+				if (this.nodes[i + 1] !== null) this.nodes[i + 1].print(indent + 2);
+				console.log(space + this.leaves[i].key + (this.parent instanceof Tree ? '*' : ''));
 			}
 			if (this.nodes[0] !== null) this.nodes[0].print(indent + 2);
 		};
@@ -528,10 +496,8 @@
 		 * @expose
 		 */
 		Tree.prototype.put = function (key, value, overwrite) {
-			if (typeof key === "undefined" || key === null)
-				throw new Error(`Illegal key: ${key}`);
-			if (typeof value === "undefined")
-				throw new Error(`Illegal value: ${value}`);
+			if (typeof key === 'undefined' || key === null) throw new Error(`Illegal key: ${key}`);
+			if (typeof value === 'undefined') throw new Error(`Illegal value: ${value}`);
 			return this.root.put(key, value, overwrite);
 		};
 
@@ -543,8 +509,7 @@
 		 * @expose
 		 */
 		Tree.prototype.get = function (key) {
-			if (typeof key === "undefined" || key === null)
-				throw new Error(`Illegal key: ${key}`);
+			if (typeof key === 'undefined' || key === null) throw new Error(`Illegal key: ${key}`);
 			return this.root.get(key);
 		};
 
@@ -555,8 +520,7 @@
 		 * @expose
 		 */
 		Tree.prototype.del = function (key) {
-			if (typeof key === "undefined" || key === null)
-				throw new Error(`Illegal key: ${key}`);
+			if (typeof key === 'undefined' || key === null) throw new Error(`Illegal key: ${key}`);
 			return this.root.del(key);
 		};
 
@@ -572,15 +536,15 @@
 			if (this.root.leaves.length == 0) {
 				return;
 			}
-			if (typeof minKey == "function") {
+			if (typeof minKey == 'function') {
 				callback = minKey;
 				minKey = maxKey = null;
-			} else if (typeof maxKey == "function") {
+			} else if (typeof maxKey == 'function') {
 				callback = maxKey;
 				maxKey = null;
 			}
-			minKey = typeof minKey != "undefined" ? minKey : null;
-			maxKey = typeof maxKey != "undefined" ? maxKey : null;
+			minKey = typeof minKey != 'undefined' ? minKey : null;
+			maxKey = typeof maxKey != 'undefined' ? maxKey : null;
 			let ptr, index;
 			if (minKey === null) {
 				// If there is no minimum limit
@@ -615,10 +579,7 @@
 			}
 			// ptr/index now points at our first result
 			while (true) {
-				if (
-					maxKey !== null &&
-					compare(ptr.leaves[index].key, maxKey) > 0
-				) {
+				if (maxKey !== null && compare(ptr.leaves[index].key, maxKey) > 0) {
 					break; // if there are no more keys less than maxKey
 				}
 				if (callback(ptr.leaves[index].key, ptr.leaves[index].value)) {
@@ -666,15 +627,15 @@
 		 * @expose
 		 */
 		Tree.prototype.walkDesc = function (minKey, maxKey, callback) {
-			if (typeof minKey == "function") {
+			if (typeof minKey == 'function') {
 				callback = minKey;
 				minKey = maxKey = null;
-			} else if (typeof maxKey == "function") {
+			} else if (typeof maxKey == 'function') {
 				callback = maxKey;
 				maxKey = null;
 			}
-			minKey = typeof minKey != "undefined" ? minKey : null;
-			maxKey = typeof maxKey != "undefined" ? maxKey : null;
+			minKey = typeof minKey != 'undefined' ? minKey : null;
+			maxKey = typeof maxKey != 'undefined' ? maxKey : null;
 			let ptr, index;
 			if (maxKey === null) {
 				// If there is no maximum limit
@@ -709,10 +670,7 @@
 			}
 			// ptr/index now points at our first result
 			while (true) {
-				if (
-					minKey !== null &&
-					compare(ptr.leaves[index].key, minKey) < 0
-				) {
+				if (minKey !== null && compare(ptr.leaves[index].key, minKey) < 0) {
 					break; // if there are no more keys bigger than minKey
 				}
 				if (callback(ptr.leaves[index].key, ptr.leaves[index].value)) {
@@ -751,8 +709,8 @@
 		Tree.prototype.count = function (minKey, maxKey) {
 			let n = 0;
 			this.walk(
-				typeof minKey != "undefined" ? minKey : null,
-				typeof maxKey != "undefined" ? maxKey : null,
+				typeof minKey != 'undefined' ? minKey : null,
+				typeof maxKey != 'undefined' ? maxKey : null,
 				(key, value) => {
 					n++;
 				}

@@ -100,7 +100,7 @@ const LinkedList = (function () {
 		return node;
 	};
 
-	LinkedList.prototype.print = function (key = "data") {
+	LinkedList.prototype.print = function (key = 'data') {
 		let curr = this.head;
 		while (curr) {
 			console.log(curr[key]);
@@ -229,13 +229,13 @@ const LinkedList = (function () {
 			length = this.length,
 			count = 0,
 			message = {
-				failure: "Failure: non-existent node in this list.",
+				failure: 'Failure: non-existent node in this list.',
 			},
 			beforeNodeToDelete = null,
 			nodeToDelete = null,
 			deletedNode = null;
 
-		if (typeof pos === "undefined" || pos < 0 || pos > length) {
+		if (typeof pos === 'undefined' || pos < 0 || pos > length) {
 			throw new Error(message.failure);
 		}
 
@@ -297,14 +297,14 @@ const LinkedList = (function () {
 
 		while (curr) {
 			next = curr.next;
-			console.log("next = curr.next; next=", next);
+			console.log('next = curr.next; next=', next);
 			curr.next = prev;
-			console.log("curr.next = prev; curr=", curr);
+			console.log('curr.next = prev; curr=', curr);
 			prev = curr;
-			console.log("prev = curr; prev=", prev);
+			console.log('prev = curr; prev=', prev);
 			curr = next;
-			console.log("curr = next; curr=", curr);
-			console.log("---------------------------------------------------");
+			console.log('curr = next; curr=', curr);
+			console.log('---------------------------------------------------');
 		}
 		this.head = prev;
 

@@ -2,9 +2,14 @@ function toArray(args) {
 	return Array.prototype.slice.call(args);
 }
 
-function add(n) {
+function addSubtract(n) {
 	let sum = n;
+	let count = 0;
 	const f = function f(m) {
+		++count;
+		m *= count % 2 ? +1 : -1;
+		console.log('count', count);
+		console.log('m', m);
 		sum += m;
 		return f;
 	};
@@ -14,7 +19,14 @@ function add(n) {
 	return f;
 }
 
-function mul(n) {
+function sum(...args) {
+	const newFunc = sum.bind(null, ...args);
+	const valueOf = () => args.reduce((a, c) => a + c, 0);
+	const updatedFunc = Object.assign(newFunc, { valueOf });
+	return updatedFunc;
+}
+
+function infiniteMultiplication(n) {
 	let res = n;
 	const f = function f(m) {
 		res *= m;
@@ -64,8 +76,7 @@ function primeFactors(n) {
 	return Object.keys(factors);
 }
 
-const greatestCommonDivisor = (a, b) =>
-	b == 0 ? a : greatestCommonDivisor(b, a % b);
+const greatestCommonDivisor = (a, b) => (b == 0 ? a : greatestCommonDivisor(b, a % b));
 
 function mergeSortedArray(a, b) {
 	let merged = [],
@@ -80,8 +91,8 @@ function mergeSortedArray(a, b) {
   if aElm or bElm exists we will insert to merged array
   (will go inside while loop)
    to insert: aElm exists and bElm doesn't exists
-             or both exists and aElm < bElm
-    this is the critical part of the example            
+			 or both exists and aElm < bElm
+	this is the critical part of the example            
   */
 	while (aElm || bElm) {
 		if ((aElm && !bElm) || aElm < bElm) {
@@ -163,7 +174,7 @@ function findSubString(str, subStr) {
 }
 
 function permutations(str) {
-	let arr = str.split(""),
+	let arr = str.split(''),
 		len = arr.length,
 		perms = [],
 		rest,
@@ -177,11 +188,11 @@ function permutations(str) {
 		rest = Object.create(arr);
 		picked = rest.splice(i, 1);
 
-		restPerms = permutations(rest.join(""));
+		restPerms = permutations(rest.join(''));
 
 		for (let j = 0, jLen = restPerms.length; j < jLen; j++) {
 			next = picked.concat(restPerms[j]);
-			perms.push(next.join(""));
+			perms.push(next.join(''));
 		}
 	}
 	return perms;
@@ -193,14 +204,11 @@ Object.compare = (obj1, obj2) => {
 		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
 
 		switch (typeof obj1[p]) {
-			case "object":
+			case 'object':
 				if (!Object.compare(obj1[p], obj2[p])) return false;
 				break;
-			case "function":
-				if (
-					typeof obj2[p] == "undefined" ||
-					(p != "compare" && obj1[p].toString() != obj2[p].toString())
-				)
+			case 'function':
+				if (typeof obj2[p] == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString()))
 					return false;
 				break;
 			default:
@@ -209,7 +217,7 @@ Object.compare = (obj1, obj2) => {
 	}
 
 	for (p in obj2) {
-		if (typeof obj1[p] == "undefined") return false;
+		if (typeof obj1[p] == 'undefined') return false;
 	}
 	return true;
 };
@@ -304,9 +312,7 @@ const memoize = function (func) {
 
 	return function () {
 		const args = slice.call(arguments);
-		return args in memo
-			? memo[args]
-			: (memo[args] = func.apply(this, args));
+		return args in memo ? memo[args] : (memo[args] = func.apply(this, args));
 	};
 };
 
@@ -324,7 +330,7 @@ Function.prototype.bind =
 Array.prototype.forEach =
 	Array.prototype.forEach ||
 	function (callback, thisArg) {
-		if (!Array.isArray(this) || typeof callback != "function") return;
+		if (!Array.isArray(this) || typeof callback != 'function') return;
 
 		for (i in this) {
 			callback.call(thisArg || this, this[i], i, this);
@@ -357,3 +363,85 @@ Function.prototype.curry =
 			return self.apply(this, args.concat(toArray(arguments)));
 		};
 	};
+
+// Currying
+function curry(fn) {
+	if (fn.length <= 1) return fn;
+	const generator = (...args) => {
+		if (fn.length === args.length) {
+			return fn(...args);
+		} else {
+			return (...args2) => {
+				return generator(...args, ...args2);
+			};
+		}
+	};
+	return generator;
+}
+
+function cachedFn(str) {
+	// If the cache is not hit, the function will be executed
+	if (!cache[str]) {
+		const result = fn(str);
+		console.log('Caching the result => ', result);
+
+		// Store the result of the function execution in the cache
+		cache[str] = result;
+	} else {
+		console.log('Cachede result => ', cache[str]);
+	}
+
+	return cache[str];
+}
+
+function compose() {
+	var args = arguments;
+	var start = args.length - 1;
+	return function () {
+		var i = start;
+		var result = args[start].apply(this, arguments);
+		while (i--) result = args[i].call(this, result);
+		return result;
+	};
+}
+
+// Create a magic object var obj = {}
+// console.log(obj.a, obj.a, obj.a);
+// 1 2 3
+
+let obj = {
+	_initValue: 0,
+	get a() {
+		this._initValue++;
+		return this._initValue;
+	},
+};
+
+var obj = Object.create(null);
+
+Object.defineProperty(obj, 'a', {
+	get: (function () {
+		let initValue = 0;
+		return function () {
+			initValue++;
+			return initValue;
+		};
+	})(),
+});
+
+console.log(obj.a, obj.a, obj.a);
+
+let initValue = 0;
+let obj = new Proxy(
+	{},
+	{
+		get: function (item, property, itemProxy) {
+			if (property === 'a') {
+				initValue++;
+				return initValue;
+			}
+			return item[property];
+		},
+	}
+);
+console.log(obj.a, obj.a, obj.a);

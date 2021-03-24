@@ -1,7 +1,12 @@
-const reverseString = (str) => {
-	if (typeof str !== 'string') {
+/**
+ * @param {number} x
+ * @return {number}
+ */
+var reverse = function (x) {
+	if (typeof x !== 'number') {
 		return '';
 	}
+	let str = Math.abs(x) + '';
 	const origLen = str.length;
 	const len = origLen >> 1;
 	let temp;
@@ -16,5 +21,7 @@ const reverseString = (str) => {
 		console.log('str => ', str);
 	}
 
-	return str;
+	return (x < 0 ? -1 : 1) * (str * 1);
 };
+
+console.log(reverse(123));

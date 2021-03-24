@@ -78,12 +78,10 @@ BTreeNode.prototype.insertSplit = function (split) {
 
 	// case A: first child was split
 	if (child === this._childs[0]) {
-		for (var i = this._keyCount; i > 0; i--)
-			this._keys[i] = this._keys[i - 1];
+		for (var i = this._keyCount; i > 0; i--) this._keys[i] = this._keys[i - 1];
 		this._keys[0] = split.key;
 
-		for (var i = this._keyCount + 1; i > 1; i--)
-			this._childs[i] = this._childs[i - 1];
+		for (var i = this._keyCount + 1; i > 1; i--) this._childs[i] = this._childs[i - 1];
 		this._childs[0] = child;
 		this._childs[1] = split.right;
 	}
@@ -336,28 +334,22 @@ BTreeNode.prototype.removeKey = function (key) {
 };
 
 BTreeNode.prototype.toString = function (indentOpt) {
-	const INDENT_STRING = "  ";
+	const INDENT_STRING = '  ';
 
-	indentOpt = indentOpt || "";
+	indentOpt = indentOpt || '';
 
 	if (this.isLeaf()) {
-		return `${indentOpt}[${this._keys
-			.slice(0, this.keyCount())
-			.join(", ")}]`;
+		return `${indentOpt}[${this._keys.slice(0, this.keyCount()).join(', ')}]`;
 	}
 
-	let str = "";
+	let str = '';
 
 	const childIndent = indentOpt + INDENT_STRING;
-	const childStrings = this._childs
-		.slice(0, this.keyCount() + 1)
-		.map((child) => child.toString(childIndent));
+	const childStrings = this._childs.slice(0, this.keyCount() + 1).map((child) => child.toString(childIndent));
 
 	str = `${indentOpt}[\n${childStrings[0]}\n`;
 	for (let i = 1; i < childStrings.length; i += 1) {
-		str += `${childIndent}${this._keys[i - 1].toString()}\n${
-			childStrings[i]
-		}\n`;
+		str += `${childIndent}${this._keys[i - 1].toString()}\n${childStrings[i]}\n`;
 	}
 	str += `${indentOpt}]`;
 
@@ -421,13 +413,13 @@ a.forEach((v) => {
 	// console.log(btree.toString());
 });
 
-console.log(" --- BEFORE REMOVING --- ");
+console.log(' --- BEFORE REMOVING --- ');
 console.log(btree.toString());
 
 a.forEach((v) => {
-	console.log("----------------------------------");
+	console.log('----------------------------------');
 	console.log(`REMOVING ${v} FROM TREE`);
-	console.log("");
+	console.log('');
 
 	console.assert(btree.remove(v));
 	console.log(btree.toString());

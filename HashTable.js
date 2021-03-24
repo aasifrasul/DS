@@ -4,6 +4,7 @@ const HashTable = (function () {
 		this.numberOfValues = 0;
 		this.size = size;
 	};
+
 	HashTable.prototype.add = function (key, value) {
 		const hash = this.calculateHash(key);
 		if (!this.hasHash(hash)) {
@@ -14,6 +15,7 @@ const HashTable = (function () {
 		}
 		this.values[hash][key] = value;
 	};
+
 	HashTable.prototype.remove = function (key) {
 		const hash = this.calculateHash(key);
 		if (this.hasKey(hash, key)) {
@@ -21,24 +23,30 @@ const HashTable = (function () {
 			this.numberOfValues--;
 		}
 	};
+
 	HashTable.prototype.hasHash = function (hash) {
 		return this.values.hasOwnProperty(hash);
 	};
+
 	HashTable.prototype.hasKey = function (hash, key) {
 		return this.hasHash(hash) && this.values[hash].hasOwnProperty(key);
 	};
+
 	HashTable.prototype.calculateHash = function (key) {
 		return key.toString().length % this.size;
 	};
+
 	HashTable.prototype.search = function (key) {
 		const hash = this.calculateHash(key);
 		return this.hasKey(hash, key) || null;
 	};
+
 	HashTable.prototype.length = function () {
 		return this.numberOfValues;
 	};
+
 	HashTable.prototype.print = function () {
-		let string = "";
+		let string = '';
 		for (const value in this.values) {
 			for (const key in this.values[value]) {
 				string += `${this.values[value][key]} `;
@@ -51,15 +59,15 @@ const HashTable = (function () {
 })();
 
 const hashTable = new HashTable(3);
-hashTable.add("first", 1);
-hashTable.add("second", 2);
-hashTable.add("third", 3);
-hashTable.add("fourth", 4);
-hashTable.add("fifth", 5);
+hashTable.add('first', 1);
+hashTable.add('second', 2);
+hashTable.add('third', 3);
+hashTable.add('fourth', 4);
+hashTable.add('fifth', 5);
 hashTable.print(); // => 2 4 1 3 5
-console.log("length gives 5:", hashTable.length()); // => 5
-console.log("search second gives 2:", hashTable.search("second")); // => 2
-hashTable.remove("fourth");
-hashTable.remove("first");
+console.log('length gives 5:', hashTable.length()); // => 5
+console.log('search second gives 2:', hashTable.search('second')); // => 2
+hashTable.remove('fourth');
+hashTable.remove('first');
 hashTable.print(); // => 2 3 5
-console.log("length gives 3:", hashTable.length());
+console.log('length gives 3:', hashTable.length());
