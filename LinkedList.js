@@ -22,7 +22,7 @@ const LinkedList = (function () {
 	};
 
 	LinkedList.prototype.toArray = function () {
-		let result = [],
+		const result = [],
 			curr = this.head;
 
 		while (curr) {
@@ -38,7 +38,7 @@ const LinkedList = (function () {
 	};
 
 	LinkedList.prototype.add = function (value) {
-		let node = new Node(value),
+		const node = new Node(value),
 			curr = this.head;
 
 		this.increment();

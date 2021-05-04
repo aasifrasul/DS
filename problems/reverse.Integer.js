@@ -2,26 +2,18 @@
  * @param {number} x
  * @return {number}
  */
-var reverse = function (x) {
-	if (typeof x !== 'number') {
-		return '';
-	}
-	let str = Math.abs(x) + '';
-	const origLen = str.length;
-	const len = origLen >> 1;
-	let temp;
+var reverse = function (num) {
+	var finalNum = 0;
+	var remainder = 0;
+	var isNegative = num < 0;
+	var cleanedNum = Math.abs(num);
 
-	for (i = 0; i < len; i++) {
-		console.log('str[i] =>', str[i]);
-		console.log('str[origLen - i - 1] =>', str[origLen - i - 1]);
-		str[i] = str[origLen - i - 1] + str[i];
-		console.log('str[i] =>', str[i]);
-		str[origLen - i - 1] = str[i] - str[origLen - i - 1];
-		str[i] = str[i] - str[origLen - i - 1];
-		console.log('str => ', str);
+	while (cleanedNum) {
+		remainder = cleanedNum % 10;
+		cleanedNum = Math.floor(cleanedNum / 10);
+		finalNum = finalNum * 10 + remainder;
 	}
-
-	return (x < 0 ? -1 : 1) * (str * 1);
+	return (isNegative ? -1 : 1) * finalNum;
 };
 
 console.log(reverse(123));

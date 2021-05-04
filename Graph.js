@@ -9,21 +9,80 @@ const Graph = (function () {
 		this.vertices.push(vertex);
 		this.edges[vertex] = [];
 	};
-	Graph.prototype.removeVertex = function (vertex) {
-		const index = this.vertices.indexOf(vertex);
-		if (~index) {
-			this.vertices.splice(index, 1);
-		}
-		while (this.edges[vertex].length) {
-			const adjacentVertex = this.edges[vertex].pop();
-			this.removeEdge(adjacentVertex, vertex);
-		}
-	};
+
 	Graph.prototype.addEdge = function (vertex1, vertex2) {
 		this.edges[vertex1].push(vertex2);
 		this.edges[vertex2].push(vertex1);
 		this.numberOfEdges++;
 	};
+
+	Graph.prototype.print = function () {
+		console.log(
+			this.vertices
+				.map(function (vertex) {
+					return `${vertex} -> ${this.edges[vertex].join(', ')}`.trim();
+				}, this)
+				.join(' | ')
+		);
+	};
+
+	Graph.prototype.traverseBFS = function (vertex, fn) {
+		if (!~this.vertices.indexOf(vertex)) {
+			return console.log('Vertex not found');
+		}
+		const queue = [];
+		queue.push(vertex);
+		const visited = [];
+		visited[vertex] = true;
+		let item;
+
+		while (queue.length) {
+			vertex = queue.shift();
+			fn(vertex);
+			item = this.edges[vertex];
+			for (let i = 0; i < item.length; i++) {
+				if (!visited[item[i]]) {
+					visited[item[i]] = true;
+					queue.push(item[i]);
+				}
+			}
+		}
+	};
+
+	Graph.prototype.traverseDFS = function (vertex, fn) {
+		if (!~this.vertices.indexOf(vertex)) {
+			return console.log('Vertex not found');
+		}
+		const visited = [];
+		this._traverseDFS(vertex, visited, fn);
+	};
+
+	Graph.prototype._traverseDFS = function (vertex, visited, fn) {
+		visited[vertex] = true;
+		let item;
+
+		if (item !== undefined) {
+			fn(vertex);
+		}
+		for (let i = 0; i < item.length; i++) {
+			if (!visited[item[i]]) {
+				this._traverseDFS(item[i], visited, fn);
+			}
+		}
+	};
+
+	Graph.prototype.removeVertex = function (vertex) {
+		const index = this.vertices.indexOf(vertex);
+		if (~index) {
+			this.vertices.splice(index, 1);
+		}
+		const item = this.edges[vertex];
+		while (item.length) {
+			const adjacentVertex = item.pop();
+			this.removeEdge(adjacentVertex, vertex);
+		}
+	};
+
 	Graph.prototype.removeEdge = function (vertex1, vertex2) {
 		const index1 = this.edges[vertex1] ? this.edges[vertex1].indexOf(vertex2) : -1;
 		const index2 = this.edges[vertex2] ? this.edges[vertex2].indexOf(vertex1) : -1;
@@ -35,50 +94,15 @@ const Graph = (function () {
 			this.edges[vertex2].splice(index2, 1);
 		}
 	};
+
 	Graph.prototype.size = function () {
 		return this.vertices.length;
 	};
+
 	Graph.prototype.relations = function () {
 		return this.numberOfEdges;
 	};
-	Graph.prototype.traverseDFS = function (vertex, fn) {
-		if (!~this.vertices.indexOf(vertex)) {
-			return console.log('Vertex not found');
-		}
-		const visited = [];
-		this._traverseDFS(vertex, visited, fn);
-	};
-	Graph.prototype._traverseDFS = function (vertex, visited, fn) {
-		visited[vertex] = true;
-		if (this.edges[vertex] !== undefined) {
-			fn(vertex);
-		}
-		for (let i = 0; i < this.edges[vertex].length; i++) {
-			if (!visited[this.edges[vertex][i]]) {
-				this._traverseDFS(this.edges[vertex][i], visited, fn);
-			}
-		}
-	};
-	Graph.prototype.traverseBFS = function (vertex, fn) {
-		if (!~this.vertices.indexOf(vertex)) {
-			return console.log('Vertex not found');
-		}
-		const queue = [];
-		queue.push(vertex);
-		const visited = [];
-		visited[vertex] = true;
 
-		while (queue.length) {
-			vertex = queue.shift();
-			fn(vertex);
-			for (let i = 0; i < this.edges[vertex].length; i++) {
-				if (!visited[this.edges[vertex][i]]) {
-					visited[this.edges[vertex][i]] = true;
-					queue.push(this.edges[vertex][i]);
-				}
-			}
-		}
-	};
 	Graph.prototype.pathFromTo = function (vertexSource, vertexDestination) {
 		if (!~this.vertices.indexOf(vertexSource)) {
 			return console.log('Vertex not found');
@@ -88,15 +112,16 @@ const Graph = (function () {
 		const visited = [];
 		visited[vertexSource] = true;
 		const paths = [];
+		let item;
 
 		while (queue.length) {
 			const vertex = queue.shift();
-			for (let i = 0; i < this.edges[vertex].length; i++) {
-				if (!visited[this.edges[vertex][i]]) {
-					visited[this.edges[vertex][i]] = true;
-					queue.push(this.edges[vertex][i]);
+			for (let i = 0; i < item.length; i++) {
+				if (!visited[item[i]]) {
+					visited[item[i]] = true;
+					queue.push(item[i]);
 					// save paths between vertices
-					paths[this.edges[vertex][i]] = vertex;
+					paths[item[i]] = vertex;
 				}
 			}
 		}
@@ -111,17 +136,8 @@ const Graph = (function () {
 		path.push(j);
 		return path.reverse().join('-');
 	};
-	Graph.prototype.print = function () {
-		console.log(
-			this.vertices
-				.map(function (vertex) {
-					return `${vertex} -> ${this.edges[vertex].join(', ')}`.trim();
-				}, this)
-				.join(' | ')
-		);
-	};
 
-	return Stack;
+	return Graph;
 })();
 
 const graph = new Graph();
