@@ -1,7 +1,8 @@
-const Graph = (function () {
-	const Graph = function () {
-		this.vertices = [];
+var Graph = (function () {
+	const Graph = function (vertices = []) {
+		this.vertices = vertices;
 		this.edges = [];
+		this.dependencyEdges = [];
 		this.numberOfEdges = 0;
 	};
 
@@ -11,8 +12,20 @@ const Graph = (function () {
 	};
 
 	Graph.prototype.addEdge = function (vertex1, vertex2) {
+		[vertex1, vertex2].forEach((i) => {
+			if (this.vertices.indexOf(i) === -1) {
+				this.addVertex(i);
+			}
+		});
+
 		this.edges[vertex1].push(vertex2);
 		this.edges[vertex2].push(vertex1);
+
+		if (!Array.isArray(this.dependencyEdges[vertex1])) {
+			this.dependencyEdges[vertex1] = [];
+		}
+		this.dependencyEdges[vertex1].push(vertex2);
+
 		this.numberOfEdges++;
 	};
 
@@ -27,53 +40,54 @@ const Graph = (function () {
 	};
 
 	Graph.prototype.traverseBFS = function (vertex, fn) {
-		if (!~this.vertices.indexOf(vertex)) {
+		if (this.vertices.indexOf(vertex) === -1) {
 			return console.log('Vertex not found');
 		}
-		const queue = [];
-		queue.push(vertex);
-		const visited = [];
+		const queue = [vertex];
+		const visited = {};
 		visited[vertex] = true;
-		let item;
+		let items, item;
 
 		while (queue.length) {
 			vertex = queue.shift();
 			fn(vertex);
-			item = this.edges[vertex];
-			for (let i = 0; i < item.length; i++) {
-				if (!visited[item[i]]) {
-					visited[item[i]] = true;
-					queue.push(item[i]);
+			items = this.edges[vertex];
+			for (let i = 0; i < items.length; i++) {
+				item = items[i];
+				if (!visited[item]) {
+					visited[item] = true;
+					queue.push(item);
 				}
 			}
 		}
 	};
 
 	Graph.prototype.traverseDFS = function (vertex, fn) {
-		if (!~this.vertices.indexOf(vertex)) {
+		if (this.vertices.indexOf(vertex) === -1) {
 			return console.log('Vertex not found');
 		}
-		const visited = [];
+		const visited = {};
 		this._traverseDFS(vertex, visited, fn);
 	};
 
 	Graph.prototype._traverseDFS = function (vertex, visited, fn) {
 		visited[vertex] = true;
+		const items = this.edges[vertex];
 		let item;
 
-		if (item !== undefined) {
-			fn(vertex);
-		}
-		for (let i = 0; i < item.length; i++) {
-			if (!visited[item[i]]) {
-				this._traverseDFS(item[i], visited, fn);
+		fn(vertex);
+
+		for (let i = 0; i < items.length; i++) {
+			item = items[i];
+			if (!visited[item]) {
+				this._traverseDFS(item, visited, fn);
 			}
 		}
 	};
 
 	Graph.prototype.removeVertex = function (vertex) {
 		const index = this.vertices.indexOf(vertex);
-		if (~index) {
+		if (index >= 0) {
 			this.vertices.splice(index, 1);
 		}
 		const item = this.edges[vertex];
@@ -86,11 +100,11 @@ const Graph = (function () {
 	Graph.prototype.removeEdge = function (vertex1, vertex2) {
 		const index1 = this.edges[vertex1] ? this.edges[vertex1].indexOf(vertex2) : -1;
 		const index2 = this.edges[vertex2] ? this.edges[vertex2].indexOf(vertex1) : -1;
-		if (~index1) {
+		if (index1 >= 0) {
 			this.edges[vertex1].splice(index1, 1);
 			this.numberOfEdges--;
 		}
-		if (~index2) {
+		if (index2 >= 0) {
 			this.edges[vertex2].splice(index2, 1);
 		}
 	};
@@ -104,7 +118,7 @@ const Graph = (function () {
 	};
 
 	Graph.prototype.pathFromTo = function (vertexSource, vertexDestination) {
-		if (!~this.vertices.indexOf(vertexSource)) {
+		if (this.vertices.indexOf(vertexSource) === -1) {
 			return console.log('Vertex not found');
 		}
 		const queue = [];
@@ -112,7 +126,7 @@ const Graph = (function () {
 		const visited = [];
 		visited[vertexSource] = true;
 		const paths = [];
-		let item;
+		let item = this.edges[vertexSource];
 
 		while (queue.length) {
 			const vertex = queue.shift();
@@ -140,7 +154,45 @@ const Graph = (function () {
 	return Graph;
 })();
 
-const graph = new Graph();
+var graph = new Graph();
+
+//['A', 'B', 'C', 'D', 'E', 'F'].forEach((i) => graph.addVertex(i));
+graph.print();
+
+[
+	[1, 0],
+	[2, 0],
+	[3, 0],
+	[3, 2],
+	[4, 3],
+	[2, 5],
+	[0, 6],
+].forEach((i) => graph.addEdge(i[0], i[1]));
+graph.print();
+graph.traverseBFS(6, console.log);
+
+/*
+6
+0
+1
+2
+3
+5
+4
+// adding edges
+graph.addEdge('A', 'B');
+graph.addEdge('A', 'D');
+graph.addEdge('A', 'E');
+graph.addEdge('B', 'C');
+graph.addEdge('D', 'E');
+graph.addEdge('E', 'F');
+graph.addEdge('E', 'C');
+graph.addEdge('C', 'F');
+
+
+console.log("BFS");
+graph.traverseBFS('A', console.log);
+
 graph.addVertex(1);
 graph.addVertex(2);
 graph.addVertex(3);
@@ -186,3 +238,4 @@ graph.removeVertex(5);
 console.log('graph size (number of vertices):', graph.size()); // => 5
 console.log('graph relations (number of edges):', graph.relations()); // => 4
 console.log('path from 6 to 1:', graph.pathFromTo(6, 1)); // => 6-4-3-2-1
+*/

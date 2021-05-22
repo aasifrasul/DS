@@ -38,8 +38,8 @@ const LinkedList = (function () {
 	};
 
 	LinkedList.prototype.add = function (value) {
-		const node = new Node(value),
-			curr = this.head;
+		const node = new Node(value);
+		let curr = this.head;
 
 		this.increment();
 
@@ -280,35 +280,12 @@ const LinkedList = (function () {
 			curr = curr.next;
 		}
 		/*
-				while (curr) {
-					reversedLL.addTop(curr.data);
-					curr = curr.next;
-				}
+		while (curr) {
+			reversedLL.addTop(curr.data);
+			curr = curr.next;
+		}
 		*/
 		return reversedLL;
-	};
-
-	LinkedList.prototype.reverseInPlace = function () {
-		if (!this.head || !this.head.next) return this;
-
-		let curr = this.head,
-			prev = null,
-			next = null;
-
-		while (curr) {
-			next = curr.next;
-			console.log('next = curr.next; next=', next);
-			curr.next = prev;
-			console.log('curr.next = prev; curr=', curr);
-			prev = curr;
-			console.log('prev = curr; prev=', prev);
-			curr = next;
-			console.log('curr = next; curr=', curr);
-			console.log('---------------------------------------------------');
-		}
-		this.head = prev;
-
-		return this;
 	};
 
 	LinkedList.prototype.reverseInPlace = function () {
@@ -323,6 +300,30 @@ const LinkedList = (function () {
 			}
 		}
 
+		return this;
+	};
+
+	LinkedList.prototype.reverseInPlace = function () {
+		if (!this.head || !this.head.next) return this;
+
+		let curr = this.head,
+			prev = null,
+			next = null;
+
+		while (curr) {
+			console.log('curr => ', curr);
+			next = curr.next;
+			console.log('next = curr.next; next => ', next);
+			curr.next = prev;
+			console.log('curr.next = prev; curr => ', curr);
+			prev = curr;
+			console.log('prev = curr; prev => ', prev);
+			curr = next;
+			console.log('curr = next; curr => ', curr);
+			console.log('---------------------------------------------------');
+		}
+
+		this.head = prev;
 		return this;
 	};
 
@@ -722,3 +723,11 @@ const LinkedList = (function () {
 })();
 
 const linkedList = new LinkedList();
+
+linkedList.add(5);
+linkedList.add(4);
+linkedList.add(3);
+linkedList.add(2);
+linkedList.add(1);
+
+linkedList.reverseInPlace();

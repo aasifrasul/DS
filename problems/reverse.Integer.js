@@ -9,6 +9,7 @@ var reverse = function (num) {
 	var cleanedNum = Math.abs(num);
 
 	while (cleanedNum) {
+		console.log('cleanedNum', cleanedNum);
 		remainder = cleanedNum % 10;
 		cleanedNum = Math.floor(cleanedNum / 10);
 		finalNum = finalNum * 10 + remainder;

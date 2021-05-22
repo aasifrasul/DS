@@ -6,6 +6,32 @@
  */
 
 const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+const dataType = (data) => Object.prototype.toString.call(data).slice(8, -1).toLowerCase();
+const isObject = (data) => dataType(data) === 'object';
+const isFunction = (data) => dataType(data) === 'function';
+const isSymbol = (data) => dataType(data) === 'symbol';
+const isString = (data) => dataType(data) === 'string';
+
+function getGlobalContext() {
+	if (typeof global !== 'object' || !global || global.Math !== Math || global.Array !== Array) {
+		return getGlobal();
+	}
+	return global;
+}
+
+function getGlobal() {
+	if (typeof self !== 'undefined') {
+		return self;
+	} else if (typeof window !== 'undefined') {
+		return window;
+	} else if (typeof global !== 'undefined') {
+		return global;
+	} else {
+		return new Function('return this')();
+	}
+}
+
+const globalContext = getGlobalContext();
 
 (function (root, factory) {
 	'use strict';
@@ -29,15 +55,17 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
 		});
 		/* eslint-enable no-undef */
 	}
-})((typeof window === 'object' && window) || this, function (PubSub) {
+})(globalContext, function (PubSub) {
+	//}.call(globalContext, function (PubSub) {
+	//})(isObject(window) ? window : this, function (PubSub) {
 	'use strict';
 
-	var messages = Object.create(null),
-		lastUid = -1,
+	const messages = Object.create(null),
 		ALL_SUBSCRIBING_MSG = '*';
+	let lastUid = -1;
 
 	function hasKeys(obj) {
-		var key;
+		let key;
 
 		for (key in obj) {
 			if (hasOwnProperty(obj, key)) {
@@ -72,11 +100,11 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
 	}
 
 	function deliverMessage(originalMessage, matchedMessage, data, immediateExceptions) {
-		var subscribers = messages[matchedMessage],
+		const subscribers = messages[matchedMessage],
 			callSubscriber = immediateExceptions
 				? callSubscriberWithImmediateExceptions
-				: callSubscriberWithDelayedExceptions,
-			s;
+				: callSubscriberWithDelayedExceptions;
+		let s;
 
 		if (!hasOwnProperty(messages, matchedMessage)) {
 			return;
@@ -91,7 +119,7 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
 
 	function createDeliveryFunction(message, data, immediateExceptions) {
 		return function deliverNamespaced() {
-			var topic = String(message),
+			let topic = String(message),
 				position = topic.lastIndexOf('.');
 
 			// deliver the message as it is now
@@ -109,14 +137,14 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
 	}
 
 	function hasDirectSubscribersFor(message) {
-		var topic = String(message),
+		const topic = String(message),
 			found = Boolean(hasOwnProperty(messages, topic) && hasKeys(messages[topic]));
 
 		return found;
 	}
 
 	function messageHasSubscribers(message) {
-		var topic = String(message),
+		let topic = String(message),
 			found = hasDirectSubscribersFor(topic) || hasDirectSubscribersFor(ALL_SUBSCRIBING_MSG),
 			position = topic.lastIndexOf('.');
 
@@ -130,14 +158,13 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
 	}
 
 	function publish(message, data, sync, immediateExceptions) {
-		message = typeof message === 'symbol' ? message.toString() : message;
+		message = isSymbol(message) ? message.toString() : message;
 
-		var deliver = createDeliveryFunction(message, data, immediateExceptions),
-			hasSubscribers = messageHasSubscribers(message);
-
-		if (!hasSubscribers) {
+		if (!messageHasSubscribers(message)) {
 			return false;
 		}
+
+		const deliver = createDeliveryFunction(message, data, immediateExceptions);
 
 		if (sync === true) {
 			deliver();
@@ -180,11 +207,11 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
 	 * @return { String }
 	 */
 	PubSub.subscribe = function (message, func) {
-		if (typeof func !== 'function') {
+		if (!isFunction(func)) {
 			return false;
 		}
 
-		message = typeof message === 'symbol' ? message.toString() : message;
+		message = isSymbol(message) ? message.toString() : message;
 
 		// message is not registered yet
 		if (!hasOwnProperty(messages, message)) {
@@ -193,7 +220,7 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
 
 		// forcing token as String, to allow for future expansions without breaking usage
 		// and allow for easy use as key names for the 'messages' object
-		var token = 'uid_' + String(++lastUid);
+		const token = 'uid_' + String(++lastUid);
 		messages[message][token] = func;
 
 		// return token for unsubscribing
@@ -211,7 +238,7 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
 	 * @return { PubSub }
 	 */
 	PubSub.subscribeOnce = function (message, func) {
-		var token = PubSub.subscribe(message, function () {
+		const token = PubSub.subscribe(message, function () {
 			// before func apply, unsubscribe message
 			PubSub.unsubscribe(token);
 			func.apply(this, arguments);
@@ -237,7 +264,7 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
 	 * @return { int }
 	 */
 	PubSub.clearSubscriptions = function clearSubscriptions(topic) {
-		var m;
+		let m;
 		for (m in messages) {
 			if (hasOwnProperty(messages, m) && m.indexOf(topic) === 0) {
 				delete messages[m];
@@ -253,8 +280,8 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
      * @return { Array }
     */
 	PubSub.countSubscriptions = function countSubscriptions(topic) {
-		var m;
-		var count = 0;
+		let m,
+			count = 0;
 		for (m in messages) {
 			if (hasOwnProperty(messages, m) && m.indexOf(topic) === 0) {
 				count++;
@@ -270,8 +297,8 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
      * @alias getSubscriptions
     */
 	PubSub.getSubscriptions = function getSubscriptions(topic) {
-		var m;
-		var list = [];
+		let m;
+		const list = [];
 		for (m in messages) {
 			if (hasOwnProperty(messages, m) && m.indexOf(topic) === 0) {
 				list.push(m);
@@ -301,24 +328,24 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
 	 * PubSub.unsubscribe('mytopic');
 	 */
 	PubSub.unsubscribe = function (value) {
-		var descendantTopicExists = function (topic) {
-				var m;
-				for (m in messages) {
-					if (hasOwnProperty(messages, m) && m.indexOf(topic) === 0) {
-						// a descendant of the topic exists:
-						return true;
-					}
-				}
-
-				return false;
-			},
-			isTopic = typeof value === 'string' && (hasOwnProperty(messages, value) || descendantTopicExists(value)),
-			isToken = !isTopic && typeof value === 'string',
-			isFunction = typeof value === 'function',
+		var isTopic = isString(value) && (hasOwnProperty(messages, value) || descendantTopicExists(value)),
+			isToken = !isTopic && isString(value),
 			result = false,
 			m,
 			message,
 			t;
+
+		function descendantTopicExists(topic) {
+			var m;
+			for (m in messages) {
+				if (hasOwnProperty(messages, m) && m.indexOf(topic) === 0) {
+					// a descendant of the topic exists:
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 		if (isTopic) {
 			PubSub.clearSubscriptions(value);
@@ -336,7 +363,7 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
 					break;
 				}
 
-				if (isFunction) {
+				if (isFunction(value)) {
 					for (t in message) {
 						if (hasOwnProperty(message, t) && message[t] === value) {
 							delete message[t];
@@ -350,3 +377,12 @@ const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, k
 		return result;
 	};
 });
+
+const token = PubSub.subscribe('radio1', (data) => console.log(data));
+console.log('token', token);
+
+PubSub.publish('radio1', {
+	url: '/some/url/path', // any argument
+});
+
+PubSub.unsubscribe(token);

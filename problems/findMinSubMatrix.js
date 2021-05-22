@@ -45,6 +45,7 @@
 		[9,10,11,12]
 		[13,14,15,16]
 	]
+	2 X 2
 	[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
 	[1,2,5,6]
 	[2,3,6,7]
@@ -57,20 +58,21 @@
 	[11,12,15,16]
 
 
+	3 X 3
 	[1,2,3,5,6,7,9,10,11]
 	[2,3,4,6,7,8,10,11,12]
 	[5,6,7,9,10,11,13,14,15]
 	[6,7,8,10,11,,12,14,15,16]
 */
 
+/*
 function findMinSubMatrix(matrix, size) {
 	let flatMatrix = [];
 	const colLength = matrix[0].length;
-	const rowLength = matrix.length;
 	const step = colLength - size;
 	let i = 0,
 		j = 0;
-	const aggregateMinMatrix = [];
+	const finalArray = [];
 	let subArr;
 	if (step < 0) {
 		return [];
@@ -93,6 +95,7 @@ function findMinSubMatrix(matrix, size) {
 		subArr = [];
 		j = 0;
 		while (j < size) {
+			console.log('subArr row', flatMatrix.slice(i + j * size + j * step, i + (j + 1) * size + j * step));
 			subArr = subArr.concat(flatMatrix.slice(i + j * size + j * step, i + (j + 1) * size + j * step));
 			j++;
 		}
@@ -102,33 +105,75 @@ function findMinSubMatrix(matrix, size) {
 			break;
 		}
 
-		aggregateMinMatrix.push(Math.min(...subArr));
+		finalArray.push(Math.min(...subArr));
+		// Can also use Math.min.apply(Math, subArr)
 		i++;
 	}
 
-	return aggregateMinMatrix;
-}
-
-function findMinSubMatrix(matrix, size) {
-	const flatAndSortedArr = matrix.flat().sort((a, b) => a - b);
-	let i = 0;
-	const subArr = [];
-
-	while (i < size) {
-		const tempArr = flatAndSortedArr.slice(i * size + i, (i + 1) * size + i);
-		console.log('tempArr', tempArr);
-		subArr.push(...tempArr);
-		i++;
-	}
-
-	return subArr;
+	return finalArray;
 }
 
 var matrix = [
-	[1, 2, 3, 4],
-	[5, 6, 7, 8],
-	[9, 10, 11, 12],
-	[13, 14, 15, 16],
+	[1, 2, 3, 4, 25],
+	[5, 6, 7, 8, 26],
+	[9, 10, 11, 12, 27],
+	[13, 14, 15, 16, 28],
+	[29, 30, 31, 32, 33],
 ];
 
-console.log(findMinSubMatrix(matrix, 3));
+console.log(findMinSubMatrix(matrix, 4));
+*/
+function findMinSubMatrix(mat, size) {
+	const finalArray = [],
+		colLength = mat[0].length,
+		rowLength = mat.length,
+		step = colLength - size;
+	let i = (j = k = 0),
+		flattenedMatrix = [],
+		tempArr = [];
+	let count = 0;
+
+	mat.forEach((i) => {
+		flattenedMatrix = flattenedMatrix.concat(i);
+	});
+	while (i < flattenedMatrix.length) {
+		if ((i % colLength) + size > colLength) {
+			console.log('Row end reached', i, (i % colLength) + size);
+			i++;
+			continue;
+		}
+		tempArr = [];
+		j = 0;
+		while (j < size * size) {
+			count++;
+			k = i + j;
+			if (j >= size) {
+				k += step;
+			}
+			console.log('k', k);
+			if (!flattenedMatrix[k]) {
+				break;
+			}
+			tempArr.push(flattenedMatrix[k]);
+			j++;
+		}
+		if (tempArr.length < size * size) {
+			console.log('End reached', i);
+			break;
+		}
+		console.log('count', count);
+		finalArray.push(Math.min(...tempArr));
+		i++;
+	}
+	return finalArray;
+}
+
+var matrix = [
+	[1, 2, 3, 4, 25],
+	[5, 6, 7, 8, 26],
+	[9, 10, 11, 12, 27],
+	[13, 14, 15, 16, 28],
+	[29, 30, 31, 32, 33],
+];
+
+console.log(findMinSubMatrix(matrix, 4));

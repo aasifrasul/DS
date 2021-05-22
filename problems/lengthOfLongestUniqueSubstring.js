@@ -44,7 +44,7 @@ var longestSubString = function (str) {
 	return maxLength;
 };
 
-var lengthOfLongestSubstring = (function () {
+var lengthOfLongestUniqueSubstring = (function () {
 	const findLongestUniqueString = (s, maxLength = 0) => {
 		if (typeof s !== 'string' || s.length === 0) {
 			return 0;
@@ -87,7 +87,7 @@ var lengthOfLongestSubstring = (function () {
 				end = i === ilen - 1 ? len - 1 : tempArr[i + 1] - 1;
 				substring = s.substring(start, end + 1);
 				if (maxLength >= substring.length) continue;
-				maxLength = Math.max(maxLength, lengthOfLongestSubstring(substring, maxLength));
+				maxLength = Math.max(maxLength, lengthOfLongestUniqueSubstring(substring, maxLength));
 			}
 		}
 
@@ -97,7 +97,7 @@ var lengthOfLongestSubstring = (function () {
 	return memoize(findLongestUniqueString);
 })();
 
-var lengthOfLongestSubstring = function (s) {
+var lengthOfLongestUniqueSubstring = function (s) {
 	if (typeof s !== 'string' || s.length === 0) {
 		return 0;
 	}
@@ -115,9 +115,8 @@ var lengthOfLongestSubstring = function (s) {
 				}
 				curMaxLength = 0;
 				break;
-			} else {
-				curMaxLength++;
 			}
+			curMaxLength++;
 			hash[s[j]] = true;
 		}
 	}
@@ -125,7 +124,9 @@ var lengthOfLongestSubstring = function (s) {
 	return Math.max(maxLength, curMaxLength);
 };
 
-var lengthOfLongestSubstring = (s) => {
+console.log(lengthOfLongestUniqueSubstring('matgmrix'));
+
+var lengthOfLongestUniqueSubstring = (s) => {
 	const hash = new Map();
 	let maxLength = (start = 0),
 		sums,
@@ -137,19 +138,15 @@ var lengthOfLongestSubstring = (s) => {
 			console.log('char', char);
 			console.log('hash', hash);
 			sums = hash.get(char) + 1;
-			if (sums > start) {
-				start = sums;
-			}
+			console.log('sums', sums);
 			console.log('start', start);
+			start = Math.max(sums, start);
 		}
 		diff = i - start + 1;
+		console.log('diff', diff);
 		maxLength = Math.max(diff, maxLength);
 		hash.set(char, i);
 	}
 
 	return maxLength;
 };
-
-lengthOfLongestSubstring('aa');
-
-lengthOfLongestSubstring = memoize(longestSubString);

@@ -49,7 +49,6 @@ function findOrderingOfTasks(input) {
 				finalArr.push(item[0]);
 			}
 		}
-		console.log('finalArr', finalArr);
 		i++;
 	}
 	return finalArr;
