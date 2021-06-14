@@ -2,14 +2,14 @@ var pubsub = {};
 (function (q) {
 	var topics = {},
 		subUid = -1;
-	q.subscribe = function (topic, func) {
+	q.subscribe = function (topic, callback) {
 		if (!topics[topic]) {
 			topics[topic] = [];
 		}
 		var token = (++subUid).toString();
 		topics[topic].push({
 			token,
-			func,
+			callback,
 		});
 		return token;
 	};
@@ -19,11 +19,11 @@ var pubsub = {};
 			return false;
 		}
 		setTimeout(function () {
-			var subscribers = topics[topic],
-				len = subscribers ? subscribers.length : 0;
+			var subscribers = topics[topic] || [],
+				len = subscribers.length;
 
 			while (len--) {
-				subscribers[len].func(topic, args);
+				subscribers[len].callback(topic, args);
 			}
 		}, 0);
 		return true;

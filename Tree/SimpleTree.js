@@ -21,23 +21,6 @@ const Tree = (function () {
 			}
 		}
 	};
-	Tree.prototype.remove = function (data) {
-		if (this.root.data === data) {
-			this.root = null;
-		}
-
-		const queue = [this.root];
-		while (queue.length) {
-			const node = queue.shift();
-			for (let i = 0; i < node.children.length; i++) {
-				if (node.children[i].data === data) {
-					node.children.splice(i, 1);
-				} else {
-					queue.push(node.children[i]);
-				}
-			}
-		}
-	};
 	Tree.prototype.contains = function (data) {
 		return this.findBFS(data) ? true : false;
 	};
@@ -54,24 +37,20 @@ const Tree = (function () {
 		}
 		return null;
 	};
-	Tree.prototype._preOrder = function (node, fn) {
+	Tree.prototype.preOrder = function (node, fn) {
 		if (node) {
-			if (fn) {
-				fn(node);
-			}
+			fn && fn(node);
 			for (let i = 0; i < node.children.length; i++) {
-				this._preOrder(node.children[i], fn);
+				this.preOrder(node.children[i], fn);
 			}
 		}
 	};
-	Tree.prototype._postOrder = function (node, fn) {
+	Tree.prototype.postOrder = function (node, fn) {
 		if (node) {
 			for (let i = 0; i < node.children.length; i++) {
-				this._postOrder(node.children[i], fn);
+				this.postOrder(node.children[i], fn);
 			}
-			if (fn) {
-				fn(node);
-			}
+			fn && fn(node);
 		}
 	};
 	Tree.prototype.traverseDFS = function (fn, method) {
@@ -79,7 +58,7 @@ const Tree = (function () {
 		if (method) {
 			this[`_${method}`](current, fn);
 		} else {
-			this._preOrder(current, fn);
+			this.preOrder(current, fn);
 		}
 	};
 	Tree.prototype.traverseBFS = function (fn) {
@@ -91,6 +70,23 @@ const Tree = (function () {
 			}
 			for (let i = 0; i < node.children.length; i++) {
 				queue.push(node.children[i]);
+			}
+		}
+	};
+	Tree.prototype.remove = function (data) {
+		if (this.root.data === data) {
+			this.root = null;
+		}
+
+		const queue = [this.root];
+		while (queue.length) {
+			const node = queue.shift();
+			for (let i = 0; i < node.children.length; i++) {
+				if (node.children[i].data === data) {
+					node.children.splice(i, 1);
+				} else {
+					queue.push(node.children[i]);
+				}
 			}
 		}
 	};

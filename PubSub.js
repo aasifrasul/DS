@@ -12,13 +12,6 @@ const isFunction = (data) => dataType(data) === 'function';
 const isSymbol = (data) => dataType(data) === 'symbol';
 const isString = (data) => dataType(data) === 'string';
 
-function getGlobalContext() {
-	if (typeof global !== 'object' || !global || global.Math !== Math || global.Array !== Array) {
-		return getGlobal();
-	}
-	return global;
-}
-
 function getGlobal() {
 	if (typeof self !== 'undefined') {
 		return self;
@@ -29,6 +22,13 @@ function getGlobal() {
 	} else {
 		return new Function('return this')();
 	}
+}
+
+function getGlobalContext() {
+	if (typeof global !== 'object' || !global || global.Math !== Math || global.Array !== Array) {
+		return getGlobal();
+	}
+	return global;
 }
 
 const globalContext = getGlobalContext();
@@ -56,8 +56,6 @@ const globalContext = getGlobalContext();
 		/* eslint-enable no-undef */
 	}
 })(globalContext, function (PubSub) {
-	//}.call(globalContext, function (PubSub) {
-	//})(isObject(window) ? window : this, function (PubSub) {
 	'use strict';
 
 	const messages = Object.create(null),

@@ -30,7 +30,9 @@ var twoSum = function (nums, target) {
 	var diff = 0;
 	for (i = 0; i < nums.length; i++) {
 		diff = target - nums[i];
+		console.log(hash);
 		if (typeof hash[diff] !== 'undefined') {
+			console.log('matched', nums[hash[diff]], nums[i]);
 			return [hash[diff], i];
 		} else {
 			hash[nums[i]] = i;
