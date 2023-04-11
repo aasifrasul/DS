@@ -35,7 +35,7 @@ var Graph = (function () {
 				.map(function (vertex) {
 					return `${vertex} -> ${this.edges[vertex].join(', ')}`.trim();
 				}, this)
-				.join(' | ')
+				.join(' | '),
 		);
 	};
 

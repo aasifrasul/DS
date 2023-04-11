@@ -329,7 +329,7 @@
 					subst = new TreeNode(
 						this.parent,
 						concat(this.leaves, [sep], right.leaves),
-						concat(this.nodes, right.nodes)
+						concat(this.nodes, right.nodes),
 					);
 					// Remove the seperator from the parent
 					this.parent.leaves.splice(index, 1);
@@ -341,7 +341,7 @@
 					subst = new TreeNode(
 						this.parent,
 						concat(left.leaves, [sep], this.leaves),
-						concat(left.nodes, this.nodes)
+						concat(left.nodes, this.nodes),
 					);
 					// Remove the seperator from the parent
 					this.parent.leaves.splice(index - 1, 1);
@@ -713,7 +713,7 @@
 				typeof maxKey != 'undefined' ? maxKey : null,
 				(key, value) => {
 					n++;
-				}
+				},
 			);
 			return n;
 		};

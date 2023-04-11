@@ -99,12 +99,14 @@ class AsyncQueue extends BaseQueue {
 const asyncQueue = new AsyncQueue(2);
 
 // generates a promise
-const asyncGenerator = ({ ms, ...rest } = {}) => () =>
-	new Promise((resolve) => setTimeout(resolve, ms, { ...rest, ms }));
+const asyncGenerator =
+	({ ms, ...rest } = {}) =>
+	() =>
+		new Promise((resolve) => setTimeout(resolve, ms, { ...rest, ms }));
 
 // creates a N items promise array
 const promises = Array.apply(null, { length: 20 }).map(Function.call, (i) =>
-	asyncGenerator.bind(null, { ms: Math.random() * 200, url: `(${++i})`, data: `payload(${i})` })()
+	asyncGenerator.bind(null, { ms: Math.random() * 200, url: `(${++i})`, data: `payload(${i})` })(),
 );
 
 // start proformance timing
@@ -119,8 +121,8 @@ promises.forEach((promise, idx) =>
 		.enqueue(promise)
 		// .enqueue(promise, ((idx + 1) == promises.length))
 		.then(({ ms, url, data }) =>
-			console.log(`DONE ${url} => time, delay, data`, performance.now() - start, ms, data)
-		)
+			console.log(`DONE ${url} => time, delay, data`, performance.now() - start, ms, data),
+		),
 );
 
 // Now start the queue
