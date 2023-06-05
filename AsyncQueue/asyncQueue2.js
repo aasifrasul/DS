@@ -29,7 +29,7 @@ function queue(concurrency = 1) {
 // This callback is executed inside the function within a setTimeout
 const tasks = new Array(50).fill(0).map((i, idx) => (done) => {
 	// "done" is a callback function passed when a task is run
-	const delay = Math.random() * 10;
+	const delay = Math.random() * 1000;
 	setTimeout(() => {
 		console.log(idx, delay);
 		done();

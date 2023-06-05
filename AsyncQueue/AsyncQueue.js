@@ -4,8 +4,8 @@ class BaseQueue {
 	}
 	enqueue(item) {
 		if (item) {
-			this.hash.set(this.count, item);
-			this.count++;
+			this.upperLimit++;
+			this.hash.set(this.upperLimit, item);
 		}
 	}
 	dequeue() {
@@ -13,28 +13,28 @@ class BaseQueue {
 			return undefined;
 		}
 
-		const result = this.hash.get(this.lowestCount);
-		this.hash.delete(this.lowestCount);
-		this.lowestCount++;
+		this.lowerLimit++;
+		const result = this.hash.get(this.lowerLimit);
+		this.hash.delete(this.lowerLimit);
 		return result;
 	}
 	reset() {
 		this.hash = new Map();
-		this.count = 0;
-		this.lowestCount = 0;
+		this.upperLimit = 0;
+		this.lowerLimit = 0;
 	}
 	get size() {
-		return this.count - this.lowestCount;
+		return this.upperLimit - this.lowerLimit;
 	}
 }
 
 class AsyncQueue extends BaseQueue {
-	constructor(maxParallelTasks) {
+	constructor(maxParallelTasks = 5) {
 		super();
 		this.pendingCount = 0;
 		this.isStopped = false;
 		this.isPaused = false;
-		this.maxParallelTasks = maxParallelTasks || 5;
+		this.maxParallelTasks = maxParallelTasks;
 	}
 	enqueue(action, autoDequeue = true) {
 		return new Promise((resolve, reject) => {
@@ -69,12 +69,11 @@ class AsyncQueue extends BaseQueue {
 			console.log('this.pendingCount', this.pendingCount);
 			const payload = await item.action(this);
 			console.log('this.pendingCount', this.pendingCount);
-			this.pendingCount--;
 			item.resolve(payload);
 		} catch (e) {
-			this.pendingCount--;
 			item.reject(e);
 		} finally {
+			this.pendingCount--;
 			this.dequeue();
 		}
 
@@ -106,7 +105,11 @@ const asyncGenerator =
 
 // creates a N items promise array
 const promises = Array.apply(null, { length: 20 }).map(Function.call, (i) =>
-	asyncGenerator.bind(null, { ms: Math.random() * 200, url: `(${++i})`, data: `payload(${i})` })(),
+	asyncGenerator.bind(null, {
+		ms: Math.random() * 200,
+		url: `(${++i})`,
+		data: `payload(${i})`,
+	})()
 );
 
 // start proformance timing
@@ -121,14 +124,18 @@ promises.forEach((promise, idx) =>
 		.enqueue(promise)
 		// .enqueue(promise, ((idx + 1) == promises.length))
 		.then(({ ms, url, data }) =>
-			console.log(`DONE ${url} => time, delay, data`, performance.now() - start, ms, data),
-		),
+			console.log(
+				`DONE ${url} => time, delay, data`,
+				performance.now() - start,
+				ms,
+				data
+			)
+		)
 );
 
 // Now start the queue
 //asyncQueue.start();
 
-/*
 setTimeout(() => {
 	asyncQueue.stop();
 	asyncQueue.pause();
@@ -139,10 +146,13 @@ setTimeout(() => {
 			.enqueue(promise)
 			// .enqueue(promise, ((idx + 1) == promises.length))
 			.then(({ ms, url, data }) =>
-				console.log(`DONE ${url} => time, delay, data`, performance.now() - start, ms, data)
+				console.log(
+					`DONE ${url} => time, delay, data`,
+					performance.now() - start,
+					ms,
+					data
+				)
 			)
 	);
-	asyncQueue.start()
-
+	asyncQueue.start();
 }, 1000);
-*/

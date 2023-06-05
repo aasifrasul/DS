@@ -1,49 +1,23 @@
-function orderedBraces(braces) {
-	if (!Array.isArray(braces) || !braces.length) {
-		return [];
+function orderedBraces(str) {
+	const len = str.length;
+	const bracesCount = {
+		'{': 0,
+		'}': 0,
+		'[': 0,
+		"]": 0,
+		'(': 0,
+		')': 0,
+	};
+
+	//for (var i = str.length - 1; i >= 0; i--) {
+	for (let value of str) {
+		if (value in bracesCount) {
+			bracesCount[value] = bracesCount[value] + 1;
+			console.log('bracesCount', bracesCount);
+		}
 	}
 
-	const bracePairs = {
-			'{': 0,
-			'[': 0,
-			'(': 0,
-			'}': 0,
-			']': 0,
-			')': 0,
-		},
-		res = [];
-	let i = 0,
-		j = 0,
-		item,
-		cur,
-		isMatch;
-
-	while (i < braces.length) {
-		cur = braces[i];
-
-		if (cur.length % 2) {
-			res.push('NO');
-			i++;
-			continue;
-		}
-		j = 0;
-
-		while (j < cur.length) {
-			item = cur[j];
-			bracePairs[item]++;
-			j++;
-		}
-
-		isMatch =
-			!((bracePairs['{'] + bracePairs['}']) % 2) &&
-			!((bracePairs['['] + bracePairs[']']) % 2) &&
-			!((bracePairs['('] + bracePairs[')']) % 2);
-
-		i++;
-		res.push(isMatch ? 'YES' : 'NO');
-	}
-
-	return res;
+	return (bracesCount['{'] === bracesCount['}'] && bracesCount['['] === bracesCount[']'] && bracesCount['('] === bracesCount[')']) ? 'valid' : 'invalid';
 }
 
-console.log(orderedBraces(['{{[()]}}', '{{}[()]}}', '{{[()[]]}}']));
+orderedBraces('{dfhhfg}');
