@@ -1,4 +1,4 @@
-var getBiggestWordFromDictionary = (dict, str) => {
+function getBiggestWordFromDictionary (dict, str) {
 	var cur,
 		hash = {},
 		isMatch,

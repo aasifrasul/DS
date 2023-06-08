@@ -1,20 +1,3 @@
-var diagonalSumOfMatrix = function (mat) {
-	const rowLength = mat[0].length - 1;
-	let sum = 0;
-
-	function addSum(val) {
-		sum += val;
-		// console.log('val, sum', val, sum)
-	}
-
-	for (let i in mat) {
-		// console.log('i', i)
-		addSum(mat[i][i]);
-		i !== Math.abs(rowLength - i) && addSum(mat[i][rowLength - i]);
-	}
-
-	return sum;
-};
 
 var mat = [
 	[01, 02, 03, 04, 05],
@@ -24,4 +7,17 @@ var mat = [
 	[21, 22, 23, 24, 25],
 ];
 
-console.log(diagonalSumOfMatrix(mat));
+
+function sumOfDiagonalNumbersInMatrix(mat) {
+	const len = mat.length;
+	let sum = 0;
+
+	for (let i = 0; i < len; i++) {
+		console.log(mat[i][i], mat[i][len -i -1]);
+		sum += mat[i][i] + ((i === len -i -1) ? 0 : mat[i][len -i -1]);
+	}
+
+	return sum;
+}
+
+sumOfDiagonalNumbersInMatrix(mat);

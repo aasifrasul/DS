@@ -43,7 +43,7 @@ function findMinSubMatrix(matrix, size, sum) {
 		i++;
 	}
 
-	return [];
+	return subArr;
 }
 
 function findMinSubMatrix(matrix, size, sum) {
@@ -79,25 +79,20 @@ var matrix = [
 	[9, 10, 11, 12],
 	[13, 14, 15, 16],
 ];
-/*
-	[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
 
-	2X2
-	[1,2,5,6]
-	[2,3,6,7]
-	[3,4,7,8]
-	[5,6,9,10]
-	[6,7,10,11]
-	[7,8,11,12]
-	[9,10,13,14]
-	[10,11,14,15]
-	[11,12,15,16]
+function findMinSubMatrix(mat) {
+	const len = mat.length;
+	const hash = {};
 
-	3X3
-	[1,2,3,5,6,7,9,10,11]
-	[2,3,4,6,7,8,10,11,12]
-	[5,6,7,9,10,11,13,14,15]
-	[6,7,8,10,11,,12,14,15,16]
-*/
-
+	for (let i = 2; i < len ; i++) {
+		hash[i] = [];
+		for (let j = 0; j < len - 2; j++) {
+			for (let k = 0; k < len - 2; k++) {
+				console.log(mat[j].slice(k, i), mat[j+1].slice(k, i));
+				hash[i].push([mat[j].slice(k, i), mat[j+1].slice(k, i));
+			}
+		}
+	}
+	return hash;
+}
 findMinSubMatrix(matrix, 2, 14);

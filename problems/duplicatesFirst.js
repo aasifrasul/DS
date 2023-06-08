@@ -8,7 +8,7 @@ function duplicatesFirst(arr) {
 		//	hash[Next Item] = Next Item;
 		if (arr[i] === arr[i - 1]) {
 			arr.push(arr.splice(i, 1)[0]);
-			console.log('i, hash, arr', i, hash, arr);
+			console.log('i, arr', i, arr);
 		} else {
 			i++;
 		}
