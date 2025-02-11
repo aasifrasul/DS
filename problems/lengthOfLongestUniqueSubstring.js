@@ -30,7 +30,7 @@ var isStringUnique = function (str) {
 function longestSubString(str) {
 	let i = 0,
 		currentStr = '';
-		start = 0;
+	start = 0;
 
 	while (i < str.length) {
 		if (str[i] !== str[start]) {
@@ -40,9 +40,9 @@ function longestSubString(str) {
 		i++;
 	}
 
-	if (str.length > start && (str.length - start) > currentStr.length) {
-        currentStr = str.slice(start, str.length);
-    }
+	if (str.length > start && str.length - start > currentStr.length) {
+		currentStr = str.slice(start, str.length);
+	}
 
 	return currentStr;
 }

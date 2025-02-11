@@ -1,10 +1,9 @@
 function getMostRepeatedCharacter(input) {
 	const hash = {
 		maxCount: 0,
-		maxCountChar: ''
+		maxCountChar: '',
 	};
-	let i,
-		item;
+	let i, item;
 	for (i = 0; i < input.length; i++) {
 		item = input[i];
 		console.log('item', item);
@@ -14,7 +13,7 @@ function getMostRepeatedCharacter(input) {
 			hash['maxCountChar'] = item;
 		}
 	}
-	console.log(hash)
+	console.log(hash);
 	return hash['maxCountChar'];
 }
 

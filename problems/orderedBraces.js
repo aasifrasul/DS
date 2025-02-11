@@ -1,23 +1,32 @@
 function orderedBraces(str) {
-	const len = str.length;
-	const bracesCount = {
-		'{': 0,
-		'}': 0,
-		'[': 0,
-		"]": 0,
-		'(': 0,
-		')': 0,
+	const stack = [];
+	const matchingBraces = {
+		')': '(',
+		']': '[',
+		'}': '{',
 	};
 
-	//for (var i = str.length - 1; i >= 0; i--) {
-	for (let value of str) {
-		if (value in bracesCount) {
-			bracesCount[value] = bracesCount[value] + 1;
-			console.log('bracesCount', bracesCount);
-		}
+	for (let char of str) {
+		if (char in matchingBraces) {
+			// Closing brace
+			const topOfStack = stack.pop();
+			if (topOfStack !== matchingBraces[char]) {
+				return 'Invalid'; // Mismatched or no opening brace
+			}
+		} else if ('({['.includes(char)) {
+			// Opening brace
+			stack.push(char);
+		} // Ignore other characters
 	}
 
-	return (bracesCount['{'] === bracesCount['}'] && bracesCount['['] === bracesCount[']'] && bracesCount['('] === bracesCount[')']) ? 'valid' : 'invalid';
+	return stack.length === 0 ? 'Valid' : 'Invalid'; // Stack should be empty if all braces matched
 }
 
-orderedBraces('{dfhhfg}');
+console.log(orderedBraces('{}dfhhfg}')); // Valid
+console.log(orderedBraces('{[}]')); // Invalid
+console.log(orderedBraces('{([])}')); // Valid
+console.log(orderedBraces('{{{{')); // Invalid
+console.log(orderedBraces('}}}}}')); // Invalid
+console.log(orderedBraces('')); // Valid (empty string is considered valid)
+console.log(orderedBraces('{')); // Invalid
+console.log(orderedBraces('(')); // Invalid

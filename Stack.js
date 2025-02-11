@@ -44,7 +44,7 @@ const Stack = (function () {
 	};
 
 	Stack.prototype.isEmpty = function () {
-		return !this.top;
+		return !this.size;
 	};
 
 	return Stack;

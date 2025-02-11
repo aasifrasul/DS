@@ -82,5 +82,5 @@ console.log(pq.printPQueue()); // A C
 let item;
 
 while ((item = await pQueue.dequeue())) {
-	console.log(item); 
+	console.log(item);
 }

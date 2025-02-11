@@ -23,11 +23,11 @@ const LinkedList = (function () {
 
 	LinkedList.prototype.toArray = function () {
 		const result = [],
-			curr = this.head;
+			current = this.head;
 
-		while (curr) {
-			result.push(curr.data);
-			curr = curr.next;
+		while (current) {
+			result.push(current.data);
+			current = current.next;
 		}
 
 		return result;
@@ -39,145 +39,169 @@ const LinkedList = (function () {
 
 	LinkedList.prototype.add = function (value) {
 		const node = new Node(value);
-		let curr = this.head;
+		let current = this.head;
 
 		this.increment();
 
-		if (!curr) {
+		if (!current) {
 			this.head = node;
 			return node;
 		}
 
-		while (curr.next) {
-			curr = curr.next;
+		while (current.next) {
+			current = current.next;
 		}
 
-		curr.next = node;
+		current.next = node;
 		return node;
 	};
 
 	LinkedList.prototype.insertAfter = function (data, toNodeData) {
-		let curr = this.head;
-		while (curr) {
-			if (curr.data === toNodeData) {
+		let current = this.head;
+		while (current) {
+			if (current.data === toNodeData) {
 				const node = new Node(data);
-				if (curr === this.tail) {
+				if (current === this.tail) {
 					this.tail.next = node;
 					this.tail = node;
 				} else {
-					node.next = curr.next;
-					curr.next = node;
+					node.next = current.next;
+					current.next = node;
 				}
 				this.numberOfValues++;
 			}
-			curr = curr.next;
+			current = current.next;
 		}
 	};
 
 	LinkedList.prototype.traverse = function (fn) {
-		let curr = this.head;
-		while (curr) {
+		let current = this.head;
+		while (current) {
 			if (fn) {
-				fn(curr);
+				fn(current);
 			}
-			curr = curr.next;
+			current = current.next;
 		}
 	};
 
 	LinkedList.prototype.addTop = function (value) {
 		const node = new Node(value),
-			curr = this.head;
+			current = this.head;
 
 		this.increment();
 
-		if (!curr) {
+		if (!current) {
 			this.head = node;
 			return node;
 		}
 
-		node.next = curr;
+		node.next = current;
 		this.head = node;
 		return node;
 	};
 
 	LinkedList.prototype.print = function (key = 'data') {
-		let curr = this.head;
-		while (curr) {
-			console.log(curr[key]);
-			curr = curr.next;
+		let current = this.head;
+		while (current) {
+			console.log(current[key]);
+			current = current.next;
 		}
 	};
 
 	LinkedList.prototype.clone = function (pos) {
-		let curr = this.head,
+		let current = this.head,
 			clonedLL = new LinkedList();
 
-		while (curr) {
-			clonedLL.add(curr.data);
-			curr = curr.next;
+		while (current) {
+			clonedLL.add(current.data);
+			current = current.next;
 		}
 
 		return clonedLL;
 	};
 
 	LinkedList.prototype.get = function (pos) {
-		let curr = this.head,
+		let current = this.head,
 			count = 0;
 
 		if (pos > this.length) {
 			return "Doesn't Exist!";
 		}
 		while (count < pos) {
-			curr = curr.next;
+			current = current.next;
 			count++;
 		}
-		return curr;
+		return current;
 	};
 
-	LinkedList.prototype.remove = function (pos) {
-		let curr = this.head,
-			count = 0,
-			prevNode = null;
-		if (pos > this.length) {
-			return "Doesn't Exist!";
-		}
-		if (pos === 0) {
-			this.head = curr.next;
-			this.decrement();
-			return this.head;
-		}
-		while (count < pos) {
-			prevNode = curr;
-			curr = curr.next;
-			count++;
-		}
-		prevNode.next = curr.next;
-		curr = null;
-		this.decrement();
+	LinkedList.prototype.remove = function (posOrValue) {
+		let current = this.head;
+		let previous = null;
+		let removedNode = null;
 
-		return this.head;
+		if (typeof posOrValue === 'number') {
+			// Remove by position
+			if (posOrValue < 0 || posOrValue >= this.length) {
+				return null; // Or throw an error if you prefer
+			}
+			if (posOrValue === 0) {
+				this.head = current.next;
+				removedNode = current;
+			} else {
+				let count = 0;
+				while (count < posOrValue) {
+					previous = current;
+					current = current.next;
+					count++;
+				}
+				previous.next = current.next;
+				removedNode = current;
+			}
+		} else {
+			// Remove by value
+			while (current && current.data !== posOrValue) {
+				previous = current;
+				current = current.next;
+			}
+			if (!current) {
+				return null; // Value not found
+			}
+			if (!previous) {
+				// Removing head
+				this.head = current.next;
+			} else {
+				previous.next = current.next;
+			}
+			removedNode = current;
+		}
+
+		if (removedNode) {
+			this.decrement();
+		}
+
+		return removedNode;
 	};
 
 	LinkedList.prototype.delete = function (value) {
-		let curr = this.head;
+		let current = this.head;
 
-		if (!curr) {
+		if (!current) {
 			return null;
 		}
 
-		if (curr.data == value) {
-			this.head = curr.next;
+		if (current.data == value) {
+			this.head = current.next;
 			this.decrement();
-			return curr;
+			return current;
 		}
 
-		while (curr.next) {
-			const prev = curr;
-			curr = curr.next;
-			if (curr.data == value) {
-				prev.next = curr.next;
+		while (current.next) {
+			const prev = current;
+			current = current.next;
+			if (current.data == value) {
+				prev.next = current.next;
 				this.decrement();
-				return curr;
+				return current;
 			}
 		}
 
@@ -185,145 +209,78 @@ const LinkedList = (function () {
 	};
 
 	LinkedList.prototype.searchNodeAt = function (pos) {
-		let curr = this.head;
+		let current = this.head;
 		let count = 0;
 
-		if (!curr) {
+		if (!current) {
 			return null;
 		}
 
-		while (curr.next) {
+		while (current.next) {
 			count++;
 			if (pos == count) {
-				return curr;
+				return current;
 			}
-			curr = curr.next;
+			current = current.next;
 		}
 
 		return null;
 	};
 
 	LinkedList.prototype.searchNodeByValue = function (val) {
-		let curr = this.head;
+		let current = this.head;
 
-		if (!curr) {
+		if (!current) {
 			return null;
 		}
 
-		if (curr.data == val) {
-			return curr;
+		if (current.data == val) {
+			return current;
 		}
 
-		while (curr.next) {
-			curr = curr.next;
-			if (curr.data == val) {
-				return curr;
+		while (current.next) {
+			current = current.next;
+			if (current.data == val) {
+				return current;
 			}
 		}
 
 		return null;
 	};
 
-	LinkedList.prototype.remove = function (pos) {
-		let curr = this.head,
-			length = this.length,
-			count = 0,
-			message = {
-				failure: 'Failure: non-existent node in this list.',
-			},
-			beforeNodeToDelete = null,
-			nodeToDelete = null,
-			deletedNode = null;
-
-		if (typeof pos === 'undefined' || pos < 0 || pos > length) {
-			throw new Error(message.failure);
-		}
-
-		if (!curr) {
-			return null;
-		}
-
-		if (pos === 0) {
-			this.head = curr.next;
-			deletedNode = curr;
-			curr = null;
-			this.decrement();
-
-			return deletedNode;
-		}
-
-		while (count < pos) {
-			beforeNodeToDelete = curr;
-			nodeToDelete = curr.next;
-			count++;
-		}
-
-		beforeNodeToDelete.next = nodeToDelete.next;
-		deletedNode = Object.assign({}, nodeToDelete);
-		nodeToDelete = null;
-		this.decrement();
-
-		return deletedNode;
-	};
-
 	LinkedList.prototype.reverse = function () {
 		if (!this.head || !this.head.next) return this;
 
-		let curr = this.head,
+		let current = this.head,
 			node;
 		const reversedLL = new LinkedList();
 
-		while (curr) {
-			node = new Node(curr.data);
+		while (current) {
+			node = new Node(current.data);
 			node.next = reversedLL.head;
 			reversedLL.head = node;
-			curr = curr.next;
+			current = current.next;
 		}
 		/*
-		while (curr) {
-			reversedLL.addTop(curr.data);
-			curr = curr.next;
+		while (current) {
+			reversedLL.addTop(current.data);
+			current = current.next;
 		}
 		*/
 		return reversedLL;
 	};
 
 	LinkedList.prototype.reverseInPlace = function () {
-		let curr = this.head;
-
-		if (curr) {
-			while (curr.next) {
-				node = new Node(curr.next.data);
-				node.next = this.head;
-				this.head = node;
-				curr.next = curr.next.next;
-			}
+		let prev = null;
+		let current = this.head;
+		let next = null;
+		while (current) {
+			next = current.next;
+			current.next = prev;
+			prev = current;
+			current = next;
 		}
-
-		return this;
-	};
-
-	LinkedList.prototype.reverseInPlace = function () {
-		if (!this.head || !this.head.next) return this;
-
-		let curr = this.head,
-			prev = null,
-			next = null;
-
-		while (curr) {
-			console.log('curr => ', curr);
-			next = curr.next;
-			console.log('next = curr.next; next => ', next);
-			curr.next = prev;
-			console.log('curr.next = prev; curr => ', curr);
-			prev = curr;
-			console.log('prev = curr; prev => ', prev);
-			curr = next;
-			console.log('curr = next; curr => ', curr);
-			console.log('---------------------------------------------------');
-		}
-
-		this.head = prev;
+		this.head = prev; // Crucial: Update the head!
 		return this;
 	};
 
@@ -368,7 +325,7 @@ const LinkedList = (function () {
 		if (!val) {
 			return null;
 		}
-		let curr = this.head,
+		let current = this.head,
 			node = new Node(val),
 			prev;
 
@@ -380,19 +337,19 @@ const LinkedList = (function () {
 		}
 		//value lower than head value
 		if (val < this.head.data) {
-			node.next = curr;
+			node.next = current;
 			this.head = node;
 			return this;
 		}
 
-		while (curr) {
-			if (curr.data > val) {
-				node.next = curr;
+		while (current) {
+			if (current.data > val) {
+				node.next = current;
 				prev.next = node;
 				return this;
 			}
-			prev = curr;
-			curr = curr.next;
+			prev = current;
+			current = current.next;
 		}
 		node.next = null;
 		prev.next = node;
@@ -404,7 +361,7 @@ const LinkedList = (function () {
 			return null;
 		}
 		let head = this.head,
-			curr = head,
+			current = head,
 			node = new Node(val),
 			prev;
 
@@ -420,14 +377,14 @@ const LinkedList = (function () {
 			return this;
 		}
 
-		while (curr) {
-			if (curr.data < val) {
-				node.next = curr;
+		while (current) {
+			if (current.data < val) {
+				node.next = current;
 				prev.next = node;
 				return this;
 			}
-			prev = curr;
-			curr = curr.next;
+			prev = current;
+			current = current.next;
 		}
 		node.next = null;
 		prev.next = node;
@@ -479,14 +436,14 @@ const LinkedList = (function () {
 
 	LinkedList.prototype.getLength = function () {
 		let head = this.head,
-			curr = head,
+			current = head,
 			pointer = head,
 			anotherPtr,
 			len = 0;
 		const loopStartNode = head.findLoopStart();
 		if (!loopStartNode) {
-			while (curr) {
-				curr = curr.next;
+			while (current) {
+				current = current.next;
 				len++;
 			}
 			return len;
@@ -504,33 +461,33 @@ const LinkedList = (function () {
 	LinkedList.prototype.rotateByKthNode = function (k) {
 		let prevHead = this.head,
 			prev = this.head,
-			curr = this.head,
+			current = this.head,
 			i = 1;
-		while (curr.next) {
+		while (current.next) {
 			if (i == k + 1) {
-				this.head = curr;
+				this.head = current;
 				prev.next = null;
 			}
-			prev = curr;
-			curr = curr.next;
+			prev = current;
+			current = current.next;
 			i++;
 		}
-		curr.next = prevHead;
+		current.next = prevHead;
 		return this;
 	};
 
 	// Ascending Sort
 	LinkedList.prototype.sort = function () {
-		let curr = this.head;
+		let current = this.head;
 		const newLL = new LinkedList();
 
-		if (!curr) {
+		if (!current) {
 			return null;
 		}
 
-		while (curr.next) {
-			newLL.pushSorted(curr.data);
-			curr = curr.next;
+		while (current.next) {
+			newLL.pushSorted(current.data);
+			current = current.next;
 		}
 
 		return newLL;
@@ -538,11 +495,11 @@ const LinkedList = (function () {
 
 	// Ascending Sort
 	LinkedList.prototype.sort = function () {
-		let curr = this.head;
+		let current = this.head;
 
-		if (curr) {
-			while (curr.next) {
-				curr = curr.next;
+		if (current) {
+			while (current.next) {
+				current = current.next;
 			}
 		}
 
@@ -551,16 +508,16 @@ const LinkedList = (function () {
 
 	// Descending sort
 	LinkedList.prototype.sortDesc = function () {
-		let curr = this.head;
+		let current = this.head;
 		const newLL = new LinkedList();
 
-		if (!curr) {
+		if (!current) {
 			return null;
 		}
 
-		while (curr.next) {
-			newLL.pushSortedDesc(curr.data);
-			curr = curr.next;
+		while (current.next) {
+			newLL.pushSortedDesc(current.data);
+			current = current.next;
 		}
 
 		return newLL;
@@ -570,18 +527,18 @@ const LinkedList = (function () {
 	// But first sort it
 	LinkedList.prototype.dedupe = function () {
 		const sortedLL = this.sort();
-		let curr = sortedLL.head;
+		let current = sortedLL.head;
 
-		if (!curr) {
+		if (!current) {
 			return null;
 		}
 
-		while (curr.next) {
-			if (curr.data === curr.next.data) {
-				curr.next = (curr.next || {}).next;
+		while (current.next) {
+			if (current.data === current.next.data) {
+				current.next = (current.next || {}).next;
 				sortedLL.decrement();
 			} else {
-				curr = curr.next;
+				current = current.next;
 			}
 		}
 
@@ -592,19 +549,19 @@ const LinkedList = (function () {
 	LinkedList.prototype.dedupeWithoutModifying = function () {
 		const uniqueLL = {};
 		const clonedLL = this.clone();
-		let curr = clonedLL.head;
+		let current = clonedLL.head;
 
-		if (!curr) {
+		if (!current) {
 			return null;
 		}
 
-		while (curr.next) {
-			if (uniqueLL[curr.next.data]) {
-				curr.next = (curr.next || {}).next;
+		while (current.next) {
+			if (uniqueLL[current.next.data]) {
+				current.next = (current.next || {}).next;
 				clonedLL.decrement();
 			} else {
-				uniqueLL[curr.data] = curr.data;
-				curr = curr.next;
+				uniqueLL[current.data] = current.data;
+				current = current.next;
 			}
 		}
 
@@ -615,20 +572,20 @@ const LinkedList = (function () {
 	// But first sort it
 	LinkedList.prototype.dedupe = function () {
 		const hashUnique = {};
-		let curr = this.head;
+		let current = this.head;
 
-		if (!curr) {
+		if (!current) {
 			return null;
 		}
-		hashUnique[curr.data] = curr.data;
+		hashUnique[current.data] = current.data;
 
-		while (curr.next) {
-			if (hashUnique[curr.next.data]) {
-				curr.next = (curr.next || {}).next;
+		while (current.next) {
+			if (hashUnique[current.next.data]) {
+				current.next = (current.next || {}).next;
 				this.decrement();
 			} else {
-				hashUnique[curr.next.data] = curr.next.data;
-				curr = curr.next;
+				hashUnique[current.next.data] = current.next.data;
+				current = current.next;
 			}
 		}
 
@@ -645,41 +602,41 @@ const LinkedList = (function () {
 		this.add(1);
 		this.add(1);
 
-		let curr = this.head;
+		let current = this.head;
 
 		while (n-- > 2) {
-			this.add(curr.data + curr.next.data);
-			curr = curr.next;
+			this.add(current.data + current.next.data);
+			current = current.next;
 		}
 		this.print();
 	};
 
 	LinkedList.prototype.deleteEven = function () {
-		let curr = this.head;
+		let current = this.head;
 		let prev;
 
-		if (!curr) {
+		if (!current) {
 			return null;
 		}
 
-		while (curr.next) {
-			if (curr.next.data % 2 === 0) {
-				curr.next = curr.next.next;
+		while (current.next) {
+			if (current.next.data % 2 === 0) {
+				current.next = current.next.next;
 				this.decrement();
 			} else {
-				curr = curr.next;
+				current = current.next;
 			}
 		}
 
-		if (curr.data % 2 === 0) {
-			curr = null;
+		if (current.data % 2 === 0) {
+			current = null;
 			this.decrement();
 		}
 
-		curr = this.head;
+		current = this.head;
 
-		if (curr.data % 2 === 0) {
-			this.head = curr.next;
+		if (current.data % 2 === 0) {
+			this.head = current.next;
 			this.decrement();
 		}
 
@@ -687,32 +644,32 @@ const LinkedList = (function () {
 	};
 
 	LinkedList.prototype.deleteOdd = function () {
-		let curr = this.head;
+		let current = this.head;
 		let prev;
 
-		if (!curr) {
+		if (!current) {
 			return null;
 		}
 
-		while (curr.next) {
-			const { data, next } = curr.next;
+		while (current.next) {
+			const { data, next } = current.next;
 			if (data && data % 2 === 1) {
-				curr.next = next;
+				current.next = next;
 				this.decrement();
 			} else {
-				curr = curr.next;
+				current = current.next;
 			}
 		}
 
-		if (curr.data && curr.data % 2 === 1) {
-			curr = null;
+		if (current.data && current.data % 2 === 1) {
+			current = null;
 			this.decrement();
 		}
 
-		curr = this.head;
+		current = this.head;
 
-		if (curr.data && curr.data % 2 === 1) {
-			this.head = curr.next;
+		if (current.data && current.data % 2 === 1) {
+			this.head = current.next;
 			this.decrement();
 		}
 
