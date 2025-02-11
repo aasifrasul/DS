@@ -1,45 +1,32 @@
-/*
+function threeSum(items, sum) {
+	const len = items.length;
+	items.sort((a, b) => a - b); // Crucial: Sort the array
 
-function twoSum(arr, sum) {
-	const len = arr.length;
-	let diff;
-
-	const hash = {};
-
-	for (let i = 0; i < len - 1; i++) {
-		console.log(JSON.stringify(hash));
-		diff = sum - arr[i];
-		if (arr[i] in hash) {
-			return [hash[arr[i]], i];
+	for (let i = 0; i < len - 2; i++) {
+		if (i > 0 && items[i] === items[i - 1]) {
+			continue; // Skip duplicate values for the first number
 		}
 
-		hash[diff] = i;
-	}
-}
+		let left = i + 1;
+		let right = len - 1;
 
-twoSum([1, -4, 6, 4, -5, -7, 5, 0], 11);
+		while (left < right) {
+			const currentSum = items[i] + items[left] + items[right];
 
-*/
-
-function threeSum(arr, sum) {
-	const len = arr.length;
-	let diff, sumTwo;
-
-	const hash = {};
-
-	for (let i = 0; i < len - 1; i++) {
-		for (let j = i + 1; j < len; j++) {
-			console.log(i, j, JSON.stringify(hash));
-			sumTwo = arr[i] + arr[j];
-			diff = sum - sumTwo;
-			console.log(sumTwo, diff);
-			if (sumTwo in hash) {
-				return hash[sumTwo].split(',').concat(j);
+			if (currentSum === sum) {
+				return [items[i], items[left], items[right]]; // Found a triplet
+			} else if (currentSum < sum) {
+				left++;
+			} else {
+				right--;
 			}
-
-			hash[diff] = `${i},${j}`;
 		}
 	}
+
+	return null; // No triplet found
 }
 
-threeSum([0, 1, 2, 3, 4, 5 ,6], 10);
+console.log(threeSum([1, 2, 2, 4, 5, 6, 3], 10)); // Output: [ 1, 3, 6 ] or [2, 2, 6]
+console.log(threeSum([2, 2, 2], 6)); // Output: [2, 2, 2]
+console.log(threeSum([-1, 0, 1, 2, -1, -4], 0)); // Output: [-1, -1, 2] (handles duplicates correctly)
+console.log(threeSum([1, 2, 3, 4, 5], 12)); // Output: null

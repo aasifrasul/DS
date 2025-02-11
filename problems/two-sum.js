@@ -1,43 +1,20 @@
-/**
-Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
-You may assume that each input would have exactly one solution, and you may not use the same element twice.
-You can return the answer in any order.
+function twoSum(items, sum) {
+	const len = items.length;
+	const hash = {}; // Store numbers we've seen and their indices
 
-Example 1:
+	for (let i = 0; i < len; i++) {
+		const complement = sum - items[i];
 
-Input: nums = [2,7,11,15], target = 9
-Output: [0,1]
-Output: Because nums[0] + nums[1] == 9, we return [0, 1].
-Example 2:
-
-Input: nums = [3,2,4], target = 6
-Output: [1,2]
-Example 3:
-
-Input: nums = [3,3], target = 6
-Output: [0,1]
-
-Constraints:
-
-2 <= nums.length <= 105
--109 <= nums[i] <= 109
--109 <= target <= 109
-Only one valid answer exists.
-*/
-
-var twoSum = function (nums, target) {
-	var hash = Object.create(null);
-	var diff = 0;
-	for (i = 0; i < nums.length; i++) {
-		diff = target - nums[i];
-		console.log(hash);
-		if (typeof hash[diff] !== 'undefined') {
-			console.log('matched', nums[hash[diff]], nums[i]);
-			return [hash[diff], i];
-		} else {
-			hash[nums[i]] = i;
+		if (complement in hash) {
+			return [hash[complement], i]; // Found the pair!
 		}
-	}
-};
 
-twoSum([0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50], 10);
+		hash[items[i]] = i; // Store the current number and its index
+	}
+
+	return null; // No pair found
+}
+
+console.log(twoSum([1, 2, 2, 4, 5, 6], 9)); // Output: [3, 4]
+console.log(twoSum([1, 2, 2, 4, 5, 6], 3)); // Output: [0, 1] or [0, 2] (this version returns the first it finds)
+console.log(twoSum([1, 2, 2, 4, 5, 6], 15)); // Output: null

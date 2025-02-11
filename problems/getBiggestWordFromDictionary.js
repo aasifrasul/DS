@@ -1,4 +1,4 @@
-function getBiggestWordFromDictionary (dict, str) {
+function getBiggestWordFromDictionary(dict, str) {
 	var cur,
 		hash = {},
 		isMatch,
@@ -23,6 +23,6 @@ function getBiggestWordFromDictionary (dict, str) {
 	}
 
 	return matched;
-};
+}
 
 getBiggestWordFromDictionary(['to', 'toe', 'toes', 'oats', 'oat'], 'tao');

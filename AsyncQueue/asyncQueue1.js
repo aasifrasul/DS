@@ -1,6 +1,5 @@
 // fake fetch for demo purposes only
-const fetch = (url, options) =>
-	new Promise((resolve) => setTimeout(resolve, options?.delay, { url, options }));
+const fetch = (url, options) => new Promise((resolve) => setTimeout(resolve, options?.delay, { url, options }));
 
 // task executor
 const addTask = (() => {
@@ -22,6 +21,6 @@ new Array(10)
 	.fill(0)
 	.forEach((i, idx) =>
 		addTask(`url` + idx, { options: idx, delay: Math.random() * 1000 }).then((data) =>
-			console.log(JSON.stringify(data))
-		)
+			console.log(JSON.stringify(data)),
+		),
 	);
