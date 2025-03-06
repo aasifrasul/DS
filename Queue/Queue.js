@@ -1,32 +1,37 @@
-const Queue = (function () {
-	const Node = function (data) {
+class Node {
+	constructor(data) {
 		this.data = data;
 		this.next = null;
-	};
+		this.prev = null; // Key addition for DLL
+	}
+}
 
-	const Queue = function () {
+class Queue {
+	constructor() {
 		this.head = null;
+		this.tail = null; // Key addition for DLL
 		this.size = 0;
-	};
+	}
 
-	Queue.prototype.enqueue = function (data) {
+	enqueue(data) {
 		const node = new Node(data);
-		let temp = this.head;
 
-		if (temp) {
-			while (temp.next) {
-				temp = temp.next;
-			}
-			temp.next = node;
+		if (this.tail) {
+			// List is not empty
+			this.tail.next = node;
+			node.prev = this.tail; // Connect the new node's prev to the old tail
+			this.tail = node; // Update the tail
 		} else {
+			// List is empty
 			this.head = node;
+			this.tail = node;
 		}
 
-		this.size += 1;
+		this.size++;
 		return node;
-	};
+	}
 
-	Queue.prototype.dequeue = function () {
+	dequeue() {
 		if (!this.head) {
 			return null;
 		}
@@ -34,43 +39,40 @@ const Queue = (function () {
 		this.head = this.head.next;
 		this.size -= 1;
 		return temp;
-	};
+	}
 
-	Queue.prototype.peekAt = function (index) {
-		//anything smaller than 0 and equal or greater than count is not at the queue
-		if (index > -1 && index < count) {
-			let current = head;
+	peekAt(index) {
+		if (this.head === null) {
+			// Handle empty queue
+			return null;
+		}
 
-			//Navigates through the queue to find the item
+		if (index >= 0 && index < this.size) {
+			let current = this.head;
 			for (let i = 0; i < index; i++) {
 				current = current.next;
 			}
-
 			return current.data;
+		} else {
+			return null; // Index out of bounds
 		}
-		//an index out of the bounds of the queue was chosen.
-		else {
-			return null;
-		}
-	};
+	}
 
-	Queue.prototype.print = function () {
-		let curr = this.head;
-		while (curr) {
-			console.log(curr.data);
-			curr = curr.next;
+	print() {
+		let current = this.head;
+		while (current) {
+			console.log(current.data);
+			current = current.next;
 		}
-	};
+	}
 
-	Queue.prototype.hasNext = function () {
+	hasNext() {
 		return this.head.next != undefined;
-	};
+	}
 
-	Queue.prototype.isEmpty = function () {
+	isEmpty() {
 		return this.head == null;
-	};
-
-	return Queue;
-})();
+	}
+}
 
 const queue = new Queue();

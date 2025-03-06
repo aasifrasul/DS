@@ -1,51 +1,51 @@
-const HashTable = (function () {
-	const HashTable = function (size) {
+class HashTable {
+	constructor(capacity) {
 		this.values = {};
-		this.numberOfValues = 0;
-		this.size = size;
-	};
+		this.count = 0;
+		this.capacity = capacity;
+	}
 
-	HashTable.prototype.add = function (key, value) {
+	add(key, value) {
 		const hash = this.calculateHash(key);
 		if (!this.hasHash(hash)) {
 			this.values[hash] = {};
 		}
 		if (!this.hasKey(hash, key)) {
-			this.numberOfValues++;
+			this.count++;
 		}
 		this.values[hash][key] = value;
-	};
+	}
 
-	HashTable.prototype.remove = function (key) {
+	remove(key) {
 		const hash = this.calculateHash(key);
 		if (this.hasKey(hash, key)) {
 			delete this.values[hash][key];
-			this.numberOfValues--;
+			this.count--;
 		}
-	};
+	}
 
-	HashTable.prototype.hasHash = function (hash) {
+	hasHash(hash) {
 		return this.values.hasOwnProperty(hash);
-	};
+	}
 
-	HashTable.prototype.hasKey = function (hash, key) {
+	hasKey(hash, key) {
 		return this.hasHash(hash) && this.values[hash].hasOwnProperty(key);
-	};
+	}
 
-	HashTable.prototype.calculateHash = function (key) {
-		return key.toString().length % this.size;
-	};
+	calculateHash(key) {
+		return key.toString().length % this.capacity;
+	}
 
-	HashTable.prototype.search = function (key) {
+	search(key) {
 		const hash = this.calculateHash(key);
-		return this.hasKey(hash, key) || null;
-	};
+		return this.hasKey(hash, key) ? this.values[hash][key] : null;
+	}
 
-	HashTable.prototype.length = function () {
-		return this.numberOfValues;
-	};
+	length() {
+		return this.count;
+	}
 
-	HashTable.prototype.print = function () {
+	print() {
 		let string = '';
 		for (const value in this.values) {
 			for (const key in this.values[value]) {
@@ -53,10 +53,8 @@ const HashTable = (function () {
 			}
 		}
 		console.log(string.trim());
-	};
-
-	return HashTable;
-})();
+	}
+}
 
 const hashTable = new HashTable(3);
 hashTable.add('first', 1);

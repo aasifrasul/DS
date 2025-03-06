@@ -1,4 +1,5 @@
-Given 2 identical DOM trees (but not equal) and one element of the first DOM tree, how would you find this element in the second DOM tree?  
+// Given 2 identical DOM trees (but not equal) and one element of the first DOM tree,
+// how would you find this element in the second DOM tree?
 
 // Inputs
 // 2 root nodes
@@ -34,7 +35,6 @@ const node1 = document.getElementById('node1');
 const node2 = document.getElementById('node2');
 console.log(getCorrespondingNode(node1, root1, root2) === node2); // true
 console.log(getCorrespondingNode(node2, root2, root1) === node1); // true
-
 
 const findCorrespondingNode = (rootA, rootB, target) => {
 	if (rootA === target) return rootB;
