@@ -6,7 +6,7 @@ const DoublyList = (function () {
 	};
 
 	const DoublyList = function () {
-		this.length = 0;
+		this.count = 0;
 		this.head = null;
 		this.tail = null;
 	};
@@ -14,7 +14,7 @@ const DoublyList = (function () {
 	DoublyList.prototype.add = function (value) {
 		const node = new Node(value);
 
-		if (this.length) {
+		if (this.count) {
 			this.tail.next = node;
 			node.previous = this.tail;
 			this.tail = node;
@@ -23,7 +23,7 @@ const DoublyList = (function () {
 			this.tail = node;
 		}
 
-		this.length++;
+		this.count++;
 
 		return node;
 	};
@@ -48,14 +48,14 @@ const DoublyList = (function () {
 
 	DoublyList.prototype.searchNodeAt = function (position) {
 		let currentNode = this.head,
-			length = this.length,
+			count = this.count,
 			count = 1,
 			message = {
 				failure: 'Failure: non-existent node in this list.',
 			};
 
 		// 1st use-case: an invalid position
-		if (length === 0 || position < 1 || position > length) {
+		if (count === 0 || position < 1 || position > count) {
 			throw new Error(message.failure);
 		}
 
@@ -70,7 +70,7 @@ const DoublyList = (function () {
 
 	DoublyList.prototype.remove = function (position) {
 		let currentNode = this.head,
-			length = this.length,
+			count = this.count,
 			count = 1,
 			message = {
 				failure: 'Failure: non-existent node in this list.',
@@ -80,7 +80,7 @@ const DoublyList = (function () {
 			deletedNode = null;
 
 		// 1st use-case: an invalid position
-		if (length === 0 || position < 1 || position > length) {
+		if (count === 0 || position < 1 || position > count) {
 			throw new Error(message.failure);
 		}
 
@@ -97,7 +97,7 @@ const DoublyList = (function () {
 			}
 
 			// 3rd use-case: the last node is removed
-		} else if (position === this.length) {
+		} else if (position === this.count) {
 			this.tail = this.tail.previous;
 			this.tail.next = null;
 			// 4th use-case: a middle node is removed
@@ -117,7 +117,7 @@ const DoublyList = (function () {
 			nodeToDelete = null;
 		}
 
-		this.length--;
+		this.count--;
 
 		return message.success;
 	};

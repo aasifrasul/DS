@@ -18,13 +18,19 @@ class PriorityQueue {
 
 	dequeue() {
 		if (this.isEmpty()) {
-			console.log('Underflow');
-			return;
+			throw new Error('Queue is empty');
 		}
 
 		const result = this.items.get(this.lowerLimit);
 		this.items.delete(this.lowerLimit);
-		this.lowerLimit++;
+
+		// Find next lowest priority
+		let nextPriority = this.lowerLimit;
+		while (!this.items.has(nextPriority) && nextPriority <= this.upperLimit) {
+			nextPriority++;
+		}
+		this.lowerLimit = nextPriority;
+
 		return result;
 	}
 
@@ -81,6 +87,6 @@ pq.dequeue();
 console.log(pq.printPQueue()); // A C
 let item;
 
-while ((item = await pQueue.dequeue())) {
+while ((item = pQueue.dequeue())) {
 	console.log(item);
 }

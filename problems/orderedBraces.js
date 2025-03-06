@@ -7,8 +7,8 @@ function orderedBraces(str) {
 	};
 
 	for (let char of str) {
+		// Closing brace
 		if (char in matchingBraces) {
-			// Closing brace
 			const topOfStack = stack.pop();
 			if (topOfStack !== matchingBraces[char]) {
 				return 'Invalid'; // Mismatched or no opening brace

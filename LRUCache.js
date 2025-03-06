@@ -20,10 +20,10 @@ class LRUCache {
 
 	put(key, value) {
 		this.moveToFront(key, value);
-		this.removeLRU();
+		this.evictLRU();
 	}
 
-	removeLRU() {
+	evictLRU() {
 		if (this.cache.size > this.capacity) {
 			this.cache.delete(this.cache.keys().next().value);
 		}
@@ -55,7 +55,7 @@ class LRUCache {
 		}
 
 		if (this.cache.size >= this.capacity) {
-			this.removeLRU(); // Remove the least recently used node
+			this.evictLRU(); // Remove the least recently used node
 		}
 
 		const newNode = { key, value, prev: null, next: null };
@@ -71,8 +71,13 @@ class LRUCache {
 		}
 
 		// Remove node from its current position
-		if (node.prev) node.prev.next = node.next;
-		if (node.next) node.next.prev = node.prev;
+		if (node.prev) {
+			node.prev.next = node.next;
+		}
+
+		if (node.next) {
+			node.next.prev = node.prev;
+		}
 
 		// Add it to the front
 		this.addToFront(node);
@@ -81,20 +86,32 @@ class LRUCache {
 	addToFront(node) {
 		node.next = this.head;
 		node.prev = null;
-		if (this.head) this.head.prev = node;
+
+		if (this.head) {
+			this.head.prev = node;
+		}
+
 		this.head = node;
-		if (!this.tail) this.tail = this.head; //If only one element
+
+		//If only one element
+		if (!this.tail) {
+			this.tail = this.head;
+		}
 	}
 
-	removeLRU() {
+	evictLRU() {
 		if (!this.tail) return; //Nothing to remove
 
-		const lruKey = this.tail.key;
-		this.cache.delete(lruKey);
+		this.cache.delete(this.tail.key);
 
 		this.tail = this.tail.prev;
-		if (this.tail) this.tail.next = null;
-		else this.head = null; //If cache becomes empty
+
+		if (this.tail) {
+			this.tail.next = null;
+		} else {
+			//If cache becomes empty
+			this.head = null;
+		}
 	}
 }
 

@@ -1,4 +1,5 @@
-function threeSum(items, sum) {
+// Implementation 1 (Sorted Two-Pointer Approach)
+function threeSum1(items, sum) {
 	const len = items.length;
 	items.sort((a, b) => a - b); // Crucial: Sort the array
 
@@ -22,8 +23,25 @@ function threeSum(items, sum) {
 			}
 		}
 	}
-
 	return null; // No triplet found
+}
+
+// Implementation 2 (Hash Table Approach)
+function threeSum2(arr, sum) {
+	const size = arr.length;
+
+	for (let i = 0; i < size; i++) {
+		const seen = new Map();
+
+		for (let j = i + 1; j < size; j++) {
+			const complement = sum - arr[i] - arr[j];
+			if (seen.has(complement)) {
+				return [seen.get(complement), i, j];
+			}
+			seen.set(arr[j], j);
+		}
+	}
+	return null;
 }
 
 console.log(threeSum([1, 2, 2, 4, 5, 6, 3], 10)); // Output: [ 1, 3, 6 ] or [2, 2, 6]

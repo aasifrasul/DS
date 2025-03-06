@@ -1,24 +1,26 @@
-const Stack = (function () {
-	const Node = function (data) {
+class Node {
+	constructor(data) {
 		this.data = data;
 		this.next = null;
-	};
+	}
+}
 
-	const Stack = function () {
+class Stack {
+	constructor() {
 		this.top = null;
 		this.size = 0;
-	};
+	}
 
-	Stack.prototype.push = function (data) {
+	push(data) {
 		const node = new Node(data);
 
 		node.next = this.top;
 		this.top = node;
 		this.size += 1;
 		return this.top;
-	};
+	}
 
-	Stack.prototype.pop = function () {
+	pop() {
 		if (!this.top) {
 			return null;
 		}
@@ -26,28 +28,26 @@ const Stack = (function () {
 		this.top = this.top.next;
 		this.size -= 1;
 		return temp;
-	};
+	}
 
-	Stack.prototype.peek = function () {
+	peek() {
 		return (this.top || {}).data;
-	};
+	}
 
-	Stack.prototype.print = function () {
+	print() {
 		const temp = this.top;
 		while (temp) {
 			temp.next = temp;
 		}
-	};
+	}
 
-	Stack.prototype.hasNext = function () {
+	hasNext() {
 		return !!this.next;
-	};
+	}
 
-	Stack.prototype.isEmpty = function () {
+	isEmpty() {
 		return !this.size;
-	};
-
-	return Stack;
-})();
+	}
+}
 
 const stack = new Stack();

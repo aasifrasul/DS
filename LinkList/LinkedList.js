@@ -1,27 +1,30 @@
-const LinkedList = (function () {
-	const Node = function (data) {
+class Node {
+	constructor(data) {
 		this.data = data;
 		this.next = null;
-	};
+	}
+}
 
-	const LinkedList = function () {
+class LinkedList {
+	constructor() {
 		this.length = 0;
 		this.head = null;
-	};
+		this.tail = null;
+	}
 
-	LinkedList.prototype.increment = function () {
+	increment() {
 		this.length++;
-	};
+	}
 
-	LinkedList.prototype.decrement = function () {
+	decrement() {
 		this.length--;
-	};
+	}
 
-	LinkedList.prototype.size = function () {
+	size() {
 		return this.length;
-	};
+	}
 
-	LinkedList.prototype.toArray = function () {
+	toArray() {
 		const result = [],
 			current = this.head;
 
@@ -31,32 +34,28 @@ const LinkedList = (function () {
 		}
 
 		return result;
-	};
+	}
 
-	LinkedList.prototype.toString = function () {
+	toString() {
 		return this.toArray().toString();
-	};
+	}
 
-	LinkedList.prototype.add = function (value) {
+	add(value) {
 		const node = new Node(value);
-		let current = this.head;
-
 		this.increment();
 
-		if (!current) {
+		if (!this.head) {
 			this.head = node;
+			this.tail = node; // Update tail
 			return node;
 		}
 
-		while (current.next) {
-			current = current.next;
-		}
-
-		current.next = node;
+		this.tail.next = node; // Use tail for efficient append
+		this.tail = node; // Update tail
 		return node;
-	};
+	}
 
-	LinkedList.prototype.insertAfter = function (data, toNodeData) {
+	insertAfter(data, toNodeData) {
 		let current = this.head;
 		while (current) {
 			if (current.data === toNodeData) {
@@ -72,9 +71,9 @@ const LinkedList = (function () {
 			}
 			current = current.next;
 		}
-	};
+	}
 
-	LinkedList.prototype.traverse = function (fn) {
+	traverse(fn) {
 		let current = this.head;
 		while (current) {
 			if (fn) {
@@ -82,9 +81,9 @@ const LinkedList = (function () {
 			}
 			current = current.next;
 		}
-	};
+	}
 
-	LinkedList.prototype.addTop = function (value) {
+	addTop(value) {
 		const node = new Node(value),
 			current = this.head;
 
@@ -98,29 +97,37 @@ const LinkedList = (function () {
 		node.next = current;
 		this.head = node;
 		return node;
-	};
+	}
 
-	LinkedList.prototype.print = function (key = 'data') {
+	print(key = 'data') {
 		let current = this.head;
 		while (current) {
 			console.log(current[key]);
 			current = current.next;
 		}
-	};
+	}
 
-	LinkedList.prototype.clone = function (pos) {
-		let current = this.head,
-			clonedLL = new LinkedList();
+	clone() {
+		const clonedLL = new LinkedList();
+		let current = this.head;
 
 		while (current) {
-			clonedLL.add(current.data);
+			const newNode = new Node(current.data);
+			if (!clonedLL.head) {
+				clonedLL.head = newNode;
+				clonedLL.tail = newNode;
+			} else {
+				clonedLL.tail.next = newNode;
+				clonedLL.tail = newNode;
+			}
+			clonedLL.length++; // Efficiently update length
 			current = current.next;
 		}
 
 		return clonedLL;
-	};
+	}
 
-	LinkedList.prototype.get = function (pos) {
+	get(pos) {
 		let current = this.head,
 			count = 0;
 
@@ -132,9 +139,9 @@ const LinkedList = (function () {
 			count++;
 		}
 		return current;
-	};
+	}
 
-	LinkedList.prototype.remove = function (posOrValue) {
+	remove(posOrValue) {
 		let current = this.head;
 		let previous = null;
 		let removedNode = null;
@@ -180,35 +187,9 @@ const LinkedList = (function () {
 		}
 
 		return removedNode;
-	};
+	}
 
-	LinkedList.prototype.delete = function (value) {
-		let current = this.head;
-
-		if (!current) {
-			return null;
-		}
-
-		if (current.data == value) {
-			this.head = current.next;
-			this.decrement();
-			return current;
-		}
-
-		while (current.next) {
-			const prev = current;
-			current = current.next;
-			if (current.data == value) {
-				prev.next = current.next;
-				this.decrement();
-				return current;
-			}
-		}
-
-		return null;
-	};
-
-	LinkedList.prototype.searchNodeAt = function (pos) {
+	searchNodeAt(pos) {
 		let current = this.head;
 		let count = 0;
 
@@ -225,9 +206,9 @@ const LinkedList = (function () {
 		}
 
 		return null;
-	};
+	}
 
-	LinkedList.prototype.searchNodeByValue = function (val) {
+	searchNodeByValue(val) {
 		let current = this.head;
 
 		if (!current) {
@@ -246,9 +227,9 @@ const LinkedList = (function () {
 		}
 
 		return null;
-	};
+	}
 
-	LinkedList.prototype.reverse = function () {
+	reverse() {
 		if (!this.head || !this.head.next) return this;
 
 		let current = this.head,
@@ -268,9 +249,9 @@ const LinkedList = (function () {
 		}
 		*/
 		return reversedLL;
-	};
+	}
 
-	LinkedList.prototype.reverseInPlace = function () {
+	reverseInPlace() {
 		let prev = null;
 		let current = this.head;
 		let next = null;
@@ -282,9 +263,9 @@ const LinkedList = (function () {
 		}
 		this.head = prev; // Crucial: Update the head!
 		return this;
-	};
+	}
 
-	LinkedList.prototype.detectLoop = function () {
+	detectLoop() {
 		let slow = this.head,
 			fast = this.head;
 
@@ -297,9 +278,9 @@ const LinkedList = (function () {
 			}
 		}
 		return false;
-	};
+	}
 
-	LinkedList.prototype.findLoopStart = function () {
+	findLoopStart() {
 		let slow = this.head,
 			fast = this.head;
 		while (slow && fast) {
@@ -319,9 +300,9 @@ const LinkedList = (function () {
 				return slow;
 			}
 		}
-	};
+	}
 
-	LinkedList.prototype.pushSorted = function (val) {
+	pushSorted(val) {
 		if (!val) {
 			return null;
 		}
@@ -354,9 +335,9 @@ const LinkedList = (function () {
 		node.next = null;
 		prev.next = node;
 		return this;
-	};
+	}
 
-	LinkedList.prototype.pushSortedDesc = function (val) {
+	pushSortedDesc(val) {
 		if (!val) {
 			return null;
 		}
@@ -389,9 +370,9 @@ const LinkedList = (function () {
 		node.next = null;
 		prev.next = node;
 		return this;
-	};
+	}
 
-	LinkedList.prototype.kthFromEnd = function (k) {
+	kthFromEnd(k) {
 		let node = this.head,
 			i = 1,
 			kthNode;
@@ -407,9 +388,9 @@ const LinkedList = (function () {
 			node = node.next;
 		}
 		return kthNode;
-	};
+	}
 
-	LinkedList.prototype.deleteKthFromEnd = function (k) {
+	deleteKthFromEnd(k) {
 		let node = this.head,
 			i = 1,
 			kthNode,
@@ -432,33 +413,19 @@ const LinkedList = (function () {
 			prev.next = kthNode.next;
 		}
 		return this;
-	};
+	}
 
-	LinkedList.prototype.getLength = function () {
-		let head = this.head,
-			current = head,
-			pointer = head,
-			anotherPtr,
-			len = 0;
-		const loopStartNode = head.findLoopStart();
-		if (!loopStartNode) {
-			while (current) {
-				current = current.next;
-				len++;
-			}
-			return len;
-		} else {
-			anotherPtr = loopStartNode;
-			while (pointer != anotherPtr) {
-				len += 2;
-				pointer = pointer.next;
-				anotherPtr = anotherPtr.next;
-			}
-			return len;
+	getLength() {
+		let current = this.head;
+		let len = 0;
+		while (current) {
+			len++;
+			current = current.next;
 		}
-	};
+		return len;
+	}
 
-	LinkedList.prototype.rotateByKthNode = function (k) {
+	rotateByKthNode(k) {
 		let prevHead = this.head,
 			prev = this.head,
 			current = this.head,
@@ -474,10 +441,10 @@ const LinkedList = (function () {
 		}
 		current.next = prevHead;
 		return this;
-	};
+	}
 
 	// Ascending Sort
-	LinkedList.prototype.sort = function () {
+	sort() {
 		let current = this.head;
 		const newLL = new LinkedList();
 
@@ -491,10 +458,10 @@ const LinkedList = (function () {
 		}
 
 		return newLL;
-	};
+	}
 
 	// Ascending Sort
-	LinkedList.prototype.sort = function () {
+	sort() {
 		let current = this.head;
 
 		if (current) {
@@ -504,10 +471,10 @@ const LinkedList = (function () {
 		}
 
 		return this;
-	};
+	}
 
 	// Descending sort
-	LinkedList.prototype.sortDesc = function () {
+	sortDesc() {
 		let current = this.head;
 		const newLL = new LinkedList();
 
@@ -521,32 +488,36 @@ const LinkedList = (function () {
 		}
 
 		return newLL;
-	};
+	}
 
 	// Removes Duplicates
-	// But first sort it
-	LinkedList.prototype.dedupe = function () {
-		const sortedLL = this.sort();
-		let current = sortedLL.head;
+	dedupe() {
+		const seen = new Set();
+		let current = this.head;
+		let prev = null;
 
-		if (!current) {
-			return null;
-		}
-
-		while (current.next) {
-			if (current.data === current.next.data) {
-				current.next = (current.next || {}).next;
-				sortedLL.decrement();
+		while (current) {
+			if (seen.has(current.data)) {
+				if (prev) {
+					prev.next = current.next;
+				} else {
+					this.head = current.next; // Removing head
+				}
+				if (!current.next) {
+					this.tail = prev; // Update tail if removing last element
+				}
+				this.decrement();
 			} else {
-				current = current.next;
+				seen.add(current.data);
+				prev = current;
 			}
+			current = current.next;
 		}
-
-		return sortedLL;
-	};
+		return this;
+	}
 
 	// Removes Duplicates without Modifying the List
-	LinkedList.prototype.dedupeWithoutModifying = function () {
+	dedupeWithoutModifying() {
 		const uniqueLL = {};
 		const clonedLL = this.clone();
 		let current = clonedLL.head;
@@ -566,33 +537,9 @@ const LinkedList = (function () {
 		}
 
 		return clonedLL;
-	};
+	}
 
-	// Removes Duplicates
-	// But first sort it
-	LinkedList.prototype.dedupe = function () {
-		const hashUnique = {};
-		let current = this.head;
-
-		if (!current) {
-			return null;
-		}
-		hashUnique[current.data] = current.data;
-
-		while (current.next) {
-			if (hashUnique[current.next.data]) {
-				current.next = (current.next || {}).next;
-				this.decrement();
-			} else {
-				hashUnique[current.next.data] = current.next.data;
-				current = current.next;
-			}
-		}
-
-		return this;
-	};
-
-	LinkedList.prototype.fib = function (n) {
+	fib(n) {
 		if (n < 2) {
 			return 1;
 		}
@@ -609,17 +556,11 @@ const LinkedList = (function () {
 			current = current.next;
 		}
 		this.print();
-	};
+	}
 
-	LinkedList.prototype.deleteEven = function () {
+	deleteEven() {
 		let current = this.head;
-		let prev;
-
-		if (!current) {
-			return null;
-		}
-
-		while (current.next) {
+		while (current && current.next) {
 			if (current.next.data % 2 === 0) {
 				current.next = current.next.next;
 				this.decrement();
@@ -628,22 +569,14 @@ const LinkedList = (function () {
 			}
 		}
 
-		if (current.data % 2 === 0) {
-			current = null;
+		if (this.head && this.head.data % 2 === 0) {
+			this.head = this.head.next;
 			this.decrement();
 		}
-
-		current = this.head;
-
-		if (current.data % 2 === 0) {
-			this.head = current.next;
-			this.decrement();
-		}
-
 		return this;
-	};
+	}
 
-	LinkedList.prototype.deleteOdd = function () {
+	deleteOdd() {
 		let current = this.head;
 		let prev;
 
@@ -674,10 +607,8 @@ const LinkedList = (function () {
 		}
 
 		return this;
-	};
-
-	return LinkedList;
-})();
+	}
+}
 
 const linkedList = new LinkedList();
 

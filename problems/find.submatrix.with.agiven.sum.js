@@ -84,12 +84,12 @@ function findMinSubMatrix(mat) {
 	const len = mat.length;
 	const hash = {};
 
-	for (let i = 2; i < len ; i++) {
+	for (let i = 2; i < len; i++) {
 		hash[i] = [];
 		for (let j = 0; j < len - 2; j++) {
 			for (let k = 0; k < len - 2; k++) {
-				console.log(mat[j].slice(k, i), mat[j+1].slice(k, i));
-				hash[i].push([mat[j].slice(k, i), mat[j+1].slice(k, i));
+				console.log(mat[j].slice(k, i), mat[j + 1].slice(k, i));
+				hash[i].push([mat[j].slice(k, i), mat[j + 1].slice(k, i)]);
 			}
 		}
 	}
