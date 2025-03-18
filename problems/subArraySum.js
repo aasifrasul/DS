@@ -2,9 +2,10 @@ function subArraySum(arr, sum) {
 	const size = arr.length;
 	const map = new Map();
 	let currentSum = 0;
+	const result = [];
 
 	// Store the initial sum (0) with an index of -1
-	map.set(0, [-1]);
+	map.set(sum, [-1]);
 
 	for (let i = 0; i < size; i++) {
 		currentSum += arr[i];
@@ -12,7 +13,7 @@ function subArraySum(arr, sum) {
 		if (map.has(currentSum)) {
 			const startIndexList = map.get(currentSum);
 			for (const startIndex of startIndexList) {
-				console.log(`Subarray found from index ${startIndex + 1} to ${i}`);
+				result.push([startIndex + 1, i]);
 			}
 			//add the current index to the list of indexes for the current sum.
 			map.get(currentSum).push(i);
@@ -20,6 +21,8 @@ function subArraySum(arr, sum) {
 			map.set(currentSum, [i]);
 		}
 	}
+
+	return result;
 }
 
 let arr = [6, 3, -1, -3, 4, -2, 2, 4, 6, -12, -7];
@@ -71,3 +74,38 @@ function subArraySum(arr, n) {
 
 let arr = [6, 3, -1, -3, 4, -2, 2, 4, 6, -12, -7];
 subArraySum(arr, 0);
+
+// Above ones are specific to 0 sum.
+// This is generic, targetSum can be  anything
+function genericSubArraySum(arr, targetSum) {
+	const size = arr.length;
+	const map = new Map();
+	let currentSum = 0;
+	const result = [];
+
+	for (let i = 0; i < size; i++) {
+		currentSum += arr[i];
+
+		// If currentSum equals targetSum, subarray from index 0 to i has sum equal to targetSum
+		if (currentSum === targetSum) {
+			result.push([0, i]);
+		}
+
+		// Check if there is any subarray ending at index i with sum equal to targetSum
+		if (map.has(currentSum - targetSum)) {
+			const startIndexList = map.get(currentSum - targetSum);
+			for (const startIndex of startIndexList) {
+				result.push([startIndex + 1, i]);
+			}
+		}
+
+		// Add current index to the list of indices for current sum
+		if (map.has(currentSum)) {
+			map.get(currentSum).push(i);
+		} else {
+			map.set(currentSum, [i]);
+		}
+	}
+
+	return result;
+}
