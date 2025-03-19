@@ -1,13 +1,8 @@
 function isValidSudoku(board) {
-	const rows = Array(9)
-		.fill()
-		.map(() => Array(9).fill(false));
-	const cols = Array(9)
-		.fill()
-		.map(() => Array(9).fill(false));
-	const boxes = Array(9)
-		.fill()
-		.map(() => Array(9).fill(false));
+	// const [rows, cols, boxes] = Array(3).fill().map( () => Array(9).fill(Array(9).fill(false)))
+	const rows = Array(9).fill(Array(9).fill(false));
+	const cols = Array(9).fill(Array(9).fill(false));
+	const boxes = Array(9).fill(Array(9).fill(false));
 
 	for (let i = 0; i < 9; i++) {
 		for (let j = 0; j < 9; j++) {
