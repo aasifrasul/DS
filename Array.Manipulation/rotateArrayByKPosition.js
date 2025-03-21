@@ -27,3 +27,26 @@ function reverse(arr, start, end) {
 		end--;
 	}
 }
+
+function roteArrayByKPos(nums, k) {
+	const len = nums.length;
+
+	// Normalize k to handle negative values and values larger than array length
+	k = ((k % len) + len) % len; // This handles both positive and negative k
+
+	// If k is 0 or equal to length, no rotation needed
+	if (k === 0) return nums;
+
+	const result = new Array(len);
+
+	for (let i = 0; i < len; i++) {
+		const currPos = (i + k) % len;
+		result[i] = nums[currPos];
+	}
+
+	return result;
+}
+
+roteArrayByKPos([1, 2, 3, 4, 5, 6, 7], 2);
+roteArrayByKPos([1, 2, 3, 4, 5, 6, 7], 3);
+roteArrayByKPos([1, 2, 3, 4, 5, 6, 7], -3);

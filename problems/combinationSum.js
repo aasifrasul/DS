@@ -21,3 +21,5 @@ var combinationSum = function (candidates, target) {
 	backtrack(target, 0);
 	return results;
 };
+
+console.log(combinationSum([2, 3, 5], 8));
