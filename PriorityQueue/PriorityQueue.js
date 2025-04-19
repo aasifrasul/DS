@@ -1,69 +1,55 @@
 class PriorityQueue {
 	constructor() {
-		this.items = [];
+		this.reset();
 	}
 
-	enqueue(element, priority) {
-		const qElement = { element, priority };
-		let contain = false;
-
-		for (let i = 0; i < this.items.length; i++) {
-			if (this.items[i].priority > qElement.priority) {
-				this.items.splice(i, 0, qElement);
-				contain = true;
-				break;
-			}
-		}
-
-		if (!contain) {
-			this.items.push(qElement);
-		}
+	enqueue(item, priority) {
+		this.map.set(priority, item);
+		this.topPriority = Math.max(this.topPriority, priority);
 	}
 
 	dequeue() {
 		if (this.isEmpty()) {
-			return 'Underflow';
+			throw new Error('List is Empty');
 		}
-		return this.items.shift();
+
+		const item = this.map.get(this.topPriority);
+		this.map.delete(this.topPriority);
+
+		this.findNextTopPriority();
+
+		return item;
 	}
 
-	front() {
+	findNextTopPriority() {
 		if (this.isEmpty()) {
-			return 'No elements in Queue';
+			return -1;
 		}
-		return this.items[0];
+
+		let topPriority = Number.NEGATIVE_INFINITY;
+
+		// set the next Top Priority
+		for (const tempPriority of this.map.keys()) {
+			topPriority = Math.max(topPriority, tempPriority);
+		}
+
+		this.topPriority = topPriority;
 	}
 
-	rear() {
+	peek() {
 		if (this.isEmpty()) {
-			return 'No elements in Queue';
+			return -1;
 		}
-		return this.items[this.items.length - 1];
+
+		return this.map.get(this.topPriority);
 	}
 
 	isEmpty() {
-		return this.items.length === 0;
+		return !this.map.size;
 	}
 
-	printPQueue() {
-		let str = '';
-		for (let i = 0; i < this.items.length; i++) {
-			str += `\${this.items[i].element} `;
-		}
-		return str;
+	reset() {
+		this.map = new Map();
+		this.topPriority = Number.NEGATIVE_INFINITY;
 	}
 }
-
-const pq = new PriorityQueue();
-
-pq.enqueue('A', 2);
-pq.enqueue('B', 1);
-pq.enqueue('C', 3);
-
-console.log(pq.printPQueue()); // B A C
-
-console.log(pq.front().element); // B
-console.log(pq.rear().element); // C
-
-pq.dequeue();
-console.log(pq.printPQueue()); // A C

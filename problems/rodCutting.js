@@ -16,7 +16,8 @@ function rodCuttingBruteForce(prices, length, hash = {}) {
 		// Current price + recursive call for remaining length
 		// prices[i] is the price for a rod of length i+1
 		const key = `${length}#${i}`;
-		const currentValue = hash[key] || prices[i] + rodCuttingBruteForce(prices, length - (i + 1), hash);
+		const currentValue =
+			hash[key] || prices[i] + rodCuttingBruteForce(prices, length - (i + 1), hash);
 		hash[key] = currentValue;
 		maxValue = Math.max(maxValue, currentValue);
 	}

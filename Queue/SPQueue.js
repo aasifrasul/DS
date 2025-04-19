@@ -1,4 +1,5 @@
-const isObject = (data) => Object.prototype.toString.call(data).slice(8, -1).toLowerCase() === 'object';
+const isObject = (data) =>
+	Object.prototype.toString.call(data).slice(8, -1).toLowerCase() === 'object';
 
 const Queue = (function () {
 	const Queue = function Queue() {

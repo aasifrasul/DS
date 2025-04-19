@@ -60,7 +60,9 @@ class PriorityQueue {
 			(right(node) < this.size() && this.greater(right(node), node))
 		) {
 			let maxChild =
-				right(node) < this.size() && this.greater(right(node), left(node)) ? right(node) : left(node);
+				right(node) < this.size() && this.greater(right(node), left(node))
+					? right(node)
+					: left(node);
 			this.swap(node, maxChild);
 			node = maxChild;
 		}

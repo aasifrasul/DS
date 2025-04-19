@@ -1,5 +1,6 @@
 // fake fetch for demo purposes only
-const fetch = (url, options) => new Promise((resolve) => setTimeout(resolve, options?.delay, { url, options }));
+const fetch = (url, options) =>
+	new Promise((resolve) => setTimeout(resolve, options?.delay, { url, options }));
 
 // task executor
 const addTask = (() => {

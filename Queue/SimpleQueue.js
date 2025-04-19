@@ -1,33 +1,52 @@
-const Queue = (function () {
-	const Queue = function () {
-		this.storage = {};
-		this.count = 0;
-		this.lowestCount = 0;
-	};
+class SimpleQueue {
+	constructor() {
+		this.reset();
+	}
 
-	Queue.prototype.enqueue = function (value) {
-		if (value) {
-			this.storage[this.count] = value;
-			this.count++;
+	enqueue(item) {
+		if (item === undefined || item === null) {
+			throw new Error('Cannot enqueue null or undefined values.');
 		}
-	};
+		this.map.set(++this.upperLimit, item);
+	}
 
-	Queue.prototype.dequeue = function () {
-		if (this.count - this.lowestCount === 0) {
+	dequeue() {
+		if (this.isEmpty()) {
 			return undefined;
 		}
 
-		const result = this.storage[this.lowestCount];
-		delete this.storage[this.lowestCount];
-		this.lowestCount++;
+		const key = this.lowerLimit + 1;
+		const result = this.map.get(this.lowerLimit + 1);
+		this.map.delete(key);
+		this.lowerLimit++;
+
 		return result;
-	};
+	}
 
-	Queue.prototype.size = function () {
-		return this.count - this.lowestCount;
-	};
+	*[Symbol.iterator]() {
+		for (const value of this.map.values()) {
+			yield value;
+		}
+	}
 
-	return Queue;
-})();
+	peek() {
+		if (this.isEmpty()) {
+			return undefined;
+		}
+		return this.map.get(this.lowerLimit + 1);
+	}
 
-const queue = new Queue();
+	reset() {
+		this.map.clear();
+		this.upperLimit = 0;
+		this.lowerLimit = 0;
+	}
+
+	get size() {
+		return this.map.size;
+	}
+
+	isEmpty() {
+		return this.size === 0;
+	}
+}

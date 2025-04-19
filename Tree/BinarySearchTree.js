@@ -81,7 +81,8 @@ const BinarySearchTree = (function () {
 			}
 
 			if (found) {
-				childCount = (current.left !== null ? 1 : 0) + (current.right !== null ? 1 : 0);
+				childCount =
+					(current.left !== null ? 1 : 0) + (current.right !== null ? 1 : 0);
 
 				if (current === this.root) {
 					switch (childCount) {
@@ -118,9 +119,11 @@ const BinarySearchTree = (function () {
 							break;
 						case 1:
 							if (current.value < parent.value) {
-								parent.left = current.left === null ? current.right : current.left;
+								parent.left =
+									current.left === null ? current.right : current.left;
 							} else {
-								parent.right = current.left === null ? current.right : current.left;
+								parent.right =
+									current.left === null ? current.right : current.left;
 							}
 							break;
 						case 2:

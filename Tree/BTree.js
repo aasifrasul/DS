@@ -345,7 +345,9 @@ BTreeNode.prototype.toString = function (indentOpt) {
 	let str = '';
 
 	const childIndent = indentOpt + INDENT_STRING;
-	const childStrings = this._childs.slice(0, this.keyCount() + 1).map((child) => child.toString(childIndent));
+	const childStrings = this._childs
+		.slice(0, this.keyCount() + 1)
+		.map((child) => child.toString(childIndent));
 
 	str = `${indentOpt}[\n${childStrings[0]}\n`;
 	for (let i = 1; i < childStrings.length; i += 1) {

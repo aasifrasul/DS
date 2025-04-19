@@ -9,7 +9,12 @@ var kWeakestRows = function (mat, k) {
 		idx = mat[i].indexOf(0);
 		idx = idx >= 0 ? idx : mat[0].length;
 		hash.set(i, idx);
-		res[idx] = typeof res[idx] === 'undefined' ? i : Array.isArray(res[idx]) ? [...res[idx], i] : [res[idx], i];
+		res[idx] =
+			typeof res[idx] === 'undefined'
+				? i
+				: Array.isArray(res[idx])
+					? [...res[idx], i]
+					: [res[idx], i];
 	}
 
 	return res.flat().slice(0, k);

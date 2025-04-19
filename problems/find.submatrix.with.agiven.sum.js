@@ -28,7 +28,9 @@ function findMinSubMatrix(matrix, size, sum) {
 		subArr = [];
 		j = 0;
 		while (j < size) {
-			subArr = subArr.concat(flatMatrix.slice(i + j * size + j * step, i + (j + 1) * size + j * step));
+			subArr = subArr.concat(
+				flatMatrix.slice(i + j * size + j * step, i + (j + 1) * size + j * step),
+			);
 			j++;
 		}
 		if (

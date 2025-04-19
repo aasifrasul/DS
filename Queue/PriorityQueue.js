@@ -9,12 +9,7 @@
  * @return {PriorityQueue}
  * @api public
  */
-const PriorityQueue = (function () {
-	function PriorityQueue(comparator) {
-		this.comparator = comparator || PriorityQueue.DEFAULT_COMPARATOR;
-		this.elements = [];
-	}
-
+class PriorityQueue {
 	/**
 	 * Compares `a` and `b`, when `a > b` it returns a positive number, when
 	 * it returns 0 and when `a < b` it returns a negative number.
@@ -24,7 +19,7 @@ const PriorityQueue = (function () {
 	 * @return {Number}
 	 * @api public
 	 */
-	PriorityQueue.DEFAULT_COMPARATOR = function (a, b) {
+	static DEFAULT_COMPARATOR(a, b) {
 		if (typeof a === 'number' && typeof b === 'number') {
 			return a - b;
 		} else {
@@ -35,30 +30,12 @@ const PriorityQueue = (function () {
 
 			return a > b ? 1 : -1;
 		}
-	};
+	}
 
-	/**
-	 * Returns whether the priority queue is empty or not.
-	 *
-	 * @return {Boolean}
-	 * @api public
-	 */
-	PriorityQueue.prototype.isEmpty = function () {
-		return this.size() === 0;
-	};
-
-	/**
-	 * Peeks at the top element of the priority queue.
-	 *
-	 * @return {Object}
-	 * @throws {Error} when the queue is empty.
-	 * @api public
-	 */
-	PriorityQueue.prototype.peek = function () {
-		if (this.isEmpty()) throw new Error('PriorityQueue is empty');
-
-		return this.elements[0];
-	};
+	constructor(comparator) {
+		this.comparator = comparator || PriorityQueue.DEFAULT_COMPARATOR;
+		this.elements = [];
+	}
 
 	/**
 	 * Dequeues the top element of the priority queue.
@@ -67,7 +44,7 @@ const PriorityQueue = (function () {
 	 * @throws {Error} when the queue is empty.
 	 * @api public
 	 */
-	PriorityQueue.prototype.deq = function () {
+	deq() {
 		const first = this.peek();
 		const last = this.elements.pop();
 		const size = this.size();
@@ -97,7 +74,7 @@ const PriorityQueue = (function () {
 		}
 
 		return first;
-	};
+	}
 
 	/**
 	 * Enqueues the `element` at the priority queue and returns its new size.
@@ -106,7 +83,7 @@ const PriorityQueue = (function () {
 	 * @return {Number}
 	 * @api public
 	 */
-	PriorityQueue.prototype.enq = function (element) {
+	enq(element) {
 		const size = this.elements.push(element);
 		let current = size - 1;
 
@@ -120,7 +97,30 @@ const PriorityQueue = (function () {
 		}
 
 		return size;
-	};
+	}
+
+	/**
+	 * Returns whether the priority queue is empty or not.
+	 *
+	 * @return {Boolean}
+	 * @api public
+	 */
+	isEmpty() {
+		return this.size() === 0;
+	}
+
+	/**
+	 * Peeks at the top element of the priority queue.
+	 *
+	 * @return {Object}
+	 * @throws {Error} when the queue is empty.
+	 * @api public
+	 */
+	peek() {
+		if (this.isEmpty()) throw new Error('PriorityQueue is empty');
+
+		return this.elements[0];
+	}
 
 	/**
 	 * Returns the size of the priority queue.
@@ -128,18 +128,18 @@ const PriorityQueue = (function () {
 	 * @return {Number}
 	 * @api public
 	 */
-	PriorityQueue.prototype.size = function () {
+	size() {
 		return this.elements.length;
-	};
+	}
 
 	/**
 	 *  Iterates over queue elements
 	 *
 	 *  @param {Function} fn
 	 */
-	PriorityQueue.prototype.forEach = function (fn) {
+	forEach(fn) {
 		return this.elements.forEach(fn);
-	};
+	}
 
 	/**
 	 * Compares the values at position `a` and `b` in the priority queue using its
@@ -150,9 +150,9 @@ const PriorityQueue = (function () {
 	 * @return {Number}
 	 * @api private
 	 */
-	PriorityQueue.prototype.compare = function (a, b) {
+	compare(a, b) {
 		return this.comparator(this.elements[a], this.elements[b]);
-	};
+	}
 
 	/**
 	 * Swaps the values at position `a` and `b` in the priority queue.
@@ -161,13 +161,11 @@ const PriorityQueue = (function () {
 	 * @param {Number} b
 	 * @api private
 	 */
-	PriorityQueue.prototype.swap = function (a, b) {
+	swap(a, b) {
 		const aux = this.elements[a];
 		this.elements[a] = this.elements[b];
 		this.elements[b] = aux;
-	};
-
-	return PriorityQueue;
-})();
+	}
+}
 
 const pq = new PriorityQueue();

@@ -124,7 +124,12 @@ promises.forEach((promise, idx) =>
 		.enqueue(promise)
 		// .enqueue(promise, ((idx + 1) == promises.length))
 		.then(({ ms, url, data }) =>
-			console.log(`DONE ${url} => time, delay, data`, performance.now() - start, ms, data),
+			console.log(
+				`DONE ${url} => time, delay, data`,
+				performance.now() - start,
+				ms,
+				data,
+			),
 		),
 );
 
@@ -141,7 +146,12 @@ setTimeout(() => {
 			.enqueue(promise)
 			// .enqueue(promise, ((idx + 1) == promises.length))
 			.then(({ ms, url, data }) =>
-				console.log(`DONE ${url} => time, delay, data`, performance.now() - start, ms, data),
+				console.log(
+					`DONE ${url} => time, delay, data`,
+					performance.now() - start,
+					ms,
+					data,
+				),
 			),
 	);
 	asyncQueue.start();

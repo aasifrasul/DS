@@ -73,7 +73,8 @@ function count(coins, sum) {
 	// Pick all coins one by one and update the table[]
 	// values after the index greater than or equal to the
 	// value of the picked coin
-	for (let i = 0; i < n; i++) for (let j = coins[i]; j <= sum; j++) dp[j] += dp[j - coins[i]];
+	for (let i = 0; i < n; i++)
+		for (let j = coins[i]; j <= sum; j++) dp[j] += dp[j - coins[i]];
 
 	return dp[sum];
 }

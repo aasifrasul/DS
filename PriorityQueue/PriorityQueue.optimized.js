@@ -59,11 +59,17 @@ class PriorityQueue {
 			const leftChild = 2 * index + 1;
 			const rightChild = 2 * index + 2;
 
-			if (leftChild < this.heap.length && this.comparator(this.heap[leftChild], this.heap[smallest]) < 0) {
+			if (
+				leftChild < this.heap.length &&
+				this.comparator(this.heap[leftChild], this.heap[smallest]) < 0
+			) {
 				smallest = leftChild;
 			}
 
-			if (rightChild < this.heap.length && this.comparator(this.heap[rightChild], this.heap[smallest]) < 0) {
+			if (
+				rightChild < this.heap.length &&
+				this.comparator(this.heap[rightChild], this.heap[smallest]) < 0
+			) {
 				smallest = rightChild;
 			}
 

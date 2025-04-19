@@ -77,7 +77,9 @@ const promiseFactory = (delay, data) => () => {
 	});
 };
 
-const promises = new Array(10).fill(0).map((item, idx) => promiseFactory(Math.random() * 200, { id: ++idx }));
+const promises = new Array(10)
+	.fill(0)
+	.map((item, idx) => promiseFactory(Math.random() * 200, { id: ++idx }));
 
 // asyncQueue.pause();
 

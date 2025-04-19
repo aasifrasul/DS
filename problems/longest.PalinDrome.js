@@ -48,7 +48,8 @@ var longestPalindrome = function (s) {
 			} else if (startOfRepeat >= 0) {
 				curChar = s.slice(tempArr[startOfRepeat], tempArr[i] + 1);
 				console.log('curChar =>', curChar);
-				largestPalindrome = curChar.length > largestPalindrome.length ? curChar : largestPalindrome;
+				largestPalindrome =
+					curChar.length > largestPalindrome.length ? curChar : largestPalindrome;
 				startOfRepeat = -1;
 				continue;
 			}
@@ -56,7 +57,8 @@ var longestPalindrome = function (s) {
 			curChar = s.slice(tempArr[i], tempArr[i + 1] + 1);
 			console.log('curChar =>', curChar);
 			if (isPalinDrome(curChar)) {
-				largestPalindrome = curChar.length > largestPalindrome.length ? curChar : largestPalindrome;
+				largestPalindrome =
+					curChar.length > largestPalindrome.length ? curChar : largestPalindrome;
 			}
 		}
 		console.log('largestPalindrome => ', largestPalindrome);
