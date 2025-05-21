@@ -86,17 +86,17 @@ class LRUCache {
 	moveToTop(key) {
 		if (key === this.head) return; // Already at top
 
-		const node = this.hash[key];
+		const { prev, next } = this.hash[key];
 
 		// Remove from current position
 		if (key === this.tail) {
 			// Node is at tail
-			this.tail = node.prev;
+			this.tail = prev;
 			if (this.tail) this.hash[this.tail].next = null;
 		} else {
 			// Node is in middle
-			if (node.prev) this.hash[node.prev].next = node.next;
-			if (node.next) this.hash[node.next].prev = node.prev;
+			if (prev) this.hash[prev].next = next;
+			if (next) this.hash[next].prev = prev;
 		}
 
 		// Add to head
@@ -137,7 +137,7 @@ class LRUCache {
 		}
 
 		// Remove from hash
-		delete this.hash[this.tail];
+		delete this.hash[tailNode.key];
 		this.size--;
 	}
 }

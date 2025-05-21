@@ -1,6 +1,6 @@
 function maxSubArraySum(items) {
-	let maxSum = items[0];
 	let currentSum = items[0];
+	let maxSum = items[0];
 
 	for (let i = 1; i < items.length; i++) {
 		// Choose whether to extend previous subarray or start a new one
@@ -13,3 +13,7 @@ function maxSubArraySum(items) {
 }
 
 maxSubArraySum([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
+
+
+currentSum = -2
+maxSum = -2

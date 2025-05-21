@@ -30,7 +30,7 @@ class PriorityQueue {
 
 		// set the next Top Priority
 		for (const tempPriority of this.map.keys()) {
-			topPriority = Math.max(topPriority, tempPriority);
+			topPriority = tempPriority > topPriority ? tempPriority : topPriority;
 		}
 
 		this.topPriority = topPriority;
