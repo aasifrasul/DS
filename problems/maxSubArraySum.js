@@ -14,6 +14,5 @@ function maxSubArraySum(items) {
 
 maxSubArraySum([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
 
-
-currentSum = -2
-maxSum = -2
+currentSum = -2;
+maxSum = -2;
