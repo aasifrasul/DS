@@ -1,78 +1,33 @@
-class Node {
-	constructor(data) {
-		this.data = data;
-		this.next = null;
-		this.prev = null; // Key addition for DLL
-	}
-}
-
+/**
+ * A very optimized Queue implementation.
+ * Also handles prequeue
+ */
 class Queue {
-	constructor() {
-		this.head = null;
-		this.tail = null; // Key addition for DLL
-		this.size = 0;
+	#elements = {};
+	#upperLimit = 0;
+	#lowerLimit = 0;
+
+	enqueue(element) {
+		this.#elements[++this.#upperLimit] = element;
 	}
 
-	enqueue(data) {
-		const node = new Node(data);
-
-		if (this.tail) {
-			// List is not empty
-			this.tail.next = node;
-			node.prev = this.tail; // Connect the new node's prev to the old tail
-			this.tail = node; // Update the tail
-		} else {
-			// List is empty
-			this.head = node;
-			this.tail = node;
-		}
-
-		this.size++;
-		return node;
+	prequeue(element) {
+		this.#elements[this.#lowerLimit--] = element;
 	}
 
 	dequeue() {
-		if (!this.head) {
-			return null;
-		}
-		const temp = this.head;
-		this.head = this.head.next;
-		this.size -= 1;
-		return temp;
-	}
+		if (this.isEmpty()) return null;
 
-	peekAt(index) {
-		if (this.head === null) {
-			// Handle empty queue
-			return null;
-		}
-
-		if (index >= 0 && index < this.size) {
-			let current = this.head;
-			for (let i = 0; i < index; i++) {
-				current = current.next;
-			}
-			return current.data;
-		} else {
-			return null; // Index out of bounds
-		}
-	}
-
-	print() {
-		let current = this.head;
-		while (current) {
-			console.log(current.data);
-			current = current.next;
-		}
-	}
-
-	hasNext() {
-		return this.head.next != undefined;
+		const element = this.#elements[++this.#lowerLimit];
+		delete this.#elements[this.#lowerLimit];
+		return element;
 	}
 
 	isEmpty() {
-		return this.head == null;
+		return this.size === 0;
+	}
+
+	get size() {
+		return this.#upperLimit - this.#lowerLimit;
 	}
 }
-
-const queue = new Queue();
