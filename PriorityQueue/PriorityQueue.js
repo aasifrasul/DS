@@ -4,52 +4,50 @@ class PriorityQueue {
 	}
 
 	enqueue(item, priority) {
-		this.map.set(priority, item);
+		if (!this.items[priority]) {
+			this.items[priority] = [];
+		}
+		this.items[priority].push(item);
 		this.topPriority = Math.max(this.topPriority, priority);
 	}
 
 	dequeue() {
-		if (this.isEmpty()) {
-			throw new Error('List is Empty');
+		if (this.isEmpty()) throw new Error('Queue is empty');
+
+		const item = this.items[this.topPriority].shift();
+
+		if (this.items[this.topPriority].length === 0) {
+			delete this.items[this.topPriority];
+			this.findNextTopPriority();
 		}
-
-		const item = this.map.get(this.topPriority);
-		this.map.delete(this.topPriority);
-
-		this.findNextTopPriority();
 
 		return item;
 	}
 
 	findNextTopPriority() {
-		if (this.isEmpty()) {
-			return -1;
-		}
+		if (this.isEmpty()) return;
 
 		let topPriority = Number.NEGATIVE_INFINITY;
-
-		// set the next Top Priority
-		for (const tempPriority of this.map.keys()) {
-			topPriority = tempPriority > topPriority ? tempPriority : topPriority;
+		for (const priority in this.items) {
+			const numPriority = +priority; // Convert string to number
+			if (numPriority > topPriority) {
+				topPriority = numPriority;
+			}
 		}
-
 		this.topPriority = topPriority;
 	}
 
-	peek() {
-		if (this.isEmpty()) {
-			return -1;
-		}
-
-		return this.map.get(this.topPriority);
+	isEmpty() {
+		return Object.keys(this.items).length === 0;
 	}
 
-	isEmpty() {
-		return !this.map.size;
+	peek() {
+		if (this.isEmpty()) return;
+		return this.items[this.topPriority][0];
 	}
 
 	reset() {
-		this.map = new Map();
+		this.items = {};
 		this.topPriority = Number.NEGATIVE_INFINITY;
 	}
 }

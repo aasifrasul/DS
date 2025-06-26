@@ -5,8 +5,7 @@ const Stack = (function () {
 	};
 
 	Stack.prototype.push = function (value) {
-		this.storage[this.count] = value;
-		this.count++;
+		this.storage[++this.count] = value;
 	};
 
 	Stack.prototype.pop = function () {
@@ -14,8 +13,7 @@ const Stack = (function () {
 			return undefined;
 		}
 
-		this.count--;
-		const result = this.storage[this.count];
+		const result = this.storage[--this.count];
 		delete this.storage[this.count];
 		return result;
 	};

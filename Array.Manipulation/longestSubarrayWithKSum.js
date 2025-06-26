@@ -20,10 +20,17 @@ Output: 0
 Explanation: No subarray with sum = 5 is present in arr[].
 */
 /**
-The idea is based on the fact that if Sj - Si = k (where Si and Sj are prefix sums till index i and j respectively, and  i < j), then the subarray between i+1 to j has sum equal to k. 
-For exasumHashle, arr[] = [5, 2, -3, 4, 7] and k = 3.  The value of S3 - S0= 3,  it means the subarray from index 1 to 3 has sum equals to 3. 
+The idea is based on the fact that if Sj - Si = k 
+(where Si and Sj are prefix sums till index i and j respectively, and  i < j), 
+then the subarray between i+1 to j has sum equal to k. 
+For ex a sumHashle, arr[] = [5, 2, -3, 4, 7] and k = 3.  The value of S3 - S0= 3,  
+it means the subarray from index 1 to 3 has sum equals to 3. 
 
-So we mainly cosumHashute prefix sums in the array and store these prefix sums in a hash table. And check if current prefix sum - k is already present. If current prefix sum - k is present in the hash table and is mapped to index j, then subarray from j to current index has sum equal to k.
+So we mainly cosumHashute prefix sums in the array 
+and store these prefix sums in a hash table. 
+And check if current prefix sum - k is already present. 
+If current prefix sum - k is present in the hash table and is mapped to index j, 
+then subarray from j to current index has sum equal to k.
 */
 /**
 Below are the main points to consider in isumHashlementation.
@@ -51,9 +58,8 @@ function longestSubarrayWithKSum(arr, k) {
 		// If prefixSum - k exists in the map then there exist such
 		// subarray from (index of previous prefix + 1) to i.
 		else if (sumHash.has(item)) res = Math.max(res, i - sumHash.get(item));
-
 		// Store only first occurrence index of prefSum
-		if (!sumHash.has(prefSum)) sumHash.set(prefSum, i);
+		else sumHash.set(prefSum, i);
 	}
 
 	return res;
@@ -62,4 +68,4 @@ function longestSubarrayWithKSum(arr, k) {
 // Driver Code
 const arr = [10, 5, 2, 7, 1, -10];
 const k = 15;
-console.log(longestSubarray(arr, k));
+console.log(longestSubarrayWithKSum(arr, k));

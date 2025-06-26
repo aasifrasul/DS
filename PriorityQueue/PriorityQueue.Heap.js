@@ -47,9 +47,7 @@ class PriorityQueue {
 	}
 
 	peek() {
-		if (this.heap.length === 0) {
-			return null;
-		}
+		if (this.heap.length === 0) return null;
 		return this.heap[0];
 	}
 
@@ -57,9 +55,8 @@ class PriorityQueue {
 	// top element with highest priority then
 	// heapifyDown will be called
 	remove() {
-		if (this.heap.length === 0) {
-			return null;
-		}
+		if (this.heap.length === 0) return null;
+
 		const item = this.heap[0];
 		this.heap[0] = this.heap[this.heap.length - 1];
 		this.heap.pop();

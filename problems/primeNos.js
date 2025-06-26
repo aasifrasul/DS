@@ -8,7 +8,6 @@ function sieveOfEratosthenes(n) {
 	let i = 2;
 
 	while (i * i <= n) {
-		debugger;
 		if (isPrime[i]) {
 			// Mark all multiples of i as composite
 			for (let j = i * i; j <= n; j += i) {

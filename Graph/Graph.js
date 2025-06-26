@@ -215,7 +215,6 @@ class Graph {
 		}
 
 		const queue = [startVertex];
-		const visited = new Set([startVertex]);
 		const predecessors = {}; // To reconstruct the path
 
 		while (queue.length > 0) {
@@ -229,14 +228,14 @@ class Graph {
 					path.push(crawl);
 					crawl = predecessors[crawl];
 				}
+				debugger;
 				path.push(startVertex);
 				return path.reverse().join('-');
 			}
 
 			// Iterate over Set directly
 			for (const neighbor of this.edges[currentVertex]) {
-				if (!visited.has(neighbor)) {
-					visited.add(neighbor);
+				if (!(neighbor in predecessors)) {
 					queue.push(neighbor);
 					predecessors[neighbor] = currentVertex;
 				}

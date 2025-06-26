@@ -22,6 +22,10 @@ class HashTable {
 			delete this.values[hash][key];
 			this.count--;
 		}
+
+		if (Object.keys(this.values[hash]).length === 0) {
+			delete this.values[hash];
+		}
 	}
 
 	hasHash(hash) {
@@ -33,7 +37,13 @@ class HashTable {
 	}
 
 	calculateHash(key) {
-		return key.toString().length % this.capacity;
+		// Better hash function
+		let hash = 0;
+		const str = key.toString();
+		for (let i = 0; i < str.length; i++) {
+			hash = ((hash << 5) - hash + str.charCodeAt(i)) & 0x7fffffff;
+		}
+		return hash % this.capacity;
 	}
 
 	search(key) {

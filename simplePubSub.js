@@ -1,35 +1,37 @@
-var pubsub = {};
-(function (q) {
-	var topics = {},
-		subUid = -1;
-	q.subscribe = function (topic, callback) {
+const pubsub = (function () {
+	const topics = {};
+	let subUid = -1;
+
+	const getRandomId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+
+	function subscribe(topic, callback) {
 		if (!topics[topic]) {
 			topics[topic] = [];
 		}
-		var token = (++subUid).toString();
+		const token = getRandomId();
 		topics[topic].push({
 			token,
 			callback,
 		});
 		return token;
-	};
+	}
 
-	q.publish = function (topic, args) {
+	function publish(topic, args) {
 		if (!topics[topic]) {
 			return false;
 		}
 		setTimeout(function () {
-			var subscribers = topics[topic] || [],
-				len = subscribers.length;
+			const subscribers = topics[topic] || [];
+			let len = subscribers.length;
 
 			while (len--) {
 				subscribers[len].callback(topic, args);
 			}
 		}, 0);
 		return true;
-	};
+	}
 
-	q.unsubscribe = function (token) {
+	function unsubscribe(token) {
 		for (var m in topics) {
 			if (topics[m]) {
 				for (var i = 0, j = topics[m].length; i < j; i++) {
@@ -41,5 +43,11 @@ var pubsub = {};
 			}
 		}
 		return false;
+	}
+
+	return {
+		publish,
+		subscribe,
+		unsubscribe,
 	};
-})(pubsub);
+})();

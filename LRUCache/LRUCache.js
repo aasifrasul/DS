@@ -1,69 +1,120 @@
-class LRUCache {
+class OptimizedLRUCache {
 	constructor(limit) {
 		this.limit = limit;
-		this.upperLimit = 0;
-		this.lowerLimit = 0;
+		this.hash = Object.create(null);
+		this.head = null;
+		this.tail = null;
 		this.size = 0;
-
-		this.keysHash = Object.create(null);
-		this.indexHash = Object.create(null);
 	}
 
 	get(key) {
-		if (!(key in this.keysHash)) return -1;
-		return this.deleteAndAddToTop(key);
-	}
+		const node = this.hash[key];
+		if (!node) return null;
 
-	deleteAndAddToTop(key) {
-		const { value, index } = this.keysHash[key];
-		if (index === this.upperLimit) return value;
-
-		delete this.keysHash[key];
-		delete this.indexHash[index];
-
-		if (index === this.lowerLimit) {
-			this.updateLowerLimit();
+		// Only move if not already at head
+		if (key !== this.head) {
+			this.moveToHead(key, node);
 		}
-
-		this.addToTop(key, value);
-		return value;
+		return node.value;
 	}
 
 	put(key, value) {
-		if (key in this.keysHash) {
-			const item = this.keysHash[key];
-			this.keysHash[key] = { value, index: item.index };
-			this.deleteAndAddToTop(key);
+		if (this.get(key)) {
+			this.hash[key].value = value;
+			return;
+		}
+
+		// Add new node
+		const newNode = { key, value, prev: null, next: this.head };
+		this.hash[key] = newNode;
+
+		// Update head linkage
+		if (this.head) {
+			this.hash[this.head].prev = key;
+		}
+		this.head = key;
+
+		// Set tail if first node
+		if (!this.tail) {
+			this.tail = key;
+		}
+
+		this.size++;
+
+		// Evict if necessary
+		if (this.size > this.limit) {
+			this.evictTail();
+		}
+	}
+
+	moveToHead(key, node) {
+		// Remove from current position
+		this.unlinkNode(key, node);
+
+		// Add to head
+		node.prev = null;
+		node.next = this.head;
+
+		if (this.head) {
+			this.hash[this.head].prev = key;
+		}
+		this.head = key;
+
+		// Update tail if this was the only node
+		if (!this.tail) {
+			this.tail = key;
+		}
+	}
+
+	unlinkNode(key, node) {
+		const { prev, next } = node;
+
+		// Update previous node's next pointer
+		if (prev) {
+			this.hash[prev].next = next;
+		}
+
+		// Update next node's prev pointer
+		if (next) {
+			this.hash[next].prev = prev;
+		}
+
+		// Update tail if this node was tail
+		if (key === this.tail) {
+			this.tail = prev;
+		}
+	}
+
+	evictTail() {
+		if (!this.tail) return;
+
+		const tailNode = this.hash[this.tail];
+		const newTail = tailNode.prev;
+
+		// Update new tail's next pointer
+		if (newTail) {
+			this.hash[newTail].next = null;
 		} else {
-			this.size++;
-			this.addToTop(key, value);
-
-			if (!this.lowerLimit) {
-				this.lowerLimit = this.upperLimit;
-			}
-
-			if (this.size > this.limit) {
-				const key = this.indexHash[this.lowerLimit];
-				delete this.keysHash[key];
-				delete this.indexHash[this.lowerLimit];
-				this.updateLowerLimit();
-			}
-		}
-	}
-
-	addToTop(key, value) {
-		this.keysHash[key] = { value, index: ++this.upperLimit };
-		this.indexHash[this.upperLimit] = key;
-	}
-
-	updateLowerLimit() {
-		let min = Number.POSITIVE_INFINITY;
-
-		for (const key in this.indexHash) {
-			min = Math.min(key, min);
+			// List becomes empty
+			this.head = null;
 		}
 
-		this.lowerLimit = min;
+		// Remove evicted node
+		delete this.hash[this.tail];
+		this.tail = newTail;
+		this.size--;
+	}
+
+	// Debug utility
+	toString() {
+		const items = [];
+		let current = this.head;
+		while (current) {
+			const node = this.hash[current];
+			items.push(`${current}:${node.value}`);
+			current = node.next;
+		}
+		return `[${items.join(' -> ')}] (size: ${this.size})`;
 	}
 }
 
@@ -175,6 +226,75 @@ class LRUCache {
 		}
 
 		this.head = key;
+	}
+}
+
+class LRUCache {
+	constructor(limit) {
+		this.limit = limit;
+		this.upperLimit = 0;
+		this.lowerLimit = 0;
+		this.size = 0;
+
+		this.keysHash = Object.create(null);
+		this.indexHash = Object.create(null);
+	}
+
+	get(key) {
+		if (!(key in this.keysHash)) return -1;
+		return this.deleteAndAddToTop(key);
+	}
+
+	deleteAndAddToTop(key) {
+		const { value, index } = this.keysHash[key];
+		if (index === this.upperLimit) return value;
+
+		delete this.keysHash[key];
+		delete this.indexHash[index];
+
+		if (index === this.lowerLimit) {
+			this.updateLowerLimit();
+		}
+
+		this.addToTop(key, value);
+		return value;
+	}
+
+	put(key, value) {
+		if (key in this.keysHash) {
+			const item = this.keysHash[key];
+			this.keysHash[key] = { value, index: item.index };
+			this.deleteAndAddToTop(key);
+		} else {
+			this.size++;
+			this.addToTop(key, value);
+
+			if (!this.lowerLimit) {
+				this.lowerLimit = this.upperLimit;
+			}
+
+			if (this.size > this.limit) {
+				const key = this.indexHash[this.lowerLimit];
+				delete this.keysHash[key];
+				delete this.indexHash[this.lowerLimit];
+				this.updateLowerLimit();
+			}
+		}
+	}
+
+	addToTop(key, value) {
+		this.keysHash[key] = { value, index: ++this.upperLimit };
+		this.indexHash[this.upperLimit] = key;
+	}
+
+	updateLowerLimit() {
+		let min = Number.POSITIVE_INFINITY;
+
+		for (const key in this.indexHash) {
+			min = Math.min(key, min);
+		}
+
+		this.lowerLimit = min;
 	}
 }
 

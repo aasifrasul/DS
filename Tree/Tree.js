@@ -9,27 +9,29 @@ class Queue {
 		this.data[++this.upperLimit] = item;
 	}
 
+	prequeue(item) {
+		this.data[this.lowerLimit--] = item;
+	}
+
 	dequeue() {
-		if (this.isEmpty()) {
-			return undefined;
-		}
+		if (this.isEmpty()) return undefined;
+
 		const item = this.data[++this.lowerLimit];
 		delete this.data[this.lowerLimit];
 		return item;
 	}
 
 	peek() {
-		if (this.isEmpty()) {
-			return undefined;
-		}
+		if (this.isEmpty()) return undefined;
+
 		return this.data[this.upperLimit];
 	}
 
 	isEmpty() {
-		return this.size() === 0;
+		return this.size === 0;
 	}
 
-	size() {
+	get size() {
 		return this.upperLimit - this.lowerLimit;
 	}
 }
