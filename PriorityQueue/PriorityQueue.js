@@ -1,53 +1,73 @@
 class PriorityQueue {
 	constructor() {
-		this.reset();
+		this.heap = [];
 	}
 
-	enqueue(item, priority) {
-		if (!this.items[priority]) {
-			this.items[priority] = [];
-		}
-		this.items[priority].push(item);
-		this.topPriority = Math.max(this.topPriority, priority);
+	enqueue(element, priority) {
+		this.heap.push({ element, priority });
+		this.heapifyUp(this.heap.length - 1);
 	}
 
 	dequeue() {
 		if (this.isEmpty()) throw new Error('Queue is empty');
 
-		const item = this.items[this.topPriority].shift();
+		const min = this.heap[0];
+		const last = this.heap.pop();
 
-		if (this.items[this.topPriority].length === 0) {
-			delete this.items[this.topPriority];
-			this.findNextTopPriority();
+		if (!this.isEmpty()) {
+			this.heap[0] = last;
+			this.heapifyDown(0);
 		}
 
-		return item;
+		return min.element;
 	}
 
-	findNextTopPriority() {
-		if (this.isEmpty()) return;
+	// O(log n) for both enqueue and dequeue
+	heapifyUp(index) {
+		while (index > 0) {
+			const parentIndex = Math.floor((index - 1) / 2);
+			if (this.heap[parentIndex].priority <= this.heap[index].priority) break;
 
-		let topPriority = Number.NEGATIVE_INFINITY;
-		for (const priority in this.items) {
-			const numPriority = +priority; // Convert string to number
-			if (numPriority > topPriority) {
-				topPriority = numPriority;
-			}
+			[this.heap[parentIndex], this.heap[index]] = [
+				this.heap[index],
+				this.heap[parentIndex],
+			];
+			index = parentIndex;
 		}
-		this.topPriority = topPriority;
+	}
+
+	heapifyDown(index) {
+		while (true) {
+			let minIndex = index;
+			const leftChild = 2 * index + 1;
+			const rightChild = 2 * index + 2;
+
+			if (
+				leftChild < this.heap.length &&
+				this.heap[leftChild].priority < this.heap[minIndex].priority
+			) {
+				minIndex = leftChild;
+			}
+
+			if (
+				rightChild < this.heap.length &&
+				this.heap[rightChild].priority < this.heap[minIndex].priority
+			) {
+				minIndex = rightChild;
+			}
+
+			if (minIndex === index) break;
+
+			[this.heap[index], this.heap[minIndex]] = [this.heap[minIndex], this.heap[index]];
+			index = minIndex;
+		}
+	}
+
+	front() {
+		return this.isEmpty() ? undefined : this.heap[0].element;
 	}
 
 	isEmpty() {
-		return Object.keys(this.items).length === 0;
-	}
-
-	peek() {
-		if (this.isEmpty()) return;
-		return this.items[this.topPriority][0];
-	}
-
-	reset() {
-		this.items = {};
-		this.topPriority = Number.NEGATIVE_INFINITY;
+		return this.heap.length === 0;
 	}
 }

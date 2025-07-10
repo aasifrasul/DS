@@ -8,13 +8,11 @@ function fourSum(numbers, targetSum) {
 	const result = [];
 
 	for (let i = 0; i < len - 3; i++) {
-		if (i > 0 && numbers[i] === numbers[i - 1]) {
-			continue; // Skip duplicate values for i
-		}
+		if (i > 0 && numbers[i] === numbers[i - 1]) continue; // Skip duplicates
+
 		for (let j = i + 1; j < len - 2; j++) {
-			if (j > i + 1 && numbers[j] === numbers[j - 1]) {
-				continue; // Skip duplicate values for j
-			}
+			if (j > i + 1 && numbers[j] === numbers[j - 1]) continue; // Skip duplicates
+
 			let left = j + 1;
 			let right = len - 1;
 

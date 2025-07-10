@@ -30,7 +30,7 @@ const twoSumSorted = (nums, target, start = 0) => {
 		const sum = nums[left] + nums[right];
 		if (sum === target) {
 			result.push([nums[left], nums[right]]);
-			// if we want only the first valid option
+			// if we want only the first set of values
 			// we can safely return from here
 
 			// Skip duplicates

@@ -41,32 +41,32 @@ class PriorityQueue {
 	}
 
 	swap(indexOne, indexTwo) {
-		const temp = this.heap[indexOne];
-		this.heap[indexOne] = this.heap[indexTwo];
-		this.heap[indexTwo] = temp;
+		[this.heap[indexOne], this.heap[indexTwo]] = [
+			this.heap[indexTwo],
+			this.heap[indexOne],
+		];
 	}
 
 	peek() {
 		if (this.heap.length === 0) return null;
-		return this.heap[0];
+		return this.heap[0].element;
 	}
 
 	// Removing an element will reomve the
 	// top element with highest priority then
 	// heapifyDown will be called
-	remove() {
-		if (this.heap.length === 0) return null;
+	enqueue(element, priority) {
+		this.heap.push({ element, priority });
+		this.heapifyUp();
+	}
 
+	dequeue() {
+		if (this.heap.length === 0) return null;
 		const item = this.heap[0];
 		this.heap[0] = this.heap[this.heap.length - 1];
 		this.heap.pop();
-		this.heapifyDown();
-		return item;
-	}
-
-	add(item) {
-		this.heap.push(item);
-		this.heapifyUp();
+		this.heapifyDown(0);
+		return item.element; // Return just the element
 	}
 
 	heapifyUp() {
@@ -77,36 +77,43 @@ class PriorityQueue {
 		}
 	}
 
-	heapifyDown() {
-		let index = 0;
+	heapifyDown(index) {
 		while (this.hasLeftChild(index)) {
-			let smallerChildIndex = this.getLeftChildIndex(index);
+			let minIndex = this.getLeftChildIndex(index);
 			if (this.hasRightChild(index) && this.rightChild(index) < this.leftChild(index)) {
-				smallerChildIndex = this.getRightChildIndex(index);
+				minIndex = this.getRightChildIndex(index);
 			}
-			if (this.heap[index] < this.heap[smallerChildIndex]) {
+			if (this.heap[index] < this.heap[minIndex]) {
 				break;
 			} else {
-				this.swap(index, smallerChildIndex);
+				this.swap(index, minIndex);
 			}
-			index = smallerChildIndex;
+			index = minIndex;
 		}
+	}
+
+	get size() {
+		return this.heap.length;
+	}
+
+	isEmpty() {
+		return this.heap.length === 0;
 	}
 }
 
 // Creating The Priority Queue
-var PriQueue = new PriorityQueue();
+const PriQueue = new PriorityQueue();
 
 // Adding the Elements
-PriQueue.add(32);
-PriQueue.add(45);
-PriQueue.add(12);
-PriQueue.add(65);
-PriQueue.add(85);
+PriQueue.enqueue(32);
+PriQueue.enqueue(45);
+PriQueue.enqueue(12);
+PriQueue.enqueue(65);
+PriQueue.enqueue(85);
 
 console.log(PriQueue.peek());
-console.log(PriQueue.remove());
+console.log(PriQueue.dequeue());
 console.log(PriQueue.peek());
-console.log(PriQueue.remove());
+console.log(PriQueue.dequeue());
 console.log(PriQueue.peek());
-console.log(PriQueue.remove());
+console.log(PriQueue.dequeue());
